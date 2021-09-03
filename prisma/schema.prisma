@@ -1,0 +1,79 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int       @id @default(autoincrement())
+  name       String
+  username   String    @unique
+  password   String
+  role       UserRole  @default(SELLER)
+  created_at DateTime  @default(now())
+  updated_at DateTime  @default(now())
+  betbooks   Betbook[]
+
+  @@map("users")
+}
+
+model Betbook {
+  id         Int      @id @default(autoincrement())
+  bettor     String
+  seller_id  Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  seller     User     @relation(fields: [seller_id], references: [id])
+  bets       Bet[]
+
+  @@map("betbooks")
+}
+
+model Bet {
+  id         Int      @id @default(autoincrement())
+  target     Float
+  pick       String
+  amount     Float
+  award      Float?
+  up_down    Boolean?
+  betbook_id Int
+  lottery_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  betbook    Betbook  @relation(fields: [betbook_id], references: [id])
+  lottery    Lottery  @relation(fields: [lottery_id], references: [id])
+
+  @@map("bets")
+}
+
+model Lottery {
+  id         Int         @id @default(autoincrement())
+  name       String
+  type       LotteryType
+  result     String?
+  date       DateTime
+  iso_date   String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
+  bets       Bet[]
+
+  @@unique([type, iso_date], name: "lottery_identifier")
+  @@map("lotteries")
+}
+
+enum UserRole {
+  SELLER
+  ADMIN
+}
+
+enum LotteryType {
+  EM
+  TL
+  M1
+  LC
+  LP
+  JE
+}

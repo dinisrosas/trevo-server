@@ -1,0 +1,78 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  name: String!
+  username: String!
+  password: String!
+  role: String!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AuthSession {
+  token: String!
+}
+
+type Lottery {
+  id: ID!
+  name: String!
+  type: String!
+  iso_date: String!
+  date: DateTime!
+  created_at: DateTime!
+  updated_at: DateTime!
+}
+
+type Query {
+  me: User!
+  users: [User!]!
+  user(username: String!): User!
+  lotteries: [Lottery!]!
+  lottery(id: Int!): Lottery!
+}
+
+type Mutation {
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): User!
+  login(loginInput: LoginInput!): AuthSession!
+  signUp(signUpInput: CreateUserInput!): User!
+  createLottery(createLotteryInput: CreateLotteryInput!): Lottery!
+  updateLottery(updateLotteryInput: UpdateLotteryInput!): Lottery!
+  removeLottery(id: Int!): Lottery!
+}
+
+input UpdateUserInput {
+  name: String
+  username: String
+  password: String
+  id: ID!
+}
+
+input LoginInput {
+  username: String!
+  password: String!
+}
+
+input CreateUserInput {
+  name: String!
+  username: String!
+  password: String!
+}
+
+input CreateLotteryInput {
+  type: String!
+  iso_date: String!
+}
+
+input UpdateLotteryInput {
+  id: ID!
+  result: String!
+}
