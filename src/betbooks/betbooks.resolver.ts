@@ -1,5 +1,5 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
 import { AuthUser } from "src/types";
@@ -30,7 +30,7 @@ export class BetbooksResolver {
   }
 
   @Query(() => Betbook, { name: "betbook" })
-  findOne(@Args("id", { type: () => Int }) id: string): Promise<Betbook> {
+  findOne(@Args("id", { type: () => ID }) id: string): Promise<Betbook> {
     return this.betbooksService.findOne(id);
   }
 

@@ -59,7 +59,7 @@ __decorate([
 ], BetbooksResolver.prototype, "findAll", null);
 __decorate([
     graphql_1.Query(() => betbook_entity_1.Betbook, { name: "betbook" }),
-    __param(0, graphql_1.Args("id", { type: () => graphql_1.Int })),
+    __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)

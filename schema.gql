@@ -87,7 +87,7 @@ type Query {
   bets: [Bet!]!
   bet(id: ID!): Bet!
   betbooks: [Betbook!]!
-  betbook(id: Int!): Betbook!
+  betbook(id: ID!): Betbook!
 }
 
 type Mutation {
