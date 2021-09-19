@@ -1,16 +1,6 @@
-import { LotteryType } from "@prisma/client";
+import { RawLottery } from "src/types";
 
-export type RawLottery = {
-  type: LotteryType;
-  name: string;
-  day: 1 | 2 | 3 | 4 | 5 | 6;
-  time: {
-    hour: number;
-    minute: number;
-  };
-};
-
-const lotteries: RawLottery[] = [
+const rawLotteries: RawLottery[] = [
   {
     type: "LC",
     name: "Lotaria Clássica",
@@ -48,15 +38,6 @@ const lotteries: RawLottery[] = [
     },
   },
   {
-    type: "M1",
-    name: "M1lhão",
-    day: 5,
-    time: {
-      hour: 20,
-      minute: 0,
-    },
-  },
-  {
     type: "EM",
     name: "Euromilhões",
     day: 5,
@@ -66,9 +47,9 @@ const lotteries: RawLottery[] = [
     },
   },
   {
-    type: "TL",
-    name: "Totoloto",
-    day: 6,
+    type: "M1",
+    name: "M1lhão",
+    day: 5,
     time: {
       hour: 20,
       minute: 0,
@@ -83,6 +64,15 @@ const lotteries: RawLottery[] = [
       minute: 0,
     },
   },
+  {
+    type: "TL",
+    name: "Totoloto",
+    day: 6,
+    time: {
+      hour: 20,
+      minute: 0,
+    },
+  },
 ];
 
-export default lotteries;
+export default rawLotteries;

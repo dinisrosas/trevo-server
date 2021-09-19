@@ -1,14 +1,14 @@
-import { User } from "@prisma/client";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserInput } from "./dto/create-user.input";
 import { UpdateUserInput } from "./dto/update-user.input";
+import { User } from "./entities/user.entity";
 export declare class UsersService {
     private prisma;
     constructor(prisma: PrismaService);
     create(createUserInput: CreateUserInput): Promise<User>;
     findAll(): Promise<User[]>;
-    findById(id: number): Promise<User>;
-    findByUsername(username: string): Promise<User>;
-    update(id: number, updateUserInput: UpdateUserInput): string;
-    remove(id: number): Promise<User>;
+    findOneById(id: string): Promise<User>;
+    findOneByUsername(username: string): Promise<User>;
+    update(id: string, updateUserInput: UpdateUserInput): Promise<User>;
+    remove(id: string): Promise<User>;
 }

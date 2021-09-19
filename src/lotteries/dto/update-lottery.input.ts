@@ -1,11 +1,7 @@
-import { Field, ID, InputType, Int } from "@nestjs/graphql";
-import { Lottery } from "@prisma/client";
+import { Field, ID, InputType } from "@nestjs/graphql";
 
 @InputType()
 export class UpdateLotteryInput {
   @Field(() => ID)
-  id: number;
-
-  @Field()
-  result: string;
+  id: string;
 }

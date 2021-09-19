@@ -4,7 +4,10 @@ import { UserRole } from "@prisma/client";
 @ObjectType()
 export class User {
   @Field(() => ID)
-  id: number;
+  id: string;
+
+  @Field()
+  sid: number;
 
   @Field()
   name: string;
@@ -19,8 +22,8 @@ export class User {
   role: UserRole;
 
   @Field()
-  created_at: Date;
+  createdAt: Date;
 
   @Field()
-  updated_at: Date;
+  updatedAt: Date;
 }

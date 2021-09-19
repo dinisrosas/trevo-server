@@ -4,12 +4,13 @@
 
 type User {
   id: ID!
+  sid: Float!
   name: String!
   username: String!
   password: String!
   role: String!
-  created_at: DateTime!
-  updated_at: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """
@@ -23,12 +24,55 @@ type AuthSession {
 
 type Lottery {
   id: ID!
+  sid: Float!
   name: String!
   type: String!
-  iso_date: String!
+  mode: String!
+  isoDate: String!
+  bets: [Bet!]
   date: DateTime!
-  created_at: DateTime!
-  updated_at: DateTime!
+  result: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Bet {
+  id: ID!
+  sid: Float!
+  target: Float!
+  pick: String!
+  amount: Float!
+  award: Float
+  lottery: Lottery
+  betbook: Betbook
+  upDown: Boolean
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type Betbook {
+  id: ID!
+  sid: Float!
+  bettor: String!
+  seller: User
+  bets: [Bet!]
+  totalAmount: Float!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type LotteryResult {
+  result: String!
+  isoDate: String!
+}
+
+type OncomingLottery {
+  id: String!
+  name: String!
+  type: String!
+  mode: String!
+  isoDate: String!
+  date: DateTime!
 }
 
 type Query {
@@ -36,17 +80,29 @@ type Query {
   users: [User!]!
   user(username: String!): User!
   lotteries: [Lottery!]!
-  lottery(id: Int!): Lottery!
+  oncomingLotteries: [OncomingLottery!]!
+  finishedLotteries: [Lottery!]!
+  lottery(isoDate: String!, type: String!): Lottery!
+  latestLotteryResult(type: String!): LotteryResult!
+  bets: [Bet!]!
+  bet(id: ID!): Bet!
+  betbooks: [Betbook!]!
+  betbook(id: Int!): Betbook!
 }
 
 type Mutation {
   updateUser(updateUserInput: UpdateUserInput!): User!
-  removeUser(id: Int!): User!
+  removeUser(id: ID!): User!
   login(loginInput: LoginInput!): AuthSession!
   signUp(signUpInput: CreateUserInput!): User!
   createLottery(createLotteryInput: CreateLotteryInput!): Lottery!
   updateLottery(updateLotteryInput: UpdateLotteryInput!): Lottery!
-  removeLottery(id: Int!): Lottery!
+  removeLottery(id: ID!): Lottery!
+  updateBet(updateBetInput: UpdateBetInput!): Bet!
+  removeBet(id: ID!): Bet!
+  createBetbook(createBetbookInput: CreateBetbookInput!): Betbook!
+  updateBetbook(updateBetbookInput: UpdateBetbookInput!): Betbook!
+  removeBetbook(id: ID!): Betbook!
 }
 
 input UpdateUserInput {
@@ -69,10 +125,31 @@ input CreateUserInput {
 
 input CreateLotteryInput {
   type: String!
-  iso_date: String!
+  isoDate: String!
 }
 
 input UpdateLotteryInput {
   id: ID!
-  result: String!
+}
+
+input UpdateBetInput {
+  id: ID!
+  award: Float!
+}
+
+input CreateBetbookInput {
+  bettor: String!
+  bets: [CreateBetInput!]!
+}
+
+input CreateBetInput {
+  pick: String!
+  target: Float!
+  upDown: Boolean
+  lottery: CreateLotteryInput!
+}
+
+input UpdateBetbookInput {
+  id: ID!
+  totalAmount: Float
 }

@@ -1,10 +1,11 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from "bcrypt";
-
 import { CreateUserInput } from "src/users/dto/create-user.input";
+import { User } from "src/users/entities/user.entity";
 import { UsersService } from "src/users/users.service";
 import { LoginInput } from "./dto/login.input";
+import { AuthSession } from "./entities/auth-session.entity";
 
 @Injectable()
 export class AuthService {
@@ -15,19 +16,19 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async login(loginInput: LoginInput) {
+  async login(loginInput: LoginInput): Promise<AuthSession> {
     const { username, password } = loginInput;
 
-    const user = await this.usersService.findByUsername(username);
+    const user = await this.usersService.findOneByUsername(username);
 
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid credentials");
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await this.comparePasswords(password, user.password);
 
     if (!isMatch) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException("Invalid credentials");
     }
 
     const payload = {
@@ -40,16 +41,27 @@ export class AuthService {
     };
   }
 
-  async signUp(createUserInput: CreateUserInput) {
-    const { password, ...rest } = createUserInput;
+  async signUp(createUserInput: CreateUserInput): Promise<User> {
+    const { password, ...restOfProps } = createUserInput;
 
-    const hash = await bcrypt.hash(password, this.saltOrRounds);
+    const encryptedPassword = await this.encryptPassword(password);
 
     const user = await this.usersService.create({
-      ...rest,
-      password: hash,
+      ...restOfProps,
+      password: encryptedPassword,
     });
 
     return user;
+  }
+
+  async encryptPassword(password: string): Promise<string> {
+    return await bcrypt.hash(password, this.saltOrRounds);
+  }
+
+  async comparePasswords(
+    password: string,
+    encryptedPassword: string
+  ): Promise<boolean> {
+    return await bcrypt.compare(password, encryptedPassword);
   }
 }

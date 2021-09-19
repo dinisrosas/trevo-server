@@ -11,46 +11,126 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LotteriesService = void 0;
 const common_1 = require("@nestjs/common");
+const eventemitter2_1 = require("eventemitter2");
 const luxon_1 = require("luxon");
 const prisma_service_1 = require("../prisma/prisma.service");
+const types_1 = require("../types");
 const raw_lotteries_1 = require("./data/raw-lotteries");
+const oncoming_helper_1 = require("./helpers/oncoming.helper");
 let LotteriesService = class LotteriesService {
-    constructor(prisma) {
+    constructor(prisma, eventEmitter) {
         this.prisma = prisma;
-        this.lotteries = raw_lotteries_1.default;
+        this.eventEmitter = eventEmitter;
+        this.rawLotteries = raw_lotteries_1.default;
     }
-    create(createLotteryInput) {
-        const { type, iso_date } = createLotteryInput;
-        const lottery = this.lotteries.find((lottery) => lottery.type === type);
-        const date = luxon_1.DateTime.fromISO(iso_date)
+    async create(createLotteryInput) {
+        const { type, isoDate } = createLotteryInput;
+        const rawLottery = this.rawLotteries.find((lottery) => lottery.type === type);
+        const date = luxon_1.DateTime.fromISO(isoDate)
             .startOf("day")
-            .set(Object.assign({}, lottery.time))
+            .set(Object.assign({}, rawLottery.time))
             .toJSDate();
-        return this.prisma.lottery.create({
+        const lotteryMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
+        return await this.prisma.lottery.create({
             data: {
                 type,
+                name: rawLottery.name,
+                mode: lotteryMode,
                 date,
-                iso_date,
-                name: lottery.name,
+                isoDate: "asd",
             },
         });
     }
-    findAll() {
-        return this.prisma.lottery.findMany();
+    async findOrCreate(createLotteryInput) {
+        const { type, isoDate } = createLotteryInput;
+        const lottery = await this.prisma.lottery.findUnique({
+            where: {
+                type_iso_date: { type, isoDate },
+            },
+        });
+        if (lottery) {
+            return lottery;
+        }
+        return await this.create(createLotteryInput);
     }
-    findOne(id) {
-        return `This action returns a #${id} lottery`;
+    async findAll() {
+        return await this.prisma.lottery.findMany();
     }
-    update(id, updateLotteryInput) {
-        return `This action updates a #${id} lottery`;
+    async findOneById(id) {
+        return await this.prisma.lottery.findUnique({
+            where: { id },
+            include: {
+                bets: true,
+            },
+        });
     }
-    remove(id) {
-        return `This action removes a #${id} lottery`;
+    async findFinished(sellerId) {
+        return await this.prisma.lottery.findMany({
+            where: {
+                result: {
+                    not: null,
+                },
+                bets: {
+                    every: {
+                        betbook: {
+                            sellerId,
+                        },
+                    },
+                },
+            },
+            orderBy: {
+                id: "desc",
+            },
+        });
+    }
+    async findOneByTypeIsoDate(type, isoDate) {
+        return await this.prisma.lottery.findUnique({
+            where: {
+                type_iso_date: { isoDate, type },
+            },
+        });
+    }
+    findOncoming() {
+        return oncoming_helper_1.getNextLotteries();
+    }
+    async findRecentActiveLotteries() {
+        const today = luxon_1.DateTime.now().toISODate();
+        return await this.prisma.lottery.findMany({
+            where: {
+                isoDate: today,
+                result: null,
+            },
+        });
+    }
+    async update(id, updateLotteryInput) {
+        const lottery = await this.prisma.lottery.update({
+            where: {
+                id,
+            },
+            data: Object.assign({}, updateLotteryInput),
+        });
+        return lottery;
+    }
+    async updateResult(id, result) {
+        const lottery = await this.prisma.lottery.update({
+            where: {
+                id,
+            },
+            data: {
+                result,
+            },
+        });
+        this.eventEmitter.emit("lottery.result.updated", lottery);
+        return lottery;
+    }
+    async remove(id) {
+        return await this.prisma.lottery.delete({ where: { id } });
     }
 };
 LotteriesService = __decorate([
     common_1.Injectable(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        eventemitter2_1.EventEmitter2])
 ], LotteriesService);
 exports.LotteriesService = LotteriesService;
 //# sourceMappingURL=lotteries.service.js.map

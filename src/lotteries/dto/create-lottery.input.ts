@@ -1,5 +1,5 @@
-import { InputType, Field } from "@nestjs/graphql";
-import { LotteryType } from "@prisma/client";
+import { Field, InputType } from "@nestjs/graphql";
+import { LotteryType } from "src/types";
 
 @InputType()
 export class CreateLotteryInput {
@@ -7,5 +7,5 @@ export class CreateLotteryInput {
   type: LotteryType;
 
   @Field()
-  iso_date: string;
+  isoDate: string;
 }

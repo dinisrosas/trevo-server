@@ -24,14 +24,19 @@ let UsersService = class UsersService {
     findAll() {
         return this.prisma.user.findMany();
     }
-    findById(id) {
+    findOneById(id) {
         return this.prisma.user.findUnique({ where: { id } });
     }
-    findByUsername(username) {
+    findOneByUsername(username) {
         return this.prisma.user.findUnique({ where: { username } });
     }
-    update(id, updateUserInput) {
-        return `This action updates a #${id} user`;
+    async update(id, updateUserInput) {
+        if (updateUserInput.password) {
+        }
+        return this.prisma.user.update({
+            where: { id },
+            data: updateUserInput,
+        });
     }
     remove(id) {
         return this.prisma.user.delete({ where: { id } });

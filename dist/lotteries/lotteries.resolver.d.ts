@@ -1,12 +1,19 @@
-import { LotteriesService } from "./lotteries.service";
+import { AuthUser, LotteryType } from "src/types";
 import { CreateLotteryInput } from "./dto/create-lottery.input";
 import { UpdateLotteryInput } from "./dto/update-lottery.input";
+import { LotteryResult } from "./entities/lottery-result.entity";
+import { Lottery } from "./entities/lottery.entity";
+import { OncomingLottery } from "./entities/oncoming-lottery.entity";
+import { LotteriesService } from "./lotteries.service";
 export declare class LotteriesResolver {
     private readonly lotteriesService;
     constructor(lotteriesService: LotteriesService);
-    createLottery(createLotteryInput: CreateLotteryInput): import(".prisma/client").Prisma.Prisma__LotteryClient<import(".prisma/client").Lottery>;
-    findAll(): import(".prisma/client").PrismaPromise<import(".prisma/client").Lottery[]>;
-    findOne(id: number): string;
-    updateLottery(updateLotteryInput: UpdateLotteryInput): string;
-    removeLottery(id: number): string;
+    createLottery(createLotteryInput: CreateLotteryInput): Promise<Lottery>;
+    findAll(): Promise<Lottery[]>;
+    findOncomingLotteries(): OncomingLottery[];
+    findFinished(user: AuthUser): Promise<Lottery[]>;
+    findOneByTypeIsoDate(type: LotteryType, isoDate: string): Promise<Lottery>;
+    findLastestResultByType(type: LotteryType): Promise<LotteryResult>;
+    updateLottery(updateLotteryInput: UpdateLotteryInput): Promise<Lottery>;
+    removeLottery(id: string): Promise<Lottery>;
 }

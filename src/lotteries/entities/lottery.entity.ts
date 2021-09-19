@@ -1,10 +1,14 @@
 import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { LotteryType } from "@prisma/client";
+import { Bet } from "src/bets/entities/bet.entity";
+import { LotteryMode, LotteryType } from "src/types";
 
 @ObjectType()
 export class Lottery {
   @Field(() => ID)
-  id: number;
+  id: string;
+
+  @Field()
+  sid: number;
 
   @Field()
   name: string;
@@ -13,14 +17,23 @@ export class Lottery {
   type: LotteryType;
 
   @Field()
-  iso_date: string;
+  mode: LotteryMode;
+
+  @Field()
+  isoDate: string;
+
+  @Field(() => [Bet])
+  bets?: Bet[];
 
   @Field()
   date: Date;
 
-  @Field()
-  created_at: Date;
+  @Field({ nullable: true })
+  result?: string;
 
   @Field()
-  updated_at: Date;
+  createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }

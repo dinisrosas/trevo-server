@@ -11,10 +11,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateLotteryInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const client_1 = require("@prisma/client");
+const types_1 = require("../../types");
 let CreateLotteryInput = class CreateLotteryInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { type: { type: () => Object }, iso_date: { type: () => String } };
+        return { type: { type: () => Object }, isoDate: { type: () => String } };
     }
 };
 __decorate([
@@ -24,7 +24,7 @@ __decorate([
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", String)
-], CreateLotteryInput.prototype, "iso_date", void 0);
+], CreateLotteryInput.prototype, "isoDate", void 0);
 CreateLotteryInput = __decorate([
     graphql_1.InputType()
 ], CreateLotteryInput);

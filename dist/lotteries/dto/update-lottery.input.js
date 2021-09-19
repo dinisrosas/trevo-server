@@ -13,17 +13,13 @@ exports.UpdateLotteryInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let UpdateLotteryInput = class UpdateLotteryInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => Number }, result: { type: () => String } };
+        return { id: { type: () => String } };
     }
 };
 __decorate([
     graphql_1.Field(() => graphql_1.ID),
-    __metadata("design:type", Number)
-], UpdateLotteryInput.prototype, "id", void 0);
-__decorate([
-    graphql_1.Field(),
     __metadata("design:type", String)
-], UpdateLotteryInput.prototype, "result", void 0);
+], UpdateLotteryInput.prototype, "id", void 0);
 UpdateLotteryInput = __decorate([
     graphql_1.InputType()
 ], UpdateLotteryInput);

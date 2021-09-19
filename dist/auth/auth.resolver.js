@@ -14,11 +14,11 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthResolver = void 0;
 const graphql_1 = require("@nestjs/graphql");
+const create_user_input_1 = require("../users/dto/create-user.input");
 const user_entity_1 = require("../users/entities/user.entity");
 const auth_service_1 = require("./auth.service");
 const login_input_1 = require("./dto/login.input");
 const auth_session_entity_1 = require("./entities/auth-session.entity");
-const create_user_input_1 = require("../users/dto/create-user.input");
 let AuthResolver = class AuthResolver {
     constructor(authService) {
         this.authService = authService;
@@ -35,14 +35,14 @@ __decorate([
     __param(0, graphql_1.Args("loginInput")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_input_1.LoginInput]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthResolver.prototype, "login", null);
 __decorate([
     graphql_1.Mutation(() => user_entity_1.User),
     __param(0, graphql_1.Args("signUpInput")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_input_1.CreateUserInput]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], AuthResolver.prototype, "signUp", null);
 AuthResolver = __decorate([
     graphql_1.Resolver(),

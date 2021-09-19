@@ -10,17 +10,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Lottery = void 0;
+const eager_import_0 = require("../../bets/entities/bet.entity");
 const graphql_1 = require("@nestjs/graphql");
-const client_1 = require("@prisma/client");
+const bet_entity_1 = require("../../bets/entities/bet.entity");
+const types_1 = require("../../types");
 let Lottery = class Lottery {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => Number }, name: { type: () => String }, type: { type: () => Object }, iso_date: { type: () => String }, date: { type: () => Date }, created_at: { type: () => Date }, updated_at: { type: () => Date } };
+        return { id: { type: () => String }, sid: { type: () => Number }, name: { type: () => String }, type: { type: () => Object }, mode: { type: () => Object }, isoDate: { type: () => String }, bets: { nullable: true, type: () => [require("../../bets/entities/bet.entity").Bet] }, date: { type: () => Date }, result: { nullable: true, type: () => String }, createdAt: { type: () => Date }, updatedAt: { type: () => Date } };
     }
 };
 __decorate([
     graphql_1.Field(() => graphql_1.ID),
-    __metadata("design:type", Number)
+    __metadata("design:type", String)
 ], Lottery.prototype, "id", void 0);
+__decorate([
+    graphql_1.Field(),
+    __metadata("design:type", Number)
+], Lottery.prototype, "sid", void 0);
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", String)
@@ -32,19 +38,31 @@ __decorate([
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", String)
-], Lottery.prototype, "iso_date", void 0);
+], Lottery.prototype, "mode", void 0);
+__decorate([
+    graphql_1.Field(),
+    __metadata("design:type", String)
+], Lottery.prototype, "isoDate", void 0);
+__decorate([
+    graphql_1.Field(() => [bet_entity_1.Bet]),
+    __metadata("design:type", Array)
+], Lottery.prototype, "bets", void 0);
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", Date)
 ], Lottery.prototype, "date", void 0);
 __decorate([
-    graphql_1.Field(),
-    __metadata("design:type", Date)
-], Lottery.prototype, "created_at", void 0);
+    graphql_1.Field({ nullable: true }),
+    __metadata("design:type", String)
+], Lottery.prototype, "result", void 0);
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", Date)
-], Lottery.prototype, "updated_at", void 0);
+], Lottery.prototype, "createdAt", void 0);
+__decorate([
+    graphql_1.Field(),
+    __metadata("design:type", Date)
+], Lottery.prototype, "updatedAt", void 0);
 Lottery = __decorate([
     graphql_1.ObjectType()
 ], Lottery);

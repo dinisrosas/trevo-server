@@ -1,5 +1,5 @@
-import { LotteryType } from "@prisma/client";
+import { LotteryType } from "src/types";
 export declare class CreateLotteryInput {
     type: LotteryType;
-    iso_date: string;
+    isoDate: string;
 }

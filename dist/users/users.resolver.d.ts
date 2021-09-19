@@ -4,9 +4,9 @@ import { UsersService } from "./users.service";
 export declare class UsersResolver {
     private readonly usersService;
     constructor(usersService: UsersService);
-    me(user: User): Promise<import(".prisma/client").User>;
-    findAll(): Promise<import(".prisma/client").User[]>;
-    findByUsername(username: string): Promise<import(".prisma/client").User>;
-    updateUser(updateUserInput: UpdateUserInput): string;
-    removeUser(id: number): Promise<import(".prisma/client").User>;
+    me(user: User): Promise<User>;
+    findAll(): Promise<User[]>;
+    findByUsername(username: string): Promise<User>;
+    updateUser(updateUserInput: UpdateUserInput): Promise<User>;
+    removeUser(id: string): Promise<User>;
 }

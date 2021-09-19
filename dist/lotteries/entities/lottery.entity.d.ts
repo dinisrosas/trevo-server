@@ -1,10 +1,15 @@
-import { LotteryType } from "@prisma/client";
+import { Bet } from "src/bets/entities/bet.entity";
+import { LotteryMode, LotteryType } from "src/types";
 export declare class Lottery {
-    id: number;
+    id: string;
+    sid: number;
     name: string;
     type: LotteryType;
-    iso_date: string;
+    mode: LotteryMode;
+    isoDate: string;
+    bets?: Bet[];
     date: Date;
-    created_at: Date;
-    updated_at: Date;
+    result?: string;
+    createdAt: Date;
+    updatedAt: Date;
 }

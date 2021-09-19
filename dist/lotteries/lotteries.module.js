@@ -11,7 +11,7 @@ const common_1 = require("@nestjs/common");
 const lotteries_service_1 = require("./lotteries.service");
 const lotteries_resolver_1 = require("./lotteries.resolver");
 const prisma_service_1 = require("../prisma/prisma.service");
-const lottery_tasks_service_1 = require("./lottery-tasks.service");
+const fetch_result_task_1 = require("./tasks/fetch-result.task");
 let LotteriesModule = class LotteriesModule {
 };
 LotteriesModule = __decorate([
@@ -20,8 +20,9 @@ LotteriesModule = __decorate([
             lotteries_resolver_1.LotteriesResolver,
             lotteries_service_1.LotteriesService,
             prisma_service_1.PrismaService,
-            lottery_tasks_service_1.LotteryTasksSerivce,
+            fetch_result_task_1.FetchLotteryResultTask,
         ],
+        exports: [lotteries_service_1.LotteriesService],
     })
 ], LotteriesModule);
 exports.LotteriesModule = LotteriesModule;

@@ -1,0 +1,32 @@
+import { UseGuards } from "@nestjs/common";
+import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
+import { BetsService } from "./bets.service";
+import { UpdateBetInput } from "./dto/update-bet.input";
+import { Bet } from "./entities/bet.entity";
+
+@UseGuards(GqlAuthGuard)
+@Resolver(() => Bet)
+export class BetsResolver {
+  constructor(private readonly betsService: BetsService) {}
+
+  @Query(() => [Bet], { name: "bets" })
+  findAll() {
+    return this.betsService.findAll();
+  }
+
+  @Query(() => Bet, { name: "bet" })
+  findOne(@Args("id", { type: () => ID }) id: string) {
+    return this.betsService.findOne(id);
+  }
+
+  @Mutation(() => Bet)
+  updateBet(@Args("updateBetInput") updateBetInput: UpdateBetInput) {
+    return this.betsService.update(updateBetInput.id, updateBetInput);
+  }
+
+  @Mutation(() => Bet)
+  removeBet(@Args("id", { type: () => ID }) id: string) {
+    return this.betsService.remove(id);
+  }
+}

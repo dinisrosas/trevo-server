@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const lotteries = [
+const types_1 = require("../../types");
+const rawLotteries = [
     {
         type: "LC",
         name: "Lotaria Clássica",
@@ -38,15 +39,6 @@ const lotteries = [
         },
     },
     {
-        type: "M1",
-        name: "M1lhão",
-        day: 5,
-        time: {
-            hour: 20,
-            minute: 0,
-        },
-    },
-    {
         type: "EM",
         name: "Euromilhões",
         day: 5,
@@ -56,9 +48,9 @@ const lotteries = [
         },
     },
     {
-        type: "TL",
-        name: "Totoloto",
-        day: 6,
+        type: "M1",
+        name: "M1lhão",
+        day: 5,
         time: {
             hour: 20,
             minute: 0,
@@ -73,6 +65,15 @@ const lotteries = [
             minute: 0,
         },
     },
+    {
+        type: "TL",
+        name: "Totoloto",
+        day: 6,
+        time: {
+            hour: 20,
+            minute: 0,
+        },
+    },
 ];
-exports.default = lotteries;
+exports.default = rawLotteries;
 //# sourceMappingURL=raw-lotteries.js.map

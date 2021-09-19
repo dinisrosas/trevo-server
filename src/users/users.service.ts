@@ -1,9 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { User } from "@prisma/client";
-
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserInput } from "./dto/create-user.input";
 import { UpdateUserInput } from "./dto/update-user.input";
+import { User } from "./entities/user.entity";
 
 @Injectable()
 export class UsersService {
@@ -19,19 +18,29 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
-  findById(id: number): Promise<User> {
+  findOneById(id: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { id } });
   }
 
-  findByUsername(username: string): Promise<User> {
+  findOneByUsername(username: string): Promise<User> {
     return this.prisma.user.findUnique({ where: { username } });
   }
 
-  update(id: number, updateUserInput: UpdateUserInput) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
+    if (updateUserInput.password) {
+      // updateUserInput.password = await this.authService.encryptPassword(
+      //   updateUserInput.password
+      // );
+      // encruypt password
+    }
+
+    return this.prisma.user.update({
+      where: { id },
+      data: updateUserInput,
+    });
   }
 
-  remove(id: number): Promise<User> {
+  remove(id: string): Promise<User> {
     return this.prisma.user.delete({ where: { id } });
   }
 }

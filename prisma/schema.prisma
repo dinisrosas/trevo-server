@@ -8,59 +8,65 @@ datasource db {
 }
 
 model User {
-  id         Int       @id @default(autoincrement())
-  name       String
-  username   String    @unique
-  password   String
-  role       UserRole  @default(SELLER)
-  created_at DateTime  @default(now())
-  updated_at DateTime  @default(now())
-  betbooks   Betbook[]
+  id        String    @id @default(cuid())
+  name      String
+  username  String    @unique
+  password  String
+  role      UserRole  @default(SELLER)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  sid       Int       @default(autoincrement())
+  betbooks  Betbook[]
 
   @@map("users")
 }
 
 model Betbook {
-  id         Int      @id @default(autoincrement())
-  bettor     String
-  seller_id  Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  seller     User     @relation(fields: [seller_id], references: [id])
-  bets       Bet[]
+  id          String   @id @default(cuid())
+  bettor      String
+  sellerId    String   @map("seller_id")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  totalAmount Float
+  sid         Int      @default(autoincrement())
+  seller      User     @relation(fields: [sellerId], references: [id])
+  bets        Bet[]
 
   @@map("betbooks")
 }
 
 model Bet {
-  id         Int      @id @default(autoincrement())
-  target     Float
-  pick       String
-  amount     Float
-  award      Float?
-  up_down    Boolean?
-  betbook_id Int
-  lottery_id Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  betbook    Betbook  @relation(fields: [betbook_id], references: [id])
-  lottery    Lottery  @relation(fields: [lottery_id], references: [id])
+  id        String   @id @default(cuid())
+  target    Float
+  pick      String
+  amount    Float
+  award     Float?
+  upDown    Boolean? @map("up_down")
+  betbookId String   @map("betbook_id")
+  lotteryId String   @map("lottery_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  sid       Int      @default(autoincrement())
+  betbook   Betbook  @relation(fields: [betbookId], references: [id])
+  lottery   Lottery  @relation(fields: [lotteryId], references: [id])
 
   @@map("bets")
 }
 
 model Lottery {
-  id         Int         @id @default(autoincrement())
-  name       String
-  type       LotteryType
-  result     String?
-  date       DateTime
-  iso_date   String
-  created_at DateTime    @default(now())
-  updated_at DateTime    @default(now())
-  bets       Bet[]
+  id        String      @id @default(cuid())
+  name      String
+  type      LotteryType
+  result    String?
+  date      DateTime
+  isoDate   String      @map("iso_date")
+  createdAt DateTime    @default(now()) @map("created_at")
+  updatedAt DateTime    @updatedAt @map("updated_at")
+  mode      LotteryMode
+  sid       Int         @default(autoincrement())
+  bets      Bet[]
 
-  @@unique([type, iso_date], name: "lottery_identifier")
+  @@unique([type, isoDate], name: "type_iso_date")
   @@map("lotteries")
 }
 
@@ -76,4 +82,9 @@ enum LotteryType {
   LC
   LP
   JE
+}
+
+enum LotteryMode {
+  DRAW
+  LOTTERY
 }

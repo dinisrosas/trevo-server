@@ -25,6 +25,7 @@ const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
 const bcrypt = require("bcrypt");
 const create_user_input_1 = require("../users/dto/create-user.input");
+const user_entity_1 = require("../users/entities/user.entity");
 const users_service_1 = require("../users/users.service");
 let AuthService = class AuthService {
     constructor(usersService, jwtService) {
@@ -34,13 +35,13 @@ let AuthService = class AuthService {
     }
     async login(loginInput) {
         const { username, password } = loginInput;
-        const user = await this.usersService.findByUsername(username);
+        const user = await this.usersService.findOneByUsername(username);
         if (!user) {
-            throw new common_1.UnauthorizedException();
+            throw new common_1.UnauthorizedException("Invalid credentials");
         }
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = await this.comparePasswords(password, user.password);
         if (!isMatch) {
-            throw new common_1.UnauthorizedException();
+            throw new common_1.UnauthorizedException("Invalid credentials");
         }
         const payload = {
             sub: user.id,
@@ -51,10 +52,16 @@ let AuthService = class AuthService {
         };
     }
     async signUp(createUserInput) {
-        const { password } = createUserInput, rest = __rest(createUserInput, ["password"]);
-        const hash = await bcrypt.hash(password, this.saltOrRounds);
-        const user = await this.usersService.create(Object.assign(Object.assign({}, rest), { password: hash }));
+        const { password } = createUserInput, restOfProps = __rest(createUserInput, ["password"]);
+        const encryptedPassword = await this.encryptPassword(password);
+        const user = await this.usersService.create(Object.assign(Object.assign({}, restOfProps), { password: encryptedPassword }));
         return user;
+    }
+    async encryptPassword(password) {
+        return await bcrypt.hash(password, this.saltOrRounds);
+    }
+    async comparePasswords(password, encryptedPassword) {
+        return await bcrypt.compare(password, encryptedPassword);
     }
 };
 AuthService = __decorate([
