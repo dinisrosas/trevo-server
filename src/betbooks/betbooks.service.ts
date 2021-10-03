@@ -44,6 +44,7 @@ export class BetbooksService {
       betbook.id
     );
 
+    // maybe improve in the future, create bet with totalAmount already
     const updatedBetbook = await this.update(betbook.id, {
       id: betbook.id,
       totalAmount,
@@ -99,7 +100,15 @@ export class BetbooksService {
     });
   }
 
-  async remove(id: string): Promise<Betbook> {
-    return await this.prisma.betbook.delete({ where: { id } });
+  async delete(id: string): Promise<Betbook> {
+    const betbook = await this.prisma.betbook.findUnique({ where: { id } });
+
+    if (!betbook) {
+      throw new Error("Betbook not found");
+    }
+
+    await this.prisma.$queryRaw("DELETE FROM betbooks WHERE id = $1", id);
+
+    return betbook;
   }
 }

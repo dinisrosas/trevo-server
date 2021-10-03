@@ -86,8 +86,13 @@ let BetbooksService = class BetbooksService {
             data: Object.assign({}, updateBetbookInput),
         });
     }
-    async remove(id) {
-        return await this.prisma.betbook.delete({ where: { id } });
+    async delete(id) {
+        const betbook = await this.prisma.betbook.findUnique({ where: { id } });
+        if (!betbook) {
+            throw new Error("Betbook not found");
+        }
+        await this.prisma.$queryRaw("DELETE FROM betbooks WHERE id = $1", id);
+        return betbook;
     }
 };
 BetbooksService = __decorate([

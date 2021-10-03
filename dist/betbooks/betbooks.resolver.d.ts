@@ -10,5 +10,5 @@ export declare class BetbooksResolver {
     findAll(user: AuthUser): Promise<Betbook[]>;
     findOne(id: string): Promise<Betbook>;
     updateBetbook(updateBetbookInput: UpdateBetbookInput): Promise<Betbook>;
-    removeBetbook(id: string): Promise<Betbook>;
+    deleteBetbook(id: string): Promise<Betbook>;
 }

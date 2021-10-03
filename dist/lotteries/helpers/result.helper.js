@@ -8,8 +8,8 @@ const DATE_REGEX = /(\d{1,2})[/](\d{1,2})[/](\d{4})/;
 async function getLatestLotteryResult(type) {
     const { result, date } = await getResultAndDate(type);
     const index = date.search(DATE_REGEX);
-    const localeIsoDate = date.substring(index);
-    const isoDate = luxon_1.DateTime.fromFormat(localeIsoDate, "dd/MM/yyyy").toISODate();
+    const localIsoDate = date.substring(index);
+    const isoDate = luxon_1.DateTime.fromFormat(localIsoDate, "dd/MM/yyyy").toISODate();
     return { result, isoDate };
 }
 exports.getLatestLotteryResult = getLatestLotteryResult;

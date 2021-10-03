@@ -25,7 +25,6 @@ let JwtStrategy = class JwtStrategy extends passport_1.PassportStrategy(passport
         this.usersService = usersService;
     }
     validate(payload) {
-        console.log({ payload });
         return { id: payload.sub, username: payload.username };
     }
 };

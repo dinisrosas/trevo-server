@@ -45,7 +45,7 @@ export class BetbooksResolver {
   }
 
   @Mutation(() => Betbook)
-  removeBetbook(@Args("id", { type: () => ID }) id: string): Promise<Betbook> {
-    return this.betbooksService.remove(id);
+  deleteBetbook(@Args("id", { type: () => ID }) id: string): Promise<Betbook> {
+    return this.betbooksService.delete(id);
   }
 }

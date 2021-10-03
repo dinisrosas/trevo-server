@@ -38,8 +38,8 @@ let BetbooksResolver = class BetbooksResolver {
     updateBetbook(updateBetbookInput) {
         return this.betbooksService.update(updateBetbookInput.id, updateBetbookInput);
     }
-    removeBetbook(id) {
-        return this.betbooksService.remove(id);
+    deleteBetbook(id) {
+        return this.betbooksService.delete(id);
     }
 };
 __decorate([
@@ -77,7 +77,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], BetbooksResolver.prototype, "removeBetbook", null);
+], BetbooksResolver.prototype, "deleteBetbook", null);
 BetbooksResolver = __decorate([
     common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),
     graphql_1.Resolver(() => betbook_entity_1.Betbook),

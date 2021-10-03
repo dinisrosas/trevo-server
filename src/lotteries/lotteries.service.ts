@@ -30,8 +30,7 @@ export class LotteriesService {
 
     const date = DateTime.fromISO(isoDate)
       .startOf("day")
-      .set({ ...rawLottery.time })
-      .toJSDate();
+      .set({ ...rawLottery.time });
 
     const lotteryMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
 
@@ -40,8 +39,8 @@ export class LotteriesService {
         type,
         name: rawLottery.name,
         mode: lotteryMode,
-        date,
-        isoDate: "asd",
+        date: date.toJSDate(),
+        isoDate: date.toISODate(),
       },
     });
   }
@@ -49,11 +48,7 @@ export class LotteriesService {
   async findOrCreate(createLotteryInput: CreateLotteryInput): Promise<Lottery> {
     const { type, isoDate } = createLotteryInput;
 
-    const lottery = await this.prisma.lottery.findUnique({
-      where: {
-        type_iso_date: { type, isoDate },
-      },
-    });
+    const lottery = await this.findOneByTypeIsoDate(type, isoDate);
 
     if (lottery) {
       return lottery;

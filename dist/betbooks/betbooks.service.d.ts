@@ -15,5 +15,5 @@ export declare class BetbooksService {
     findAllBySeller(sellerId: string): Promise<Betbook[]>;
     findOne(id: string): Promise<Betbook>;
     update(id: string, updateBetbookInput: UpdateBetbookInput): Promise<Betbook>;
-    remove(id: string): Promise<Betbook>;
+    delete(id: string): Promise<Betbook>;
 }

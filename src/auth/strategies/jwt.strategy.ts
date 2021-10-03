@@ -7,6 +7,8 @@ import { jwtConstants } from "../constants";
 type JwtPayload = {
   username: string;
   sub: string;
+  iat: number;
+  exp: number;
 };
 
 @Injectable()
@@ -20,7 +22,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   validate(payload: JwtPayload): { id: string; username: string } {
-    console.log({ payload });
     return { id: payload.sub, username: payload.username };
   }
 }

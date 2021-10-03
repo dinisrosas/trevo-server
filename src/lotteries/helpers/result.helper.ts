@@ -11,9 +11,9 @@ export async function getLatestLotteryResult(type: LotteryType): Promise<{
 }> {
   const { result, date } = await getResultAndDate(type);
   const index = date.search(DATE_REGEX);
-  const localeIsoDate = date.substring(index);
+  const localIsoDate = date.substring(index);
 
-  const isoDate = DateTime.fromFormat(localeIsoDate, "dd/MM/yyyy").toISODate();
+  const isoDate = DateTime.fromFormat(localIsoDate, "dd/MM/yyyy").toISODate();
 
   return { result, isoDate };
 }

@@ -28,26 +28,21 @@ let LotteriesService = class LotteriesService {
         const rawLottery = this.rawLotteries.find((lottery) => lottery.type === type);
         const date = luxon_1.DateTime.fromISO(isoDate)
             .startOf("day")
-            .set(Object.assign({}, rawLottery.time))
-            .toJSDate();
+            .set(Object.assign({}, rawLottery.time));
         const lotteryMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
         return await this.prisma.lottery.create({
             data: {
                 type,
                 name: rawLottery.name,
                 mode: lotteryMode,
-                date,
-                isoDate: "asd",
+                date: date.toJSDate(),
+                isoDate: date.toISODate(),
             },
         });
     }
     async findOrCreate(createLotteryInput) {
         const { type, isoDate } = createLotteryInput;
-        const lottery = await this.prisma.lottery.findUnique({
-            where: {
-                type_iso_date: { type, isoDate },
-            },
-        });
+        const lottery = await this.findOneByTypeIsoDate(type, isoDate);
         if (lottery) {
             return lottery;
         }
