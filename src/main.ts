@@ -8,9 +8,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
 
-  await app.listen(3333);
+  await app.listen(process.env.PORT || 8080);
 
-  const url = (await app.getUrl()).replace("[::1]", "localhost");
+  const url = await app.getUrl();
   console.log(`Application is running on: ${url}`);
 }
 

@@ -82,7 +82,7 @@ type Query {
   lotteries: [Lottery!]!
   oncomingLotteries: [OncomingLottery!]!
   finishedLotteries: [Lottery!]!
-  lottery(isoDate: String!, type: String!): Lottery!
+  lottery(id: ID!): Lottery!
   latestLotteryResult(type: String!): LotteryResult!
   bets: [Bet!]!
   bet(id: ID!): Bet!
@@ -97,6 +97,7 @@ type Mutation {
   signUp(signUpInput: CreateUserInput!): User!
   createLottery(createLotteryInput: CreateLotteryInput!): Lottery!
   updateLottery(updateLotteryInput: UpdateLotteryInput!): Lottery!
+  updateLotteryResult(result: String!, id: ID!): Lottery!
   removeLottery(id: ID!): Lottery!
   updateBet(updateBetInput: UpdateBetInput!): Bet!
   removeBet(id: ID!): Bet!

@@ -40,28 +40,28 @@ __decorate([
     graphql_1.Query(() => [bet_entity_1.Bet], { name: "bets" }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BetsResolver.prototype, "findAll", null);
 __decorate([
     graphql_1.Query(() => bet_entity_1.Bet, { name: "bet" }),
     __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BetsResolver.prototype, "findOne", null);
 __decorate([
     graphql_1.Mutation(() => bet_entity_1.Bet),
     __param(0, graphql_1.Args("updateBetInput")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_bet_input_1.UpdateBetInput]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BetsResolver.prototype, "updateBet", null);
 __decorate([
     graphql_1.Mutation(() => bet_entity_1.Bet),
     __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], BetsResolver.prototype, "removeBet", null);
 BetsResolver = __decorate([
     common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),

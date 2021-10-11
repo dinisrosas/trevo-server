@@ -11,22 +11,24 @@ export class BetsResolver {
   constructor(private readonly betsService: BetsService) {}
 
   @Query(() => [Bet], { name: "bets" })
-  findAll() {
+  findAll(): Promise<Bet[]> {
     return this.betsService.findAll();
   }
 
   @Query(() => Bet, { name: "bet" })
-  findOne(@Args("id", { type: () => ID }) id: string) {
+  findOne(@Args("id", { type: () => ID }) id: string): Promise<Bet> {
     return this.betsService.findOne(id);
   }
 
   @Mutation(() => Bet)
-  updateBet(@Args("updateBetInput") updateBetInput: UpdateBetInput) {
+  updateBet(
+    @Args("updateBetInput") updateBetInput: UpdateBetInput
+  ): Promise<Bet> {
     return this.betsService.update(updateBetInput.id, updateBetInput);
   }
 
   @Mutation(() => Bet)
-  removeBet(@Args("id", { type: () => ID }) id: string) {
+  removeBet(@Args("id", { type: () => ID }) id: string): Promise<Bet> {
     return this.betsService.remove(id);
   }
 }

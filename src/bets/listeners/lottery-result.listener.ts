@@ -11,9 +11,7 @@ export class LotteryResultListener {
   constructor(private betsService: BetsService) {}
 
   @OnEvent("lottery.result.updated")
-  async handleLotteryResultUpdated(payload: Lottery) {
-    this.logger.debug({ lottery: payload });
-
+  async handleLotteryResultUpdated(payload: Lottery): Promise<void> {
     // get all lottery bets
     const bets = await this.betsService.findAllByLotteryId(payload.id);
 

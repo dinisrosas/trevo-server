@@ -65,12 +65,16 @@ export class LotteriesService {
     return await this.prisma.lottery.findUnique({
       where: { id },
       include: {
-        bets: true,
+        bets: {
+          include: {
+            betbook: true,
+          },
+        },
       },
     });
   }
 
-  async findFinished(sellerId: string): Promise<Lottery[]> {
+  async findAllFinished(sellerId: string): Promise<Lottery[]> {
     return await this.prisma.lottery.findMany({
       where: {
         result: {

@@ -132,4 +132,4 @@ LotteriesService = __decorate([
         eventemitter2_1.EventEmitter2])
 ], LotteriesService);
 exports.LotteriesService = LotteriesService;
-//# sourceMappingURL=lotteries.service.js.map
+//# sourceMappingURL=stats.service.js.map

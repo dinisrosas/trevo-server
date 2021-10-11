@@ -4,7 +4,7 @@ import { UpdateLotteryInput } from "./dto/update-lottery.input";
 import { LotteryResult } from "./entities/lottery-result.entity";
 import { Lottery } from "./entities/lottery.entity";
 import { OncomingLottery } from "./entities/oncoming-lottery.entity";
-import { LotteriesService } from "./lotteries.service";
+import { LotteriesService } from "./stats.service";
 export declare class LotteriesResolver {
     private readonly lotteriesService;
     constructor(lotteriesService: LotteriesService);
@@ -15,6 +15,5 @@ export declare class LotteriesResolver {
     findOne(id: string): Promise<Lottery>;
     findLastestResultByType(type: LotteryType): Promise<LotteryResult>;
     updateLottery(updateLotteryInput: UpdateLotteryInput): Promise<Lottery>;
-    updateLotteryResult(id: string, result: string): Promise<Lottery>;
     removeLottery(id: string): Promise<Lottery>;
 }

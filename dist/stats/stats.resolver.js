@@ -11,20 +11,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var _a, _b, _c, _d, _e;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LotteriesResolver = void 0;
 const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
 const current_user_decorator_1 = require("../auth/decorators/current-user.decorator");
 const gql_auth_guard_1 = require("../auth/guards/gql-auth.guard");
-const types_1 = require("../types");
-const create_lottery_input_1 = require("./dto/create-lottery.input");
-const update_lottery_input_1 = require("./dto/update-lottery.input");
-const lottery_result_entity_1 = require("./entities/lottery-result.entity");
-const lottery_entity_1 = require("./entities/lottery.entity");
-const oncoming_lottery_entity_1 = require("./entities/oncoming-lottery.entity");
-const result_helper_1 = require("./helpers/result.helper");
-const lotteries_service_1 = require("./lotteries.service");
 let LotteriesResolver = class LotteriesResolver {
     constructor(lotteriesService) {
         this.lotteriesService = lotteriesService;
@@ -45,75 +38,64 @@ let LotteriesResolver = class LotteriesResolver {
         return this.lotteriesService.findOneById(id);
     }
     async findLastestResultByType(type) {
-        return await result_helper_1.getLatestLotteryResult(type);
+        return await getLatestLotteryResult(type);
     }
     updateLottery(updateLotteryInput) {
         return this.lotteriesService.update(updateLotteryInput.id, updateLotteryInput);
-    }
-    updateLotteryResult(id, result) {
-        return this.lotteriesService.updateResult(id, result);
     }
     removeLottery(id) {
         return this.lotteriesService.remove(id);
     }
 };
 __decorate([
-    graphql_1.Mutation(() => lottery_entity_1.Lottery),
+    graphql_1.Mutation(() => Lottery),
     __param(0, graphql_1.Args("createLotteryInput")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_lottery_input_1.CreateLotteryInput]),
+    __metadata("design:paramtypes", [typeof (_a = typeof CreateLotteryInput !== "undefined" && CreateLotteryInput) === "function" ? _a : Object]),
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "createLottery", null);
 __decorate([
-    graphql_1.Query(() => [lottery_entity_1.Lottery], { name: "lotteries" }),
+    graphql_1.Query(() => [Lottery], { name: "lotteries" }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "findAll", null);
 __decorate([
-    graphql_1.Query(() => [oncoming_lottery_entity_1.OncomingLottery], { name: "oncomingLotteries" }),
+    graphql_1.Query(() => [OncomingLottery], { name: "oncomingLotteries" }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Array)
 ], LotteriesResolver.prototype, "findOncomingLotteries", null);
 __decorate([
-    graphql_1.Query(() => [lottery_entity_1.Lottery], { name: "finishedLotteries" }),
+    graphql_1.Query(() => [Lottery], { name: "finishedLotteries" }),
     __param(0, current_user_decorator_1.CurrentUser()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [typeof (_b = typeof AuthUser !== "undefined" && AuthUser) === "function" ? _b : Object]),
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "findFinished", null);
 __decorate([
-    graphql_1.Query(() => lottery_entity_1.Lottery, { name: "lottery" }),
+    graphql_1.Query(() => Lottery, { name: "lottery" }),
     __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "findOne", null);
 __decorate([
-    graphql_1.Query(() => lottery_result_entity_1.LotteryResult, { name: "latestLotteryResult" }),
+    graphql_1.Query(() => LotteryResult, { name: "latestLotteryResult" }),
     __param(0, graphql_1.Args("type")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [typeof (_c = typeof LotteryType !== "undefined" && LotteryType) === "function" ? _c : Object]),
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "findLastestResultByType", null);
 __decorate([
-    graphql_1.Mutation(() => lottery_entity_1.Lottery),
+    graphql_1.Mutation(() => Lottery),
     __param(0, graphql_1.Args("updateLotteryInput")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [update_lottery_input_1.UpdateLotteryInput]),
+    __metadata("design:paramtypes", [typeof (_d = typeof UpdateLotteryInput !== "undefined" && UpdateLotteryInput) === "function" ? _d : Object]),
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "updateLottery", null);
 __decorate([
-    graphql_1.Mutation(() => lottery_entity_1.Lottery),
-    __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
-    __param(1, graphql_1.Args("result")),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String]),
-    __metadata("design:returntype", Promise)
-], LotteriesResolver.prototype, "updateLotteryResult", null);
-__decorate([
-    graphql_1.Mutation(() => lottery_entity_1.Lottery),
+    graphql_1.Mutation(() => Lottery),
     __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
@@ -121,8 +103,8 @@ __decorate([
 ], LotteriesResolver.prototype, "removeLottery", null);
 LotteriesResolver = __decorate([
     common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),
-    graphql_1.Resolver(() => lottery_entity_1.Lottery),
-    __metadata("design:paramtypes", [lotteries_service_1.LotteriesService])
+    graphql_1.Resolver(() => Lottery),
+    __metadata("design:paramtypes", [typeof (_e = typeof LotteriesService !== "undefined" && LotteriesService) === "function" ? _e : Object])
 ], LotteriesResolver);
 exports.LotteriesResolver = LotteriesResolver;
-//# sourceMappingURL=lotteries.resolver.js.map
+//# sourceMappingURL=stats.resolver.js.map

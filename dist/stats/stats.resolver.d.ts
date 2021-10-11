@@ -15,6 +15,5 @@ export declare class LotteriesResolver {
     findOne(id: string): Promise<Lottery>;
     findLastestResultByType(type: LotteryType): Promise<LotteryResult>;
     updateLottery(updateLotteryInput: UpdateLotteryInput): Promise<Lottery>;
-    updateLotteryResult(id: string, result: string): Promise<Lottery>;
     removeLottery(id: string): Promise<Lottery>;
 }

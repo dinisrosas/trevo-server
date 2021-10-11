@@ -21,7 +21,6 @@ let LotteryResultListener = LotteryResultListener_1 = class LotteryResultListene
         this.logger = new common_1.Logger(LotteryResultListener_1.name);
     }
     async handleLotteryResultUpdated(payload) {
-        this.logger.debug({ lottery: payload });
         const bets = await this.betsService.findAllByLotteryId(payload.id);
         for (const bet of bets) {
             const award = award_helper_1.getBetAward({

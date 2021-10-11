@@ -7,8 +7,8 @@ async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.useGlobalPipes(new common_1.ValidationPipe());
     app.enableCors();
-    await app.listen(3333);
-    const url = (await app.getUrl()).replace("[::1]", "localhost");
+    await app.listen(process.env.PORT || 8080);
+    const url = await app.getUrl();
     console.log(`Application is running on: ${url}`);
 }
 bootstrap();
