@@ -13,17 +13,13 @@ exports.UpdateBetbookInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let UpdateBetbookInput = class UpdateBetbookInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, totalAmount: { nullable: true, type: () => Number } };
+        return { id: { type: () => String } };
     }
 };
 __decorate([
     graphql_1.Field(() => graphql_1.ID),
     __metadata("design:type", String)
 ], UpdateBetbookInput.prototype, "id", void 0);
-__decorate([
-    graphql_1.Field(),
-    __metadata("design:type", Number)
-], UpdateBetbookInput.prototype, "totalAmount", void 0);
 UpdateBetbookInput = __decorate([
     graphql_1.InputType()
 ], UpdateBetbookInput);

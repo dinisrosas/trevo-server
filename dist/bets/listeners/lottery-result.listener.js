@@ -29,7 +29,9 @@ let LotteryResultListener = LotteryResultListener_1 = class LotteryResultListene
                 mode: payload.mode,
                 target: bet.target,
                 type: payload.type,
-                upDown: bet.upDown,
+                ball: bet.ball,
+                amount: bet.amount,
+                updown: bet.updown,
             });
             await this.betsService.update(bet.id, { id: bet.id, award });
         }

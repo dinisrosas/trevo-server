@@ -26,14 +26,28 @@ type Lottery {
   id: ID!
   sid: Float!
   name: String!
-  type: String!
-  mode: String!
+  type: LotteryType!
+  mode: LotteryMode!
   isoDate: String!
   bets: [Bet!]
   date: DateTime!
   result: String
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+enum LotteryType {
+  EM
+  TL
+  M1
+  LC
+  LP
+  JE
+}
+
+enum LotteryMode {
+  DRAW
+  LOTTERY
 }
 
 type Bet {
@@ -45,7 +59,8 @@ type Bet {
   award: Float
   lottery: Lottery
   betbook: Betbook
-  upDown: Boolean
+  updown: Boolean
+  ball: Int
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -54,9 +69,9 @@ type Betbook {
   id: ID!
   sid: Float!
   bettor: String!
+  fixed: Boolean!
   seller: User
   bets: [Bet!]
-  totalAmount: Float!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -86,8 +101,12 @@ type Query {
   latestLotteryResult(type: String!): LotteryResult!
   bets: [Bet!]!
   bet(id: ID!): Bet!
-  betbooks: [Betbook!]!
+  betbooks(query: QueryBetbooksInput): [Betbook!]!
   betbook(id: ID!): Betbook!
+}
+
+input QueryBetbooksInput {
+  fixed: Boolean
 }
 
 type Mutation {
@@ -140,17 +159,18 @@ input UpdateBetInput {
 
 input CreateBetbookInput {
   bettor: String!
+  fixed: Boolean!
   bets: [CreateBetInput!]!
 }
 
 input CreateBetInput {
   pick: String!
   target: Float!
-  upDown: Boolean
+  updown: Boolean
+  ball: Float
   lottery: CreateLotteryInput!
 }
 
 input UpdateBetbookInput {
   id: ID!
-  totalAmount: Float
 }

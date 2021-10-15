@@ -10,7 +10,10 @@ export class CreateBetInput {
   target: number;
 
   @Field({ nullable: true })
-  upDown?: boolean;
+  updown?: boolean;
+
+  @Field({ nullable: true })
+  ball?: number;
 
   @Field()
   lottery: CreateLotteryInput;

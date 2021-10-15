@@ -24,8 +24,8 @@ let BetbooksService = class BetbooksService {
         const betbook = await this.prisma.betbook.create({
             data: {
                 bettor: createBetbookInput.bettor,
+                fixed: createBetbookInput.fixed,
                 sellerId: createBetbookInput.sellerId,
-                totalAmount: 0,
             },
         });
         for (const bet of createBetbookInput.bets) {
@@ -38,21 +38,15 @@ let BetbooksService = class BetbooksService {
                 lotteryId: lottery.id,
                 pick: bet.pick,
                 target: bet.target,
-                upDown: bet.upDown,
+                updown: bet.updown,
+                ball: bet.ball,
             });
         }
-        const totalAmount = await this.betsService.getBetbookTotalAmount(betbook.id);
-        const updatedBetbook = await this.update(betbook.id, {
-            id: betbook.id,
-            totalAmount,
-        });
-        return updatedBetbook;
+        return betbook;
     }
-    async findAllBySeller(sellerId) {
+    async findAllBySeller(sellerId, query) {
         const betbooks = await this.prisma.betbook.findMany({
-            where: {
-                sellerId,
-            },
+            where: Object.assign({ sellerId }, query),
             orderBy: {
                 id: "desc",
             },

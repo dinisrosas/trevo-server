@@ -5,82 +5,109 @@ export type GetBetAward = {
   mode: LotteryMode;
   target: number;
   pick: string;
-  upDown?: boolean;
+  ball?: number;
+  updown?: boolean;
   result: string;
+  amount: number;
 };
 
-export type GetLotteryAward = Omit<GetBetAward, "upDown" | "mode">;
+export type GetDrawAward = Omit<GetBetAward, "type" | "mode" | "amount">;
+export type GetLotteryAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
 export type GetDrawnTickets = Pick<GetBetAward, "type" | "result">;
 
-const ODDS = {
-  DRAW: [40, 8, 4],
-  LOTTERY: [500, 100, 50],
-  DRAW_UP_DOWN: [30, 2.5],
+const odd_dividers = {
+  draw_updown: 12,
+  lottery_updown: [5, 10, 20],
+  lottery_2: [1, 6, 12],
+  lottery_3: [1, 6, 12],
 };
 
 export function getBetAward(params: GetBetAward): number {
-  const { type, mode, target, pick, upDown, result } = params;
-
-  switch (mode) {
+  switch (params.mode) {
     case "DRAW":
-      return getDrawAward({ target, pick, upDown, result });
+      return getDrawAward({
+        target: params.target,
+        pick: params.pick,
+        ball: params.ball,
+        updown: params.updown,
+        result: params.result,
+      });
     case "LOTTERY":
-      return getLotteryAward({ type, target, pick, result });
+      return getLotteryAward({
+        type: params.type,
+        target: params.target,
+        pick: params.pick,
+        result: params.result,
+        amount: params.amount,
+      });
     default:
       throw new Error("Invalid lottery mode");
   }
 }
 
-function getDrawAward(params: any) {
-  const { target, pick, upDown, result } = params;
+function getDrawAward(params: GetDrawAward): number {
+  const ball = parseInt(params.result.split(/\s+/)[params.ball - 1]);
+  const pick = parseInt(params.pick);
 
-  // ball 5
-  const ball = parseInt(result.split(/\s+/)[4]);
-  const ballPick = parseInt(pick);
-
-  if (ball === ballPick) {
-    return target;
-  } else if (upDown) {
-    const match = ball === ballPick - 1 || ball === ballPick + 1;
+  if (ball === pick) {
+    return params.target;
+  } else if (params.updown) {
+    const match = ball === pick - 1 || ball === pick + 1;
     if (match) {
-      return (target / ODDS.DRAW_UP_DOWN[0]) * ODDS.DRAW_UP_DOWN[1];
+      return params.target / odd_dividers.draw_updown;
     }
   }
 
   return 0;
 }
 
-function getLotteryAward(params: GetLotteryAward) {
-  const { type, target, pick, result } = params;
+function getLotteryAward(params: GetLotteryAward): number {
+  const drawnTickets = getDrawnTickets({
+    type: params.type,
+    result: params.result,
+  });
 
-  const drawnTickets = getDrawnTickets({ type, result });
-
-  if (pick.length === 3) {
-    const index = drawnTickets.findIndex((ticket: string) => ticket === pick);
-
-    if (index !== -1) {
-      return (target / ODDS.LOTTERY[0]) * ODDS.LOTTERY[index];
-    }
-
-    const hasLastTwo = drawnTickets[0].slice(-2) === pick.slice(-2);
-
-    if (hasLastTwo) {
-      return target / ODDS.LOTTERY[0];
-    }
-  } else if (pick.length === 2) {
+  if (params.pick.length === 3) {
     const index = drawnTickets.findIndex(
-      (ticket: string) => ticket.slice(-2) === pick
+      (ticket: string) => ticket === params.pick
     );
 
     if (index !== -1) {
-      return (target / ODDS.DRAW[0]) * ODDS.DRAW[index];
+      return params.target / odd_dividers.lottery_3[index];
+    }
+
+    const hasLastTwo = drawnTickets
+      .map((ticket) => ticket.slice(-2))
+      .some((termination) => termination === params.pick.slice(-2));
+
+    if (hasLastTwo) {
+      // betted amount
+      return params.amount;
+    }
+  } else if (params.pick.length === 2) {
+    const index = drawnTickets.findIndex(
+      (ticket) => ticket.slice(-2) === params.pick
+    );
+
+    if (index !== -1) {
+      return params.target / odd_dividers.lottery_2[index];
+    }
+
+    const updownIndex = drawnTickets.findIndex(
+      (ticket) =>
+        Number(ticket.slice(-2)) === Number(params.pick) - 1 ||
+        Number(ticket.slice(-2)) === Number(params.pick) + 1
+    );
+
+    if (updownIndex !== -1) {
+      return params.amount * odd_dividers.lottery_updown[updownIndex];
     }
   }
 
   return 0;
 }
 
-function getDrawnTickets({ type, result }: GetDrawnTickets) {
+function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
   if (type === "M1") {
     const first = result.slice(-3);
     const second = result.substring(0, result.length - 1).slice(-3);

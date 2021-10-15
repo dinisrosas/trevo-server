@@ -25,14 +25,15 @@ let BetsService = class BetsService {
             mode: lottery.mode,
             pick: createBetInput.pick,
             target: createBetInput.target,
-            upDown: createBetInput.upDown,
+            updown: createBetInput.updown,
         });
         return this.prisma.bet.create({
             data: {
                 amount,
                 target: createBetInput.target,
                 pick: createBetInput.pick,
-                upDown: createBetInput.upDown,
+                updown: createBetInput.updown,
+                ball: createBetInput.ball,
                 betbookId: createBetInput.betbookId,
                 lotteryId: createBetInput.lotteryId,
             },

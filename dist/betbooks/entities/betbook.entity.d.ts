@@ -4,9 +4,9 @@ export declare class Betbook {
     id: string;
     sid: number;
     bettor: string;
+    fixed: boolean;
     seller?: User;
     bets?: Bet[];
-    totalAmount: number;
     updatedAt: Date;
     createdAt: Date;
 }

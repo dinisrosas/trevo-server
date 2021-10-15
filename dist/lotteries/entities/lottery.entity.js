@@ -14,6 +14,12 @@ const eager_import_0 = require("../../bets/entities/bet.entity");
 const graphql_1 = require("@nestjs/graphql");
 const bet_entity_1 = require("../../bets/entities/bet.entity");
 const types_1 = require("../../types");
+graphql_1.registerEnumType(types_1.LotteryModeEnum, {
+    name: "LotteryMode",
+});
+graphql_1.registerEnumType(types_1.LotteryTypeEnum, {
+    name: "LotteryType",
+});
 let Lottery = class Lottery {
     static _GRAPHQL_METADATA_FACTORY() {
         return { id: { type: () => String }, sid: { type: () => Number }, name: { type: () => String }, type: { type: () => Object }, mode: { type: () => Object }, isoDate: { type: () => String }, bets: { nullable: true, type: () => [require("../../bets/entities/bet.entity").Bet] }, date: { type: () => Date }, result: { nullable: true, type: () => String }, createdAt: { type: () => Date }, updatedAt: { type: () => Date } };
@@ -32,11 +38,11 @@ __decorate([
     __metadata("design:type", String)
 ], Lottery.prototype, "name", void 0);
 __decorate([
-    graphql_1.Field(),
+    graphql_1.Field(() => types_1.LotteryTypeEnum),
     __metadata("design:type", String)
 ], Lottery.prototype, "type", void 0);
 __decorate([
-    graphql_1.Field(),
+    graphql_1.Field(() => types_1.LotteryModeEnum),
     __metadata("design:type", String)
 ], Lottery.prototype, "mode", void 0);
 __decorate([

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "eventemitter2";
 import { DateTime } from "luxon";
 import { PrismaService } from "src/prisma/prisma.service";
-import { LotteryType, RawLottery } from "src/types";
+import { LotteryMode, LotteryType, RawLottery } from "src/types";
 import rawLotteries from "./data/raw-lotteries";
 import { CreateLotteryInput } from "./dto/create-lottery.input";
 import { UpdateLotteryInput } from "./dto/update-lottery.input";
@@ -23,7 +23,6 @@ export class LotteriesService {
     const { type, isoDate } = createLotteryInput;
 
     // needs validations !!
-
     const rawLottery = this.rawLotteries.find(
       (lottery) => lottery.type === type
     );

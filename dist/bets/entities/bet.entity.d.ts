@@ -9,7 +9,8 @@ export declare class Bet {
     award?: number;
     lottery?: Lottery;
     betbook?: Betbook;
-    upDown?: boolean;
+    updown?: boolean;
+    ball?: number;
     updatedAt: Date;
     createdAt: Date;
 }

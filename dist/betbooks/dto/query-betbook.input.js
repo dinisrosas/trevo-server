@@ -9,20 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UpdateLotteryInput = void 0;
+exports.QueryBetbooksInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
-let UpdateLotteryInput = class UpdateLotteryInput {
+let QueryBetbooksInput = class QueryBetbooksInput {
+    static _GRAPHQL_METADATA_FACTORY() {
+        return { fixed: { nullable: true, type: () => Boolean } };
+    }
 };
 __decorate([
-    graphql_1.Field(() => graphql_1.ID),
-    __metadata("design:type", String)
-], UpdateLotteryInput.prototype, "id", void 0);
-__decorate([
     graphql_1.Field(),
-    __metadata("design:type", String)
-], UpdateLotteryInput.prototype, "result", void 0);
-UpdateLotteryInput = __decorate([
+    __metadata("design:type", Boolean)
+], QueryBetbooksInput.prototype, "fixed", void 0);
+QueryBetbooksInput = __decorate([
     graphql_1.InputType()
-], UpdateLotteryInput);
-exports.UpdateLotteryInput = UpdateLotteryInput;
-//# sourceMappingURL=update-lottery-result.js.map
+], QueryBetbooksInput);
+exports.QueryBetbooksInput = QueryBetbooksInput;
+//# sourceMappingURL=query-betbook.input.js.map

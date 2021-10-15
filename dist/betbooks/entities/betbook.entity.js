@@ -17,7 +17,7 @@ const bet_entity_1 = require("../../bets/entities/bet.entity");
 const user_entity_1 = require("../../users/entities/user.entity");
 let Betbook = class Betbook {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, sid: { type: () => Number }, bettor: { type: () => String }, seller: { nullable: true, type: () => require("../../users/entities/user.entity").User }, bets: { nullable: true, type: () => [require("../../bets/entities/bet.entity").Bet] }, totalAmount: { type: () => Number }, updatedAt: { type: () => Date }, createdAt: { type: () => Date } };
+        return { id: { type: () => String }, sid: { type: () => Number }, bettor: { type: () => String }, fixed: { type: () => Boolean }, seller: { nullable: true, type: () => require("../../users/entities/user.entity").User }, bets: { nullable: true, type: () => [require("../../bets/entities/bet.entity").Bet] }, updatedAt: { type: () => Date }, createdAt: { type: () => Date } };
     }
 };
 __decorate([
@@ -33,6 +33,10 @@ __decorate([
     __metadata("design:type", String)
 ], Betbook.prototype, "bettor", void 0);
 __decorate([
+    graphql_1.Field({ defaultValue: false }),
+    __metadata("design:type", Boolean)
+], Betbook.prototype, "fixed", void 0);
+__decorate([
     graphql_1.Field(),
     __metadata("design:type", user_entity_1.User)
 ], Betbook.prototype, "seller", void 0);
@@ -40,10 +44,6 @@ __decorate([
     graphql_1.Field(() => [bet_entity_1.Bet]),
     __metadata("design:type", Array)
 ], Betbook.prototype, "bets", void 0);
-__decorate([
-    graphql_1.Field(),
-    __metadata("design:type", Number)
-], Betbook.prototype, "totalAmount", void 0);
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", Date)

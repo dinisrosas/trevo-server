@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { Betbook } from "src/betbooks/entities/betbook.entity";
 import { Lottery } from "src/lotteries/entities/lottery.entity";
 
@@ -29,7 +29,10 @@ export class Bet {
   betbook?: Betbook;
 
   @Field({ nullable: true })
-  upDown?: boolean;
+  updown?: boolean;
+
+  @Field(() => Int, { nullable: true })
+  ball?: number;
 
   @Field()
   updatedAt: Date;

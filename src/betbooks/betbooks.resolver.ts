@@ -5,6 +5,7 @@ import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
 import { AuthUser } from "src/types";
 import { BetbooksService } from "./betbooks.service";
 import { CreateBetbookInput } from "./dto/create-betbook.input";
+import { QueryBetbooksInput } from "./dto/query-betbook.input";
 import { UpdateBetbookInput } from "./dto/update-betbook.input";
 import { Betbook } from "./entities/betbook.entity";
 
@@ -25,8 +26,11 @@ export class BetbooksResolver {
   }
 
   @Query(() => [Betbook], { name: "betbooks" })
-  findAll(@CurrentUser() user: AuthUser): Promise<Betbook[]> {
-    return this.betbooksService.findAllBySeller(user.id);
+  findAll(
+    @CurrentUser() user: AuthUser,
+    @Args("query", { nullable: true }) query: QueryBetbooksInput = {}
+  ): Promise<Betbook[]> {
+    return this.betbooksService.findAllBySeller(user.id, query);
   }
 
   @Query(() => Betbook, { name: "betbook" })

@@ -22,15 +22,15 @@ model User {
 }
 
 model Betbook {
-  id          String   @id @default(cuid())
-  bettor      String
-  sellerId    String   @map("seller_id")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
-  totalAmount Float
-  sid         Int      @default(autoincrement())
-  seller      User     @relation(fields: [sellerId], references: [id])
-  bets        Bet[]
+  id        String   @id @default(cuid())
+  bettor    String
+  fixed     Boolean  @default(false)
+  sellerId  String   @map("seller_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  sid       Int      @default(autoincrement())
+  seller    User     @relation(fields: [sellerId], references: [id])
+  bets      Bet[]
 
   @@map("betbooks")
 }
@@ -41,7 +41,8 @@ model Bet {
   pick      String
   amount    Float
   award     Float?
-  upDown    Boolean? @map("up_down")
+  updown    Boolean?
+  ball      Int?
   betbookId String   @map("betbook_id")
   lotteryId String   @map("lottery_id")
   createdAt DateTime @default(now()) @map("created_at")

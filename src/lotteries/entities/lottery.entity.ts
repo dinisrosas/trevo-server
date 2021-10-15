@@ -1,6 +1,19 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
+import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { Bet } from "src/bets/entities/bet.entity";
-import { LotteryMode, LotteryType } from "src/types";
+import {
+  LotteryMode,
+  LotteryModeEnum,
+  LotteryType,
+  LotteryTypeEnum,
+} from "src/types";
+
+registerEnumType(LotteryModeEnum, {
+  name: "LotteryMode",
+});
+
+registerEnumType(LotteryTypeEnum, {
+  name: "LotteryType",
+});
 
 @ObjectType()
 export class Lottery {
@@ -13,10 +26,10 @@ export class Lottery {
   @Field()
   name: string;
 
-  @Field()
+  @Field(() => LotteryTypeEnum)
   type: LotteryType;
 
-  @Field()
+  @Field(() => LotteryModeEnum)
   mode: LotteryMode;
 
   @Field()
