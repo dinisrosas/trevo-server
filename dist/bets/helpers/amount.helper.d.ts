@@ -3,7 +3,7 @@ declare type CalculateBetAmount = {
     mode: LotteryMode;
     pick: string;
     target: number;
-    upDown?: boolean;
+    updown?: boolean;
 };
-export declare function getBetAmount({ mode, pick, target, upDown, }: CalculateBetAmount): number;
+export declare function getBetAmount({ mode, pick, target, updown, }: CalculateBetAmount): number;
 export {};

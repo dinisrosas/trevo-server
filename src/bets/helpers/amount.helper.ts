@@ -4,7 +4,7 @@ type CalculateBetAmount = {
   mode: LotteryMode;
   pick: string;
   target: number;
-  upDown?: boolean;
+  updown?: boolean;
 };
 
 const ODDS = {
@@ -16,11 +16,11 @@ export function getBetAmount({
   mode,
   pick,
   target,
-  upDown,
+  updown,
 }: CalculateBetAmount): number {
   switch (mode) {
     case "DRAW":
-      if (upDown) {
+      if (updown) {
         return target / ODDS[mode][1];
       } else {
         return target / ODDS[mode][0];

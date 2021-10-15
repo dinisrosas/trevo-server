@@ -17,7 +17,7 @@ const betbook_entity_1 = require("../../betbooks/entities/betbook.entity");
 const lottery_entity_1 = require("../../lotteries/entities/lottery.entity");
 let Bet = class Bet {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, sid: { type: () => Number }, target: { type: () => Number }, pick: { type: () => String }, amount: { type: () => Number }, award: { nullable: true, type: () => Number }, lottery: { nullable: true, type: () => require("../../lotteries/entities/lottery.entity").Lottery }, betbook: { nullable: true, type: () => require("../../betbooks/entities/betbook.entity").Betbook }, upDown: { nullable: true, type: () => Boolean }, updatedAt: { type: () => Date }, createdAt: { type: () => Date } };
+        return { id: { type: () => String }, sid: { type: () => Number }, target: { type: () => Number }, pick: { type: () => String }, amount: { type: () => Number }, award: { nullable: true, type: () => Number }, lottery: { nullable: true, type: () => require("../../lotteries/entities/lottery.entity").Lottery }, betbook: { nullable: true, type: () => require("../../betbooks/entities/betbook.entity").Betbook }, updown: { nullable: true, type: () => Boolean }, ball: { nullable: true, type: () => Number }, updatedAt: { type: () => Date }, createdAt: { type: () => Date } };
     }
 };
 __decorate([
@@ -55,7 +55,11 @@ __decorate([
 __decorate([
     graphql_1.Field({ nullable: true }),
     __metadata("design:type", Boolean)
-], Bet.prototype, "upDown", void 0);
+], Bet.prototype, "updown", void 0);
+__decorate([
+    graphql_1.Field(() => graphql_1.Int, { nullable: true }),
+    __metadata("design:type", Number)
+], Bet.prototype, "ball", void 0);
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", Date)

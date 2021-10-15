@@ -13,14 +13,14 @@ export class Betbook {
   @Field()
   bettor: string;
 
+  @Field({ defaultValue: false })
+  fixed: boolean;
+
   @Field()
   seller?: User;
 
   @Field(() => [Bet])
   bets?: Bet[];
-
-  @Field()
-  totalAmount: number;
 
   @Field()
   updatedAt: Date;

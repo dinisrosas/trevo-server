@@ -6,6 +6,9 @@ export class CreateBetbookInput {
   @Field()
   bettor: string;
 
+  @Field()
+  fixed: boolean;
+
   @Field(() => [CreateBetInput])
   bets: CreateBetInput[];
 }

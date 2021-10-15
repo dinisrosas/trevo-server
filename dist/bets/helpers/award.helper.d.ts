@@ -4,9 +4,12 @@ export declare type GetBetAward = {
     mode: LotteryMode;
     target: number;
     pick: string;
-    upDown?: boolean;
+    ball?: number;
+    updown?: boolean;
     result: string;
+    amount: number;
 };
-export declare type GetLotteryAward = Omit<GetBetAward, "upDown" | "mode">;
+export declare type GetDrawAward = Omit<GetBetAward, "type" | "mode" | "amount">;
+export declare type GetLotteryAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
 export declare type GetDrawnTickets = Pick<GetBetAward, "type" | "result">;
 export declare function getBetAward(params: GetBetAward): number;

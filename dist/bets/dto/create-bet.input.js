@@ -15,7 +15,7 @@ const graphql_1 = require("@nestjs/graphql");
 const create_lottery_input_1 = require("../../lotteries/dto/create-lottery.input");
 let CreateBetInput = class CreateBetInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { pick: { type: () => String }, target: { type: () => Number }, upDown: { nullable: true, type: () => Boolean }, lottery: { type: () => require("../../lotteries/dto/create-lottery.input").CreateLotteryInput } };
+        return { pick: { type: () => String }, target: { type: () => Number }, updown: { nullable: true, type: () => Boolean }, ball: { nullable: true, type: () => Number }, lottery: { type: () => require("../../lotteries/dto/create-lottery.input").CreateLotteryInput } };
     }
 };
 __decorate([
@@ -29,7 +29,11 @@ __decorate([
 __decorate([
     graphql_1.Field({ nullable: true }),
     __metadata("design:type", Boolean)
-], CreateBetInput.prototype, "upDown", void 0);
+], CreateBetInput.prototype, "updown", void 0);
+__decorate([
+    graphql_1.Field({ nullable: true }),
+    __metadata("design:type", Number)
+], CreateBetInput.prototype, "ball", void 0);
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", create_lottery_input_1.CreateLotteryInput)

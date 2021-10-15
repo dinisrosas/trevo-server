@@ -5,10 +5,10 @@ const ODDS = {
     DRAW: [35, 30],
     LOTTERY: [500, 40],
 };
-function getBetAmount({ mode, pick, target, upDown, }) {
+function getBetAmount({ mode, pick, target, updown, }) {
     switch (mode) {
         case "DRAW":
-            if (upDown) {
+            if (updown) {
                 return target / ODDS[mode][1];
             }
             else {

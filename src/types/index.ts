@@ -8,8 +8,28 @@ export type BetbookProps = Betbook;
 export type BetProps = Bet;
 
 export type LotteryProps = Lottery;
-export type LotteryMode = Lottery["mode"];
-export type LotteryType = Lottery["type"];
+
+export enum UserRoleEnum {
+  SELLER = "SELLER",
+  ADMIN = "ADMIN",
+}
+
+export type LotteryType = LotteryProps["type"];
+export type LotteryMode = LotteryProps["mode"];
+
+export enum LotteryTypeEnum {
+  EM = "EM",
+  TL = "TL",
+  M1 = "M1",
+  LC = "LC",
+  LP = "LP",
+  JE = "JE",
+}
+
+export enum LotteryModeEnum {
+  DRAW = "DRAW",
+  LOTTERY = "LOTTERY",
+}
 
 export type RawLottery = {
   type: LotteryType;

@@ -15,13 +15,17 @@ const graphql_1 = require("@nestjs/graphql");
 const create_bet_input_1 = require("../../bets/dto/create-bet.input");
 let CreateBetbookInput = class CreateBetbookInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { bettor: { type: () => String }, bets: { type: () => [require("../../bets/dto/create-bet.input").CreateBetInput] } };
+        return { bettor: { type: () => String }, fixed: { type: () => Boolean }, bets: { type: () => [require("../../bets/dto/create-bet.input").CreateBetInput] } };
     }
 };
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", String)
 ], CreateBetbookInput.prototype, "bettor", void 0);
+__decorate([
+    graphql_1.Field(),
+    __metadata("design:type", Boolean)
+], CreateBetbookInput.prototype, "fixed", void 0);
 __decorate([
     graphql_1.Field(() => [create_bet_input_1.CreateBetInput]),
     __metadata("design:type", Array)
