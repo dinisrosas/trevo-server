@@ -31,7 +31,7 @@ let AuthService = class AuthService {
     constructor(usersService, jwtService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
-        this.saltOrRounds = 10;
+        this.rounds = 10;
     }
     async login(loginInput) {
         const { username, password } = loginInput;
@@ -58,7 +58,7 @@ let AuthService = class AuthService {
         return user;
     }
     async encryptPassword(password) {
-        return await bcrypt.hash(password, this.saltOrRounds);
+        return await bcrypt.hash(password, this.rounds);
     }
     async comparePasswords(password, encryptedPassword) {
         return await bcrypt.compare(password, encryptedPassword);

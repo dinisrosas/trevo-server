@@ -23,8 +23,8 @@ let AuthResolver = class AuthResolver {
     constructor(authService) {
         this.authService = authService;
     }
-    login(loginInput) {
-        return this.authService.login(loginInput);
+    async login(loginInput) {
+        return await this.authService.login(loginInput);
     }
     signUp(createUserInput) {
         return this.authService.signUp(createUserInput);

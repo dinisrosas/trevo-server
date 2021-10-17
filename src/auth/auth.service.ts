@@ -9,7 +9,7 @@ import { AuthSession } from "./entities/auth-session.entity";
 
 @Injectable()
 export class AuthService {
-  private readonly saltOrRounds = 10;
+  private readonly rounds = 10;
 
   constructor(
     private usersService: UsersService,
@@ -55,7 +55,7 @@ export class AuthService {
   }
 
   async encryptPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, this.saltOrRounds);
+    return await bcrypt.hash(password, this.rounds);
   }
 
   async comparePasswords(

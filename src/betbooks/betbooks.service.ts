@@ -1,7 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { DateTime } from "luxon";
 import { BetsService } from "src/bets/bets.service";
 import { LotteriesService } from "src/lotteries/lotteries.service";
 import { PrismaService } from "src/prisma/prisma.service";
+import { getLottery } from "src/utils/misc";
 import { CreateBetbookInput } from "./dto/create-betbook.input";
 import { QueryBetbooksInput } from "./dto/query-betbook.input";
 import { UpdateBetbookInput } from "./dto/update-betbook.input";
@@ -18,6 +20,25 @@ export class BetbooksService {
   async create(
     createBetbookInput: CreateBetbookInput & { sellerId: string }
   ): Promise<Betbook> {
+    const now = DateTime.now();
+
+    // validations
+    const hasInvalidDate = createBetbookInput.bets.some((bet) => {
+      const lottery = getLottery(bet.lottery.type, bet.lottery.isoDate);
+
+      if (!lottery) {
+        return true;
+      }
+
+      return lottery.date.diff(now).as("minutes") < 50;
+    });
+
+    if (hasInvalidDate) {
+      throw new BadRequestException(
+        "Less than 50 minutes left for one or more selected lotteries"
+      );
+    }
+
     const betbook = await this.prisma.betbook.create({
       data: {
         bettor: createBetbookInput.bettor,

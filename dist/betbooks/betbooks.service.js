@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BetbooksService = void 0;
 const common_1 = require("@nestjs/common");
+const luxon_1 = require("luxon");
 const bets_service_1 = require("../bets/bets.service");
 const lotteries_service_1 = require("../lotteries/lotteries.service");
 const prisma_service_1 = require("../prisma/prisma.service");
+const misc_1 = require("../utils/misc");
 let BetbooksService = class BetbooksService {
     constructor(prisma, betsService, lotteriesService) {
         this.prisma = prisma;
@@ -21,6 +23,17 @@ let BetbooksService = class BetbooksService {
         this.lotteriesService = lotteriesService;
     }
     async create(createBetbookInput) {
+        const now = luxon_1.DateTime.now();
+        const hasInvalidDate = createBetbookInput.bets.some((bet) => {
+            const lottery = misc_1.getLottery(bet.lottery.type, bet.lottery.isoDate);
+            if (!lottery) {
+                return true;
+            }
+            return lottery.date.diff(now).as("minutes") < 50;
+        });
+        if (hasInvalidDate) {
+            throw new common_1.BadRequestException("Less than 50 minutes left for one or more selected lotteries");
+        }
         const betbook = await this.prisma.betbook.create({
             data: {
                 bettor: createBetbookInput.bettor,

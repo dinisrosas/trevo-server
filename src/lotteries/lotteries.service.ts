@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "eventemitter2";
 import { DateTime } from "luxon";
 import { PrismaService } from "src/prisma/prisma.service";
-import { LotteryMode, LotteryType, RawLottery } from "src/types";
-import rawLotteries from "./data/raw-lotteries";
+import { LotteryType } from "src/types";
+import { getLottery } from "src/utils/misc";
 import { CreateLotteryInput } from "./dto/create-lottery.input";
 import { UpdateLotteryInput } from "./dto/update-lottery.input";
 import { Lottery } from "./entities/lottery.entity";
@@ -12,8 +12,6 @@ import { getNextLotteries } from "./helpers/oncoming.helper";
 
 @Injectable()
 export class LotteriesService {
-  private readonly rawLotteries: RawLottery[] = rawLotteries;
-
   constructor(
     private prisma: PrismaService,
     private eventEmitter: EventEmitter2
@@ -22,24 +20,19 @@ export class LotteriesService {
   async create(createLotteryInput: CreateLotteryInput): Promise<Lottery> {
     const { type, isoDate } = createLotteryInput;
 
-    // needs validations !!
-    const rawLottery = this.rawLotteries.find(
-      (lottery) => lottery.type === type
-    );
+    const lottery = getLottery(type, isoDate);
 
-    const date = DateTime.fromISO(isoDate)
-      .startOf("day")
-      .set({ ...rawLottery.time });
-
-    const lotteryMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
+    if (!lottery) {
+      throw new BadRequestException("Invalid lottery type or date");
+    }
 
     return await this.prisma.lottery.create({
       data: {
         type,
-        name: rawLottery.name,
-        mode: lotteryMode,
-        date: date.toJSDate(),
-        isoDate: date.toISODate(),
+        name: lottery.name,
+        mode: lottery.mode,
+        date: lottery.date.toJSDate(),
+        isoDate: lottery.isoDate,
       },
     });
   }

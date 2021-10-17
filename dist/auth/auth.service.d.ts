@@ -7,7 +7,7 @@ import { AuthSession } from "./entities/auth-session.entity";
 export declare class AuthService {
     private usersService;
     private jwtService;
-    private readonly saltOrRounds;
+    private readonly rounds;
     constructor(usersService: UsersService, jwtService: JwtService);
     login(loginInput: LoginInput): Promise<AuthSession>;
     signUp(createUserInput: CreateUserInput): Promise<User>;

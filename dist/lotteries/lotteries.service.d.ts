@@ -8,7 +8,6 @@ import { OncomingLottery } from "./entities/oncoming-lottery.entity";
 export declare class LotteriesService {
     private prisma;
     private eventEmitter;
-    private readonly rawLotteries;
     constructor(prisma: PrismaService, eventEmitter: EventEmitter2);
     create(createLotteryInput: CreateLotteryInput): Promise<Lottery>;
     findOrCreate(createLotteryInput: CreateLotteryInput): Promise<Lottery>;

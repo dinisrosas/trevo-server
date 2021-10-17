@@ -15,28 +15,26 @@ const eventemitter2_1 = require("eventemitter2");
 const luxon_1 = require("luxon");
 const prisma_service_1 = require("../prisma/prisma.service");
 const types_1 = require("../types");
-const raw_lotteries_1 = require("./data/raw-lotteries");
+const misc_1 = require("../utils/misc");
 const oncoming_helper_1 = require("./helpers/oncoming.helper");
 let LotteriesService = class LotteriesService {
     constructor(prisma, eventEmitter) {
         this.prisma = prisma;
         this.eventEmitter = eventEmitter;
-        this.rawLotteries = raw_lotteries_1.default;
     }
     async create(createLotteryInput) {
         const { type, isoDate } = createLotteryInput;
-        const rawLottery = this.rawLotteries.find((lottery) => lottery.type === type);
-        const date = luxon_1.DateTime.fromISO(isoDate)
-            .startOf("day")
-            .set(Object.assign({}, rawLottery.time));
-        const lotteryMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
+        const lottery = misc_1.getLottery(type, isoDate);
+        if (!lottery) {
+            throw new common_1.BadRequestException("Invalid lottery type or date");
+        }
         return await this.prisma.lottery.create({
             data: {
                 type,
-                name: rawLottery.name,
-                mode: lotteryMode,
-                date: date.toJSDate(),
-                isoDate: date.toISODate(),
+                name: lottery.name,
+                mode: lottery.mode,
+                date: lottery.date.toJSDate(),
+                isoDate: lottery.isoDate,
             },
         });
     }
