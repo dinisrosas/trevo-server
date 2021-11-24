@@ -22,6 +22,13 @@ type AuthSession {
   token: String!
 }
 
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
 type Lottery {
   id: ID!
   sid: Float!
@@ -50,6 +57,17 @@ enum LotteryMode {
   LOTTERY
 }
 
+type LotteryEdge {
+  cursor: String!
+  node: Lottery!
+}
+
+type LotteryConnection {
+  edges: [LotteryEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type Bet {
   id: ID!
   sid: Float!
@@ -76,6 +94,17 @@ type Betbook {
   createdAt: DateTime!
 }
 
+type BetbookEdge {
+  cursor: String!
+  node: Betbook!
+}
+
+type BetbookConnection {
+  edges: [BetbookEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type LotteryResult {
   result: String!
   isoDate: String!
@@ -94,19 +123,14 @@ type Query {
   me: User!
   users: [User!]!
   user(username: String!): User!
-  lotteries: [Lottery!]!
   oncomingLotteries: [OncomingLottery!]!
-  finishedLotteries: [Lottery!]!
+  lotteries(first: Int, after: String, finished: Boolean, date: String): LotteryConnection!
   lottery(id: ID!): Lottery!
   latestLotteryResult(type: String!): LotteryResult!
   bets: [Bet!]!
   bet(id: ID!): Bet!
-  betbooks(query: QueryBetbooksInput): [Betbook!]!
+  betbooks(first: Int, after: String, fixed: Boolean): BetbookConnection!
   betbook(id: ID!): Betbook!
-}
-
-input QueryBetbooksInput {
-  fixed: Boolean
 }
 
 type Mutation {

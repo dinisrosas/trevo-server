@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.LotteriesService = void 0;
+const prisma_relay_cursor_connection_1 = require("@devoxa/prisma-relay-cursor-connection");
 const common_1 = require("@nestjs/common");
 const eventemitter2_1 = require("eventemitter2");
 const luxon_1 = require("luxon");
@@ -61,12 +62,15 @@ let LotteriesService = class LotteriesService {
             },
         });
     }
-    async findAllFinished(sellerId) {
-        return await this.prisma.lottery.findMany({
+    async findAllBySeller(sellerId, date, finished, after, first) {
+        const args = {
             where: {
-                result: {
-                    not: null,
-                },
+                isoDate: date,
+                result: finished
+                    ? {
+                        not: null,
+                    }
+                    : undefined,
                 bets: {
                     every: {
                         betbook: {
@@ -78,7 +82,9 @@ let LotteriesService = class LotteriesService {
             orderBy: {
                 id: "desc",
             },
-        });
+        };
+        const lotteries = await prisma_relay_cursor_connection_1.findManyCursorConnection((pagination) => this.prisma.lottery.findMany(Object.assign(Object.assign({}, pagination), args)), () => this.prisma.lottery.count({ where: args.where }), { first, after });
+        return lotteries;
     }
     async findOneByTypeIsoDate(type, isoDate) {
         return await this.prisma.lottery.findUnique({

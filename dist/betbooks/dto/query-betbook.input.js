@@ -13,13 +13,17 @@ exports.QueryBetbooksInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let QueryBetbooksInput = class QueryBetbooksInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { fixed: { nullable: true, type: () => Boolean } };
+        return { fixed: { nullable: true, type: () => Boolean }, cursor: { nullable: true, type: () => String } };
     }
 };
 __decorate([
     graphql_1.Field(),
     __metadata("design:type", Boolean)
 ], QueryBetbooksInput.prototype, "fixed", void 0);
+__decorate([
+    graphql_1.Field(),
+    __metadata("design:type", String)
+], QueryBetbooksInput.prototype, "cursor", void 0);
 QueryBetbooksInput = __decorate([
     graphql_1.InputType()
 ], QueryBetbooksInput);

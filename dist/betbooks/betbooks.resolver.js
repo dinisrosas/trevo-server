@@ -20,7 +20,6 @@ const gql_auth_guard_1 = require("../auth/guards/gql-auth.guard");
 const types_1 = require("../types");
 const betbooks_service_1 = require("./betbooks.service");
 const create_betbook_input_1 = require("./dto/create-betbook.input");
-const query_betbook_input_1 = require("./dto/query-betbook.input");
 const update_betbook_input_1 = require("./dto/update-betbook.input");
 const betbook_entity_1 = require("./entities/betbook.entity");
 let BetbooksResolver = class BetbooksResolver {
@@ -30,8 +29,8 @@ let BetbooksResolver = class BetbooksResolver {
     createBetbook(user, createBetbookInput) {
         return this.betbooksService.create(Object.assign(Object.assign({}, createBetbookInput), { sellerId: user.id }));
     }
-    findAll(user, query = {}) {
-        return this.betbooksService.findAllBySeller(user.id, query);
+    findAll(user, fixed, after, first) {
+        return this.betbooksService.findAllBySeller(user.id, fixed, after, first);
     }
     findOne(id) {
         return this.betbooksService.findOne(id);
@@ -52,11 +51,13 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "createBetbook", null);
 __decorate([
-    graphql_1.Query(() => [betbook_entity_1.Betbook], { name: "betbooks" }),
+    graphql_1.Query(() => betbook_entity_1.BetbookConnection, { name: "betbooks" }),
     __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args("query", { nullable: true })),
+    __param(1, graphql_1.Args("fixed", { nullable: true })),
+    __param(2, graphql_1.Args("after", { nullable: true })),
+    __param(3, graphql_1.Args("first", { nullable: true, type: () => graphql_1.Int })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, query_betbook_input_1.QueryBetbooksInput]),
+    __metadata("design:paramtypes", [Object, Boolean, String, Number]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "findAll", null);
 __decorate([

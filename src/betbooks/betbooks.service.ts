@@ -1,13 +1,14 @@
+import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
 import { BadRequestException, Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
 import { BetsService } from "src/bets/bets.service";
 import { LotteriesService } from "src/lotteries/lotteries.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { getLottery } from "src/utils/misc";
 import { CreateBetbookInput } from "./dto/create-betbook.input";
-import { QueryBetbooksInput } from "./dto/query-betbook.input";
 import { UpdateBetbookInput } from "./dto/update-betbook.input";
-import { Betbook } from "./entities/betbook.entity";
+import { Betbook, BetbookConnection } from "./entities/betbook.entity";
 
 @Injectable()
 export class BetbooksService {
@@ -68,12 +69,14 @@ export class BetbooksService {
 
   async findAllBySeller(
     sellerId: string,
-    query: QueryBetbooksInput
-  ): Promise<Betbook[]> {
-    const betbooks = await this.prisma.betbook.findMany({
+    fixed?: boolean,
+    after?: string,
+    first?: number
+  ): Promise<BetbookConnection> {
+    const args: Prisma.BetbookFindManyArgs = {
       where: {
         sellerId,
-        ...query,
+        fixed,
       },
       orderBy: {
         id: "desc",
@@ -86,7 +89,13 @@ export class BetbooksService {
           },
         },
       },
-    });
+    };
+
+    const betbooks = await findManyCursorConnection(
+      (pagination) => this.prisma.betbook.findMany({ ...pagination, ...args }),
+      () => this.prisma.betbook.count({ where: args.where }),
+      { first, after }
+    );
 
     return betbooks;
   }

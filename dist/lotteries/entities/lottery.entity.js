@@ -9,10 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Lottery = void 0;
+exports.LotteryConnection = exports.LotteryEdge = exports.Lottery = void 0;
 const eager_import_0 = require("../../bets/entities/bet.entity");
+const eager_import_1 = require("./lottery.entity");
+const eager_import_2 = require("../../common/entities/pagination.entity");
 const graphql_1 = require("@nestjs/graphql");
 const bet_entity_1 = require("../../bets/entities/bet.entity");
+const pagination_entity_1 = require("../../common/entities/pagination.entity");
 const types_1 = require("../../types");
 graphql_1.registerEnumType(types_1.LotteryModeEnum, {
     name: "LotteryMode",
@@ -73,4 +76,42 @@ Lottery = __decorate([
     graphql_1.ObjectType()
 ], Lottery);
 exports.Lottery = Lottery;
+let LotteryEdge = class LotteryEdge {
+    static _GRAPHQL_METADATA_FACTORY() {
+        return { cursor: { type: () => String }, node: { type: () => require("./lottery.entity").Lottery } };
+    }
+};
+__decorate([
+    graphql_1.Field(),
+    __metadata("design:type", String)
+], LotteryEdge.prototype, "cursor", void 0);
+__decorate([
+    graphql_1.Field(() => Lottery),
+    __metadata("design:type", Lottery)
+], LotteryEdge.prototype, "node", void 0);
+LotteryEdge = __decorate([
+    graphql_1.ObjectType()
+], LotteryEdge);
+exports.LotteryEdge = LotteryEdge;
+let LotteryConnection = class LotteryConnection {
+    static _GRAPHQL_METADATA_FACTORY() {
+        return { edges: { type: () => [require("./lottery.entity").LotteryEdge] }, pageInfo: { type: () => require("../../common/entities/pagination.entity").PageInfo }, totalCount: { type: () => Number } };
+    }
+};
+__decorate([
+    graphql_1.Field(() => [LotteryEdge]),
+    __metadata("design:type", Array)
+], LotteryConnection.prototype, "edges", void 0);
+__decorate([
+    graphql_1.Field(() => pagination_entity_1.PageInfo),
+    __metadata("design:type", pagination_entity_1.PageInfo)
+], LotteryConnection.prototype, "pageInfo", void 0);
+__decorate([
+    graphql_1.Field(() => graphql_1.Int),
+    __metadata("design:type", Number)
+], LotteryConnection.prototype, "totalCount", void 0);
+LotteryConnection = __decorate([
+    graphql_1.ObjectType()
+], LotteryConnection);
+exports.LotteryConnection = LotteryConnection;
 //# sourceMappingURL=lottery.entity.js.map

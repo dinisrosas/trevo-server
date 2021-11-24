@@ -3,7 +3,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { LotteryType } from "src/types";
 import { CreateLotteryInput } from "./dto/create-lottery.input";
 import { UpdateLotteryInput } from "./dto/update-lottery.input";
-import { Lottery } from "./entities/lottery.entity";
+import { Lottery, LotteryConnection } from "./entities/lottery.entity";
 import { OncomingLottery } from "./entities/oncoming-lottery.entity";
 export declare class LotteriesService {
     private prisma;
@@ -13,7 +13,7 @@ export declare class LotteriesService {
     findOrCreate(createLotteryInput: CreateLotteryInput): Promise<Lottery>;
     findAll(): Promise<Lottery[]>;
     findOneById(id: string): Promise<Lottery>;
-    findAllFinished(sellerId: string): Promise<Lottery[]>;
+    findAllBySeller(sellerId: string, date?: string, finished?: boolean, after?: string, first?: number): Promise<LotteryConnection>;
     findOneByTypeIsoDate(type: LotteryType, isoDate: string): Promise<Lottery>;
     findOncoming(): OncomingLottery[];
     findRecentActiveLotteries(): Promise<Lottery[]>;

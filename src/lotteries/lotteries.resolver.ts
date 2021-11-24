@@ -1,12 +1,12 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
 import { AuthUser, LotteryType } from "src/types";
 import { CreateLotteryInput } from "./dto/create-lottery.input";
 import { UpdateLotteryInput } from "./dto/update-lottery.input";
 import { LotteryResult } from "./entities/lottery-result.entity";
-import { Lottery } from "./entities/lottery.entity";
+import { Lottery, LotteryConnection } from "./entities/lottery.entity";
 import { OncomingLottery } from "./entities/oncoming-lottery.entity";
 import { getLatestLotteryResult } from "./helpers/result.helper";
 import { LotteriesService } from "./lotteries.service";
@@ -23,19 +23,26 @@ export class LotteriesResolver {
     return this.lotteriesService.create(createLotteryInput);
   }
 
-  @Query(() => [Lottery], { name: "lotteries" })
-  findAll(): Promise<Lottery[]> {
-    return this.lotteriesService.findAll();
-  }
-
   @Query(() => [OncomingLottery], { name: "oncomingLotteries" })
   findOncomingLotteries(): OncomingLottery[] {
     return this.lotteriesService.findOncoming();
   }
 
-  @Query(() => [Lottery], { name: "finishedLotteries" })
-  findFinished(@CurrentUser() user: AuthUser): Promise<Lottery[]> {
-    return this.lotteriesService.findAllFinished(user.id);
+  @Query(() => LotteryConnection, { name: "lotteries" })
+  findAllBySeller(
+    @CurrentUser() user: AuthUser,
+    @Args("date", { nullable: true }) date?: string,
+    @Args("finished", { nullable: true }) finished?: boolean,
+    @Args("after", { nullable: true }) after?: string,
+    @Args("first", { nullable: true, type: () => Int }) first?: number
+  ): Promise<LotteryConnection> {
+    return this.lotteriesService.findAllBySeller(
+      user.id,
+      date,
+      finished,
+      after,
+      first
+    );
   }
 
   @Query(() => Lottery, { name: "lottery" })

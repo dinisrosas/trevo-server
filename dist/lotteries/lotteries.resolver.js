@@ -32,14 +32,11 @@ let LotteriesResolver = class LotteriesResolver {
     createLottery(createLotteryInput) {
         return this.lotteriesService.create(createLotteryInput);
     }
-    findAll() {
-        return this.lotteriesService.findAll();
-    }
     findOncomingLotteries() {
         return this.lotteriesService.findOncoming();
     }
-    findFinished(user) {
-        return this.lotteriesService.findAllFinished(user.id);
+    findAllBySeller(user, date, finished, after, first) {
+        return this.lotteriesService.findAllBySeller(user.id, date, finished, after, first);
     }
     findOne(id) {
         return this.lotteriesService.findOneById(id);
@@ -65,24 +62,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], LotteriesResolver.prototype, "createLottery", null);
 __decorate([
-    graphql_1.Query(() => [lottery_entity_1.Lottery], { name: "lotteries" }),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", Promise)
-], LotteriesResolver.prototype, "findAll", null);
-__decorate([
     graphql_1.Query(() => [oncoming_lottery_entity_1.OncomingLottery], { name: "oncomingLotteries" }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Array)
 ], LotteriesResolver.prototype, "findOncomingLotteries", null);
 __decorate([
-    graphql_1.Query(() => [lottery_entity_1.Lottery], { name: "finishedLotteries" }),
+    graphql_1.Query(() => lottery_entity_1.LotteryConnection, { name: "lotteries" }),
     __param(0, current_user_decorator_1.CurrentUser()),
+    __param(1, graphql_1.Args("date", { nullable: true })),
+    __param(2, graphql_1.Args("finished", { nullable: true })),
+    __param(3, graphql_1.Args("after", { nullable: true })),
+    __param(4, graphql_1.Args("first", { nullable: true, type: () => graphql_1.Int })),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [Object, String, Boolean, String, Number]),
     __metadata("design:returntype", Promise)
-], LotteriesResolver.prototype, "findFinished", null);
+], LotteriesResolver.prototype, "findAllBySeller", null);
 __decorate([
     graphql_1.Query(() => lottery_entity_1.Lottery, { name: "lottery" }),
     __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),

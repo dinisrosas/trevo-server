@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BetbooksService = void 0;
+const prisma_relay_cursor_connection_1 = require("@devoxa/prisma-relay-cursor-connection");
 const common_1 = require("@nestjs/common");
 const luxon_1 = require("luxon");
 const bets_service_1 = require("../bets/bets.service");
@@ -57,9 +58,12 @@ let BetbooksService = class BetbooksService {
         }
         return betbook;
     }
-    async findAllBySeller(sellerId, query) {
-        const betbooks = await this.prisma.betbook.findMany({
-            where: Object.assign({ sellerId }, query),
+    async findAllBySeller(sellerId, fixed, after, first) {
+        const args = {
+            where: {
+                sellerId,
+                fixed,
+            },
             orderBy: {
                 id: "desc",
             },
@@ -71,7 +75,8 @@ let BetbooksService = class BetbooksService {
                     },
                 },
             },
-        });
+        };
+        const betbooks = await prisma_relay_cursor_connection_1.findManyCursorConnection((pagination) => this.prisma.betbook.findMany(Object.assign(Object.assign({}, pagination), args)), () => this.prisma.betbook.count({ where: args.where }), { first, after });
         return betbooks;
     }
     async findOne(id) {

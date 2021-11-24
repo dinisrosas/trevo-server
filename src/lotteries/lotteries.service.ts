@@ -1,3 +1,5 @@
+import { Prisma } from ".prisma/client";
+import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import { EventEmitter2 } from "eventemitter2";
 import { DateTime } from "luxon";
@@ -6,7 +8,7 @@ import { LotteryType } from "src/types";
 import { getLottery } from "src/utils/misc";
 import { CreateLotteryInput } from "./dto/create-lottery.input";
 import { UpdateLotteryInput } from "./dto/update-lottery.input";
-import { Lottery } from "./entities/lottery.entity";
+import { Lottery, LotteryConnection } from "./entities/lottery.entity";
 import { OncomingLottery } from "./entities/oncoming-lottery.entity";
 import { getNextLotteries } from "./helpers/oncoming.helper";
 
@@ -66,12 +68,21 @@ export class LotteriesService {
     });
   }
 
-  async findAllFinished(sellerId: string): Promise<Lottery[]> {
-    return await this.prisma.lottery.findMany({
+  async findAllBySeller(
+    sellerId: string,
+    date?: string,
+    finished?: boolean,
+    after?: string,
+    first?: number
+  ): Promise<LotteryConnection> {
+    const args: Prisma.LotteryFindManyArgs = {
       where: {
-        result: {
-          not: null,
-        },
+        isoDate: date,
+        result: finished
+          ? {
+              not: null,
+            }
+          : undefined,
         bets: {
           every: {
             betbook: {
@@ -83,7 +94,15 @@ export class LotteriesService {
       orderBy: {
         id: "desc",
       },
-    });
+    };
+
+    const lotteries = await findManyCursorConnection(
+      (pagination) => this.prisma.lottery.findMany({ ...pagination, ...args }),
+      () => this.prisma.lottery.count({ where: args.where }),
+      { first, after }
+    );
+
+    return lotteries;
   }
 
   async findOneByTypeIsoDate(

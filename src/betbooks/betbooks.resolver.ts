@@ -1,13 +1,12 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
 import { AuthUser } from "src/types";
 import { BetbooksService } from "./betbooks.service";
 import { CreateBetbookInput } from "./dto/create-betbook.input";
-import { QueryBetbooksInput } from "./dto/query-betbook.input";
 import { UpdateBetbookInput } from "./dto/update-betbook.input";
-import { Betbook } from "./entities/betbook.entity";
+import { Betbook, BetbookConnection } from "./entities/betbook.entity";
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => Betbook)
@@ -25,12 +24,14 @@ export class BetbooksResolver {
     });
   }
 
-  @Query(() => [Betbook], { name: "betbooks" })
+  @Query(() => BetbookConnection, { name: "betbooks" })
   findAll(
     @CurrentUser() user: AuthUser,
-    @Args("query", { nullable: true }) query: QueryBetbooksInput = {}
-  ): Promise<Betbook[]> {
-    return this.betbooksService.findAllBySeller(user.id, query);
+    @Args("fixed", { nullable: true }) fixed?: boolean,
+    @Args("after", { nullable: true }) after?: string,
+    @Args("first", { nullable: true, type: () => Int }) first?: number
+  ): Promise<BetbookConnection> {
+    return this.betbooksService.findAllBySeller(user.id, fixed, after, first);
   }
 
   @Query(() => Betbook, { name: "betbook" })

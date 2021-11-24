@@ -1,5 +1,6 @@
-import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
+import { Field, ID, Int, ObjectType, registerEnumType } from "@nestjs/graphql";
 import { Bet } from "src/bets/entities/bet.entity";
+import { PageInfo } from "src/common/entities/pagination.entity";
 import {
   LotteryMode,
   LotteryModeEnum,
@@ -49,4 +50,25 @@ export class Lottery {
 
   @Field()
   updatedAt: Date;
+}
+
+@ObjectType()
+export class LotteryEdge {
+  @Field()
+  cursor: string;
+
+  @Field(() => Lottery)
+  node: Lottery;
+}
+
+@ObjectType()
+export class LotteryConnection {
+  @Field(() => [LotteryEdge])
+  edges: LotteryEdge[];
+
+  @Field(() => PageInfo)
+  pageInfo: PageInfo;
+
+  @Field(() => Int)
+  totalCount: number;
 }
