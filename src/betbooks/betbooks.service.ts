@@ -132,17 +132,6 @@ export class BetbooksService {
   }
 
   async delete(id: string): Promise<Betbook> {
-    const betbook = await this.prisma.betbook.findUnique({ where: { id } });
-
-    if (!betbook) {
-      throw new Error("Betbook not found");
-    }
-
-    // await this.prisma.$queryRaw<Betbook>`DELETE FROM betbooks WHERE id = {id}`;
-    await this.prisma.betbook.delete({
-      where: { id },
-    });
-
-    return betbook;
+    return await this.prisma.betbook.delete({ where: { id } });
   }
 }

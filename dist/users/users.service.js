@@ -53,8 +53,8 @@ let UsersService = class UsersService {
             },
         });
     }
-    remove(id) {
-        return this.prisma.user.delete({ where: { id } });
+    async delete(id) {
+        return await this.prisma.user.delete({ where: { id } });
     }
 };
 UsersService = __decorate([

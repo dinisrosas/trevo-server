@@ -111,7 +111,6 @@ type GameResult {
 }
 
 type OncomingGame {
-  id: String!
   name: String!
   type: String!
   mode: String!
@@ -136,7 +135,7 @@ type Query {
 type Mutation {
   updateUser(input: UpdateUserInput!): User!
   updatePassword(input: UpdatePasswordInput!): User!
-  removeUser(id: ID!): User!
+  deleteUser(id: ID!): User!
   login(input: LoginInput!): AuthSession!
   signUp(input: CreateUserInput!): User!
   createGame(input: CreateGameInput!): Game!

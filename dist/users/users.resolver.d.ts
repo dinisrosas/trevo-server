@@ -9,5 +9,5 @@ export declare class UsersResolver {
     findByUsername(username: string): Promise<User>;
     updateUser(input: UpdateUserInput): Promise<User>;
     updatePassword(user: User, input: UpdatePasswordInput): Promise<User>;
-    removeUser(id: string): Promise<User>;
+    deleteUser(id: string): Promise<User>;
 }

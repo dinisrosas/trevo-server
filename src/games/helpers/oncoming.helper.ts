@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
+import { gameConstants } from "../contants";
 import rawGames from "../data/raw-games";
 import { OncomingGame } from "../entities/oncoming-game.entity";
-import * as cuid from "cuid";
 
 function getGameCalendarDate(game, startDate) {
   const previousGameDateTime = DateTime.fromJSDate(startDate)
@@ -48,7 +48,7 @@ function findFirstRawGame(startDate) {
     "minutes"
   );
 
-  if (minutesLeft > 50) {
+  if (minutesLeft > gameConstants.maxMinutesBeforeGame) {
     return firstGame;
   }
 
@@ -75,7 +75,6 @@ export function getNextGames(
   const oncomingGame: OncomingGame = {
     ...game,
     date,
-    id: cuid(),
     isoDate: DateTime.fromJSDate(date).toISODate(),
     mode: game.type.match(/EM|TL/) ? "DRAW" : "LOTTERY",
   };

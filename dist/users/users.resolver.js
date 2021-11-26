@@ -39,8 +39,8 @@ let UsersResolver = class UsersResolver {
     updatePassword(user, input) {
         return this.usersService.updatePassword(user.id, input);
     }
-    removeUser(id) {
-        return this.usersService.remove(id);
+    deleteUser(id) {
+        return this.usersService.delete(id);
     }
 };
 __decorate([
@@ -85,7 +85,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UsersResolver.prototype, "removeUser", null);
+], UsersResolver.prototype, "deleteUser", null);
 UsersResolver = __decorate([
     common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),
     graphql_1.Resolver(() => user_entity_1.User),

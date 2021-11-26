@@ -4,9 +4,6 @@ import { GameMode, GameType } from "@prisma/client";
 @ObjectType()
 export class OncomingGame {
   @Field()
-  id: string;
-
-  @Field()
   name: string;
 
   @Field()

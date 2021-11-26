@@ -4,6 +4,7 @@ import { DateTime } from "luxon";
 import rawGames from "src/games/data/raw-games";
 import { Game } from "src/games/entities/game.entity";
 import { GameType } from "src/types";
+import * as cuid from "cuid";
 
 export function getGame(
   type: GameType,
@@ -43,4 +44,8 @@ export async function comparePasswords(
   encryptedPassword: string
 ): Promise<boolean> {
   return await bcrypt.compare(password, encryptedPassword);
+}
+
+export function getId(): string {
+  return cuid();
 }
