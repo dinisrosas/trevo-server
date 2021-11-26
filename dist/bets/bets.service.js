@@ -11,41 +11,41 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BetsService = void 0;
 const common_1 = require("@nestjs/common");
-const lotteries_service_1 = require("../lotteries/lotteries.service");
+const games_service_1 = require("../games/games.service");
 const prisma_service_1 = require("../prisma/prisma.service");
 const amount_helper_1 = require("./helpers/amount.helper");
 let BetsService = class BetsService {
-    constructor(prisma, lotteriesService) {
+    constructor(prisma, gamesService) {
         this.prisma = prisma;
-        this.lotteriesService = lotteriesService;
+        this.gamesService = gamesService;
     }
-    async create(createBetInput) {
-        const lottery = await this.lotteriesService.findOneById(createBetInput.lotteryId);
+    async create(data) {
+        const game = await this.gamesService.findOneById(data.gameId);
         const amount = amount_helper_1.getBetAmount({
-            mode: lottery.mode,
-            pick: createBetInput.pick,
-            target: createBetInput.target,
-            updown: createBetInput.updown,
+            mode: game.mode,
+            pick: data.pick,
+            target: data.target,
+            updown: data.updown,
         });
         return this.prisma.bet.create({
             data: {
                 amount,
-                target: createBetInput.target,
-                pick: createBetInput.pick,
-                updown: createBetInput.updown,
-                ball: createBetInput.ball,
-                betbookId: createBetInput.betbookId,
-                lotteryId: createBetInput.lotteryId,
+                target: data.target,
+                pick: data.pick,
+                updown: data.updown,
+                ball: data.ball,
+                betbookId: data.betbookId,
+                gameId: data.gameId,
             },
         });
     }
     async findAll() {
         return await this.prisma.bet.findMany();
     }
-    async findAllByLotteryId(lotteryId) {
+    async findAllByGameId(gameId) {
         return await this.prisma.bet.findMany({
             where: {
-                lotteryId: lotteryId,
+                gameId: gameId,
             },
         });
     }
@@ -70,20 +70,20 @@ let BetsService = class BetsService {
     async findOne(id) {
         return await this.prisma.bet.findUnique({ where: { id } });
     }
-    async update(id, updateBetInput) {
+    async update(id, data) {
         return await this.prisma.bet.update({
             where: { id },
-            data: Object.assign({}, updateBetInput),
+            data: Object.assign({}, data),
         });
     }
-    async remove(id) {
+    async delete(id) {
         return await this.prisma.bet.delete({ where: { id } });
     }
 };
 BetsService = __decorate([
     common_1.Injectable(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
-        lotteries_service_1.LotteriesService])
+        games_service_1.GamesService])
 ], BetsService);
 exports.BetsService = BetsService;
 //# sourceMappingURL=bets.service.js.map

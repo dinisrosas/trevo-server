@@ -1,10 +1,10 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { LotteryType } from "src/types";
+import { GameType } from "src/types";
 
 @InputType()
-export class CreateLotteryInput {
+export class CreateGameInput {
   @Field()
-  type: LotteryType;
+  type: GameType;
 
   @Field()
   isoDate: string;

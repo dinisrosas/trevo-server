@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getBetAward = void 0;
 const odd_dividers = {
     draw_updown: 12,
-    lottery_updown: [5, 10, 20],
-    lottery_2: [1, 6, 12],
-    lottery_3: [1, 6, 12],
+    game_updown: [5, 10, 20],
+    game_2: [1, 6, 12],
+    game_3: [1, 6, 12],
 };
 function getBetAward(params) {
     switch (params.mode) {
@@ -18,7 +18,7 @@ function getBetAward(params) {
                 result: params.result,
             });
         case "LOTTERY":
-            return getLotteryAward({
+            return getGameAward({
                 type: params.type,
                 target: params.target,
                 pick: params.pick,
@@ -26,7 +26,7 @@ function getBetAward(params) {
                 amount: params.amount,
             });
         default:
-            throw new Error("Invalid lottery mode");
+            throw new Error("Invalid game mode");
     }
 }
 exports.getBetAward = getBetAward;
@@ -44,7 +44,7 @@ function getDrawAward(params) {
     }
     return 0;
 }
-function getLotteryAward(params) {
+function getGameAward(params) {
     const drawnTickets = getDrawnTickets({
         type: params.type,
         result: params.result,
@@ -52,7 +52,7 @@ function getLotteryAward(params) {
     if (params.pick.length === 3) {
         const index = drawnTickets.findIndex((ticket) => ticket === params.pick);
         if (index !== -1) {
-            return params.target / odd_dividers.lottery_3[index];
+            return params.target / odd_dividers.game_3[index];
         }
         const hasLastTwo = drawnTickets
             .map((ticket) => ticket.slice(-2))
@@ -64,12 +64,12 @@ function getLotteryAward(params) {
     else if (params.pick.length === 2) {
         const index = drawnTickets.findIndex((ticket) => ticket.slice(-2) === params.pick);
         if (index !== -1) {
-            return params.target / odd_dividers.lottery_2[index];
+            return params.target / odd_dividers.game_2[index];
         }
         const updownIndex = drawnTickets.findIndex((ticket) => Number(ticket.slice(-2)) === Number(params.pick) - 1 ||
             Number(ticket.slice(-2)) === Number(params.pick) + 1);
         if (updownIndex !== -1) {
-            return params.amount * odd_dividers.lottery_updown[updownIndex];
+            return params.amount * odd_dividers.game_updown[updownIndex];
         }
     }
     return 0;

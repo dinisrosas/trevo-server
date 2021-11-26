@@ -29,11 +29,11 @@ let BetsResolver = class BetsResolver {
     findOne(id) {
         return this.betsService.findOne(id);
     }
-    updateBet(updateBetInput) {
-        return this.betsService.update(updateBetInput.id, updateBetInput);
+    updateBet(input) {
+        return this.betsService.update(input.id, input);
     }
-    removeBet(id) {
-        return this.betsService.remove(id);
+    deleteBet(id) {
+        return this.betsService.delete(id);
     }
 };
 __decorate([
@@ -51,7 +51,7 @@ __decorate([
 ], BetsResolver.prototype, "findOne", null);
 __decorate([
     graphql_1.Mutation(() => bet_entity_1.Bet),
-    __param(0, graphql_1.Args("updateBetInput")),
+    __param(0, graphql_1.Args("input")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_bet_input_1.UpdateBetInput]),
     __metadata("design:returntype", Promise)
@@ -62,7 +62,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], BetsResolver.prototype, "removeBet", null);
+], BetsResolver.prototype, "deleteBet", null);
 BetsResolver = __decorate([
     common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),
     graphql_1.Resolver(() => bet_entity_1.Bet),

@@ -6,6 +6,6 @@ import { AuthSession } from "./entities/auth-session.entity";
 export declare class AuthResolver {
     private readonly authService;
     constructor(authService: AuthService);
-    login(loginInput: LoginInput): Promise<AuthSession>;
-    signUp(createUserInput: CreateUserInput): Promise<User>;
+    login(input: LoginInput): Promise<AuthSession>;
+    signUp(input: CreateUserInput): Promise<User>;
 }

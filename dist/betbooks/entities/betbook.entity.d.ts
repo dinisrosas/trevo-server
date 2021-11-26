@@ -1,5 +1,4 @@
 import { Bet } from "src/bets/entities/bet.entity";
-import { PageInfo } from "src/common/entities/pagination.entity";
 import { User } from "src/users/entities/user.entity";
 export declare class Betbook {
     id: string;
@@ -11,12 +10,7 @@ export declare class Betbook {
     updatedAt: Date;
     createdAt: Date;
 }
-export declare class BetbookEdge {
-    cursor: string;
-    node: Betbook;
+declare const BetbookConnection_base: import("@nestjs/common").Type<import("src/common/generics/pagination.entity").IConnectionType<Betbook>>;
+export declare class BetbookConnection extends BetbookConnection_base {
 }
-export declare class BetbookConnection {
-    edges: BetbookEdge[];
-    pageInfo: PageInfo;
-    totalCount: number;
-}
+export {};

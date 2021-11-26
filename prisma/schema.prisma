@@ -36,39 +36,40 @@ model Betbook {
 }
 
 model Bet {
-  id        String   @id @default(cuid())
-  target    Float
-  pick      String
-  amount    Float
-  award     Float?
-  updown    Boolean?
-  ball      Int?
-  betbookId String   @map("betbook_id")
-  lotteryId String   @map("lottery_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
-  sid       Int      @default(autoincrement())
-  betbook   Betbook  @relation(fields: [betbookId], references: [id])
-  lottery   Lottery  @relation(fields: [lotteryId], references: [id])
+  id               String   @id @default(cuid())
+  target           Float
+  pick             String
+  amount           Float
+  award            Float?
+  awardDescription String?
+  updown           Boolean?
+  ball             Int?
+  betbookId        String   @map("betbook_id")
+  gameId           String   @map("game_id")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  sid              Int      @default(autoincrement())
+  betbook          Betbook  @relation(fields: [betbookId], references: [id])
+  game             Game     @relation(fields: [gameId], references: [id])
 
   @@map("bets")
 }
 
-model Lottery {
-  id        String      @id @default(cuid())
+model Game {
+  id        String   @id @default(cuid())
   name      String
-  type      LotteryType
+  type      GameType
   result    String?
   date      DateTime
-  isoDate   String      @map("iso_date")
-  createdAt DateTime    @default(now()) @map("created_at")
-  updatedAt DateTime    @updatedAt @map("updated_at")
-  mode      LotteryMode
-  sid       Int         @default(autoincrement())
+  isoDate   String   @map("iso_date")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  mode      GameMode
+  sid       Int      @default(autoincrement())
   bets      Bet[]
 
   @@unique([type, isoDate], name: "type_iso_date")
-  @@map("lotteries")
+  @@map("games")
 }
 
 enum UserRole {
@@ -76,7 +77,7 @@ enum UserRole {
   ADMIN
 }
 
-enum LotteryType {
+enum GameType {
   EM
   TL
   M1
@@ -85,7 +86,7 @@ enum LotteryType {
   JE
 }
 
-enum LotteryMode {
+enum GameMode {
   DRAW
   LOTTERY
 }

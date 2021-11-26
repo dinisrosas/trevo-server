@@ -43,8 +43,8 @@ type BetbookEdge {
 
 type BetbookConnection {
   edges: [BetbookEdge!]!
-  pageInfo: PageInfo!
   totalCount: Int!
+  pageInfo: PageInfo!
 }
 
 type Bet {
@@ -54,7 +54,7 @@ type Bet {
   pick: String!
   amount: Float!
   award: Float
-  lottery: Lottery
+  game: Game
   betbook: Betbook
   updown: Boolean
   ball: Int
@@ -62,12 +62,12 @@ type Bet {
   createdAt: DateTime!
 }
 
-type Lottery {
+type Game {
   id: ID!
   sid: Float!
   name: String!
-  type: LotteryType!
-  mode: LotteryMode!
+  type: GameType!
+  mode: GameMode!
   isoDate: String!
   bets: [Bet!]
   date: DateTime!
@@ -76,7 +76,7 @@ type Lottery {
   updatedAt: DateTime!
 }
 
-enum LotteryType {
+enum GameType {
   EM
   TL
   M1
@@ -85,32 +85,32 @@ enum LotteryType {
   JE
 }
 
-enum LotteryMode {
+enum GameMode {
   DRAW
   LOTTERY
 }
 
-type LotteryEdge {
+type GameEdge {
   cursor: String!
-  node: Lottery!
+  node: Game!
 }
 
-type LotteryConnection {
-  edges: [LotteryEdge!]!
-  pageInfo: PageInfo!
+type GameConnection {
+  edges: [GameEdge!]!
   totalCount: Int!
+  pageInfo: PageInfo!
 }
 
 type AuthSession {
   token: String!
 }
 
-type LotteryResult {
+type GameResult {
   result: String!
   isoDate: String!
 }
 
-type OncomingLottery {
+type OncomingGame {
   id: String!
   name: String!
   type: String!
@@ -123,30 +123,30 @@ type Query {
   me: User!
   users: [User!]!
   user(username: String!): User!
-  oncomingLotteries: [OncomingLottery!]!
-  lotteries(first: Int, after: String, finished: Boolean, date: String): LotteryConnection!
-  lottery(id: ID!): Lottery!
-  latestLotteryResult(type: String!): LotteryResult!
+  oncomingGames: [OncomingGame!]!
+  games(before: String, after: String, first: Int, last: Int, finished: Boolean, date: String): GameConnection!
+  game(id: ID!): Game!
+  latestGameResult(type: String!): GameResult!
   bets: [Bet!]!
   bet(id: ID!): Bet!
-  betbooks(first: Int, after: String, fixed: Boolean): BetbookConnection!
+  betbooks(before: String, after: String, first: Int, last: Int, fixed: Boolean): BetbookConnection!
   betbook(id: ID!): Betbook!
 }
 
 type Mutation {
-  updateUser(updateUserInput: UpdateUserInput!): User!
-  updatePassword(newPassword: String!, currentPassword: String!): User!
+  updateUser(input: UpdateUserInput!): User!
+  updatePassword(input: UpdatePasswordInput!): User!
   removeUser(id: ID!): User!
-  login(loginInput: LoginInput!): AuthSession!
-  signUp(signUpInput: CreateUserInput!): User!
-  createLottery(createLotteryInput: CreateLotteryInput!): Lottery!
-  updateLottery(updateLotteryInput: UpdateLotteryInput!): Lottery!
-  updateLotteryResult(result: String!, id: ID!): Lottery!
-  removeLottery(id: ID!): Lottery!
-  updateBet(updateBetInput: UpdateBetInput!): Bet!
-  removeBet(id: ID!): Bet!
-  createBetbook(createBetbookInput: CreateBetbookInput!): Betbook!
-  updateBetbook(updateBetbookInput: UpdateBetbookInput!): Betbook!
+  login(input: LoginInput!): AuthSession!
+  signUp(input: CreateUserInput!): User!
+  createGame(input: CreateGameInput!): Game!
+  updateGame(input: UpdateGameInput!): Game!
+  updateGameResult(input: UpdateGameResultInput!): Game!
+  deleteGame(id: ID!): Game!
+  updateBet(input: UpdateBetInput!): Bet!
+  deleteBet(id: ID!): Bet!
+  createBetbook(input: CreateBetbookInput!): Betbook!
+  updateBetbook(input: UpdateBetbookInput!): Betbook!
   deleteBetbook(id: ID!): Betbook!
 }
 
@@ -154,6 +154,11 @@ input UpdateUserInput {
   id: ID!
   name: ID!
   username: ID!
+}
+
+input UpdatePasswordInput {
+  currentPassword: String!
+  newPassword: String!
 }
 
 input LoginInput {
@@ -167,13 +172,18 @@ input CreateUserInput {
   password: String!
 }
 
-input CreateLotteryInput {
+input CreateGameInput {
   type: String!
   isoDate: String!
 }
 
-input UpdateLotteryInput {
+input UpdateGameInput {
   id: ID!
+}
+
+input UpdateGameResultInput {
+  id: ID!
+  result: String!
 }
 
 input UpdateBetInput {
@@ -192,7 +202,7 @@ input CreateBetInput {
   target: Float!
   updown: Boolean
   ball: Float
-  lottery: CreateLotteryInput!
+  game: CreateGameInput!
 }
 
 input UpdateBetbookInput {

@@ -6,6 +6,6 @@ export declare class BetsResolver {
     constructor(betsService: BetsService);
     findAll(): Promise<Bet[]>;
     findOne(id: string): Promise<Bet>;
-    updateBet(updateBetInput: UpdateBetInput): Promise<Bet>;
-    removeBet(id: string): Promise<Bet>;
+    updateBet(input: UpdateBetInput): Promise<Bet>;
+    deleteBet(id: string): Promise<Bet>;
 }

@@ -10,12 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateBetInput = void 0;
-const eager_import_0 = require("../../lotteries/dto/create-lottery.input");
+const eager_import_0 = require("../../games/dto/create-game.input");
 const graphql_1 = require("@nestjs/graphql");
-const create_lottery_input_1 = require("../../lotteries/dto/create-lottery.input");
+const create_game_input_1 = require("../../games/dto/create-game.input");
 let CreateBetInput = class CreateBetInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { pick: { type: () => String }, target: { type: () => Number }, updown: { nullable: true, type: () => Boolean }, ball: { nullable: true, type: () => Number }, lottery: { type: () => require("../../lotteries/dto/create-lottery.input").CreateLotteryInput } };
+        return { pick: { type: () => String }, target: { type: () => Number }, updown: { nullable: true, type: () => Boolean }, ball: { nullable: true, type: () => Number }, game: { type: () => require("../../games/dto/create-game.input").CreateGameInput } };
     }
 };
 __decorate([
@@ -36,8 +36,8 @@ __decorate([
 ], CreateBetInput.prototype, "ball", void 0);
 __decorate([
     graphql_1.Field(),
-    __metadata("design:type", create_lottery_input_1.CreateLotteryInput)
-], CreateBetInput.prototype, "lottery", void 0);
+    __metadata("design:type", create_game_input_1.CreateGameInput)
+], CreateBetInput.prototype, "game", void 0);
 CreateBetInput = __decorate([
     graphql_1.InputType()
 ], CreateBetInput);

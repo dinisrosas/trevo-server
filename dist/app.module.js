@@ -14,7 +14,7 @@ const schedule_1 = require("@nestjs/schedule");
 const auth_module_1 = require("./auth/auth.module");
 const betbooks_module_1 = require("./betbooks/betbooks.module");
 const bets_module_1 = require("./bets/bets.module");
-const lotteries_module_1 = require("./lotteries/lotteries.module");
+const games_module_1 = require("./games/games.module");
 const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
@@ -22,6 +22,7 @@ AppModule = __decorate([
     common_1.Module({
         imports: [
             graphql_1.GraphQLModule.forRoot({
+                debug: true,
                 installSubscriptionHandlers: true,
                 autoSchemaFile: "schema.gql",
                 formatError: (error) => {
@@ -39,7 +40,7 @@ AppModule = __decorate([
             schedule_1.ScheduleModule.forRoot(),
             users_module_1.UsersModule,
             auth_module_1.AuthModule,
-            lotteries_module_1.LotteriesModule,
+            games_module_1.GamesModule,
             bets_module_1.BetsModule,
             betbooks_module_1.BetbooksModule,
         ],

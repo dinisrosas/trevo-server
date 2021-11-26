@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { Bet } from "@prisma/client";
-import { LotteriesService } from "src/lotteries/lotteries.service";
+import { GamesService } from "src/games/games.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateBetInput } from "./dto/create-bet.input";
 import { UpdateBetInput } from "./dto/update-bet.input";
@@ -10,35 +10,33 @@ import { getBetAmount } from "./helpers/amount.helper";
 export class BetsService {
   constructor(
     private prisma: PrismaService,
-    private lotteriesService: LotteriesService
+    private gamesService: GamesService
   ) {}
 
   async create(
-    createBetInput: Omit<CreateBetInput, "lottery"> & {
-      lotteryId: string;
+    data: Omit<CreateBetInput, "game"> & {
+      gameId: string;
       betbookId: string;
     }
   ): Promise<Bet> {
-    const lottery = await this.lotteriesService.findOneById(
-      createBetInput.lotteryId
-    );
+    const game = await this.gamesService.findOneById(data.gameId);
 
     const amount = getBetAmount({
-      mode: lottery.mode,
-      pick: createBetInput.pick,
-      target: createBetInput.target,
-      updown: createBetInput.updown,
+      mode: game.mode,
+      pick: data.pick,
+      target: data.target,
+      updown: data.updown,
     });
 
     return this.prisma.bet.create({
       data: {
         amount,
-        target: createBetInput.target,
-        pick: createBetInput.pick,
-        updown: createBetInput.updown,
-        ball: createBetInput.ball,
-        betbookId: createBetInput.betbookId,
-        lotteryId: createBetInput.lotteryId,
+        target: data.target,
+        pick: data.pick,
+        updown: data.updown,
+        ball: data.ball,
+        betbookId: data.betbookId,
+        gameId: data.gameId,
       },
     });
   }
@@ -47,10 +45,10 @@ export class BetsService {
     return await this.prisma.bet.findMany();
   }
 
-  async findAllByLotteryId(lotteryId: string): Promise<Bet[]> {
+  async findAllByGameId(gameId: string): Promise<Bet[]> {
     return await this.prisma.bet.findMany({
       where: {
-        lotteryId: lotteryId,
+        gameId: gameId,
       },
     });
   }
@@ -80,16 +78,16 @@ export class BetsService {
     return await this.prisma.bet.findUnique({ where: { id } });
   }
 
-  async update(id: string, updateBetInput: UpdateBetInput): Promise<Bet> {
+  async update(id: string, data: UpdateBetInput): Promise<Bet> {
     return await this.prisma.bet.update({
       where: { id },
       data: {
-        ...updateBetInput,
+        ...data,
       },
     });
   }
 
-  async remove(id: string): Promise<Bet> {
+  async delete(id: string): Promise<Bet> {
     return await this.prisma.bet.delete({ where: { id } });
   }
 }

@@ -1,8 +1,8 @@
-import { LotteryMode, LotteryType } from ".prisma/client";
+import { GameMode, GameType } from ".prisma/client";
 
 export type GetBetAward = {
-  type: LotteryType;
-  mode: LotteryMode;
+  type: GameType;
+  mode: GameMode;
   target: number;
   pick: string;
   ball?: number;
@@ -12,14 +12,14 @@ export type GetBetAward = {
 };
 
 export type GetDrawAward = Omit<GetBetAward, "type" | "mode" | "amount">;
-export type GetLotteryAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
+export type GetGameAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
 export type GetDrawnTickets = Pick<GetBetAward, "type" | "result">;
 
 const odd_dividers = {
   draw_updown: 12,
-  lottery_updown: [5, 10, 20],
-  lottery_2: [1, 6, 12],
-  lottery_3: [1, 6, 12],
+  game_updown: [5, 10, 20],
+  game_2: [1, 6, 12],
+  game_3: [1, 6, 12],
 };
 
 export function getBetAward(params: GetBetAward): number {
@@ -33,7 +33,7 @@ export function getBetAward(params: GetBetAward): number {
         result: params.result,
       });
     case "LOTTERY":
-      return getLotteryAward({
+      return getGameAward({
         type: params.type,
         target: params.target,
         pick: params.pick,
@@ -41,7 +41,7 @@ export function getBetAward(params: GetBetAward): number {
         amount: params.amount,
       });
     default:
-      throw new Error("Invalid lottery mode");
+      throw new Error("Invalid game mode");
   }
 }
 
@@ -61,7 +61,7 @@ function getDrawAward(params: GetDrawAward): number {
   return 0;
 }
 
-function getLotteryAward(params: GetLotteryAward): number {
+function getGameAward(params: GetGameAward): number {
   const drawnTickets = getDrawnTickets({
     type: params.type,
     result: params.result,
@@ -73,7 +73,7 @@ function getLotteryAward(params: GetLotteryAward): number {
     );
 
     if (index !== -1) {
-      return params.target / odd_dividers.lottery_3[index];
+      return params.target / odd_dividers.game_3[index];
     }
 
     const hasLastTwo = drawnTickets
@@ -90,7 +90,7 @@ function getLotteryAward(params: GetLotteryAward): number {
     );
 
     if (index !== -1) {
-      return params.target / odd_dividers.lottery_2[index];
+      return params.target / odd_dividers.game_2[index];
     }
 
     const updownIndex = drawnTickets.findIndex(
@@ -100,7 +100,7 @@ function getLotteryAward(params: GetLotteryAward): number {
     );
 
     if (updownIndex !== -1) {
-      return params.amount * odd_dividers.lottery_updown[updownIndex];
+      return params.amount * odd_dividers.game_updown[updownIndex];
     }
   }
 

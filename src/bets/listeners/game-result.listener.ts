@@ -1,22 +1,21 @@
-import { Lottery } from ".prisma/client";
-import { Injectable, Logger } from "@nestjs/common";
+import { Game } from ".prisma/client";
+import { Injectable } from "@nestjs/common";
 import { OnEvent } from "@nestjs/event-emitter";
 import { BetsService } from "../bets.service";
 import { getBetAward } from "../helpers/award.helper";
 
 @Injectable()
-export class LotteryResultListener {
-  private readonly logger = new Logger(LotteryResultListener.name);
+export class GameResultListener {
+  // private readonly logger = new Logger(GameResultListener.name);
 
   constructor(private betsService: BetsService) {}
 
-  @OnEvent("lottery.result.updated")
-  async handleLotteryResultUpdated(payload: Lottery): Promise<void> {
-    // get all lottery bets
-    const bets = await this.betsService.findAllByLotteryId(payload.id);
+  @OnEvent("game.result.updated")
+  async handleGameResultUpdated(payload: Game): Promise<void> {
+    // get all game bets
+    const bets = await this.betsService.findAllByGameId(payload.id);
 
     for (const bet of bets) {
-      // calculate and update bet award
       const award = getBetAward({
         pick: bet.pick,
         result: payload.result,

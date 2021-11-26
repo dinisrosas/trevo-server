@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
-export class LotteryResult {
+export class GameResult {
   @Field()
   result: string;
 

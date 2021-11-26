@@ -1,11 +1,11 @@
-import { LotteryType } from ".prisma/client";
+import { GameType } from ".prisma/client";
 import got from "got";
 import cheerio from "cheerio";
 import { DateTime } from "luxon";
 
 const DATE_REGEX = /(\d{1,2})[/](\d{1,2})[/](\d{4})/;
 
-export async function getLatestLotteryResult(type: LotteryType): Promise<{
+export async function getLatestGameResult(type: GameType): Promise<{
   result: string;
   isoDate: string;
 }> {
@@ -18,7 +18,7 @@ export async function getLatestLotteryResult(type: LotteryType): Promise<{
   return { result, isoDate };
 }
 
-export async function getResultAndDate(type: LotteryType): Promise<{
+export async function getResultAndDate(type: GameType): Promise<{
   result: string;
   date: string;
 }> {

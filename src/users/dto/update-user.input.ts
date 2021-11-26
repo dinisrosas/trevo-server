@@ -11,3 +11,12 @@ export class UpdateUserInput {
   @Field(() => ID)
   username: string;
 }
+
+@InputType()
+export class UpdatePasswordInput {
+  @Field()
+  currentPassword: string;
+
+  @Field()
+  newPassword: string;
+}

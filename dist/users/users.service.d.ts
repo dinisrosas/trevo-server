@@ -1,6 +1,6 @@
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserInput } from "./dto/create-user.input";
-import { UpdateUserInput } from "./dto/update-user.input";
+import { UpdatePasswordInput, UpdateUserInput } from "./dto/update-user.input";
 import { User } from "./entities/user.entity";
 export declare class UsersService {
     private prisma;
@@ -10,6 +10,6 @@ export declare class UsersService {
     findOneById(id: string): Promise<User>;
     findOneByUsername(username: string): Promise<User>;
     update(id: string, updateUserInput: UpdateUserInput): Promise<User>;
-    updatePassword(id: string, currentPassword: string, newPassword: string): Promise<User>;
+    updatePassword(id: string, data: UpdatePasswordInput): Promise<User>;
     remove(id: string): Promise<User>;
 }

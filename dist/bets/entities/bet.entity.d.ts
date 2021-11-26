@@ -1,5 +1,5 @@
 import { Betbook } from "src/betbooks/entities/betbook.entity";
-import { Lottery } from "src/lotteries/entities/lottery.entity";
+import { Game } from "src/games/entities/game.entity";
 export declare class Bet {
     id: string;
     sid: number;
@@ -7,7 +7,7 @@ export declare class Bet {
     pick: string;
     amount: number;
     award?: number;
-    lottery?: Lottery;
+    game?: Game;
     betbook?: Betbook;
     updown?: boolean;
     ball?: number;

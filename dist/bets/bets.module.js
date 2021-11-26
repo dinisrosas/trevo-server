@@ -8,17 +8,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BetsModule = void 0;
 const common_1 = require("@nestjs/common");
-const lotteries_module_1 = require("../lotteries/lotteries.module");
+const games_module_1 = require("../games/games.module");
 const prisma_service_1 = require("../prisma/prisma.service");
 const bets_resolver_1 = require("./bets.resolver");
 const bets_service_1 = require("./bets.service");
-const lottery_result_listener_1 = require("./listeners/lottery-result.listener");
+const game_result_listener_1 = require("./listeners/game-result.listener");
 let BetsModule = class BetsModule {
 };
 BetsModule = __decorate([
     common_1.Module({
-        imports: [lotteries_module_1.LotteriesModule],
-        providers: [bets_resolver_1.BetsResolver, bets_service_1.BetsService, prisma_service_1.PrismaService, lottery_result_listener_1.LotteryResultListener],
+        imports: [games_module_1.GamesModule],
+        providers: [bets_resolver_1.BetsResolver, bets_service_1.BetsService, prisma_service_1.PrismaService, game_result_listener_1.GameResultListener],
         exports: [bets_service_1.BetsService],
     })
 ], BetsModule);

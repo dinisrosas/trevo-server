@@ -3,3 +3,7 @@ export declare class UpdateUserInput {
     name: string;
     username: string;
 }
+export declare class UpdatePasswordInput {
+    currentPassword: string;
+    newPassword: string;
+}

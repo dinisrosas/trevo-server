@@ -21,14 +21,12 @@ export class BetsResolver {
   }
 
   @Mutation(() => Bet)
-  updateBet(
-    @Args("updateBetInput") updateBetInput: UpdateBetInput
-  ): Promise<Bet> {
-    return this.betsService.update(updateBetInput.id, updateBetInput);
+  updateBet(@Args("input") input: UpdateBetInput): Promise<Bet> {
+    return this.betsService.update(input.id, input);
   }
 
   @Mutation(() => Bet)
-  removeBet(@Args("id", { type: () => ID }) id: string): Promise<Bet> {
-    return this.betsService.remove(id);
+  deleteBet(@Args("id", { type: () => ID }) id: string): Promise<Bet> {
+    return this.betsService.delete(id);
   }
 }

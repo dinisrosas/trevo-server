@@ -14,26 +14,26 @@ const prisma_relay_cursor_connection_1 = require("@devoxa/prisma-relay-cursor-co
 const common_1 = require("@nestjs/common");
 const luxon_1 = require("luxon");
 const bets_service_1 = require("../bets/bets.service");
-const lotteries_service_1 = require("../lotteries/lotteries.service");
+const games_service_1 = require("../games/games.service");
 const prisma_service_1 = require("../prisma/prisma.service");
 const misc_1 = require("../utils/misc");
 let BetbooksService = class BetbooksService {
-    constructor(prisma, betsService, lotteriesService) {
+    constructor(prisma, betsService, gamesService) {
         this.prisma = prisma;
         this.betsService = betsService;
-        this.lotteriesService = lotteriesService;
+        this.gamesService = gamesService;
     }
     async create(createBetbookInput) {
         const now = luxon_1.DateTime.now();
         const hasInvalidDate = createBetbookInput.bets.some((bet) => {
-            const lottery = misc_1.getLottery(bet.lottery.type, bet.lottery.isoDate);
-            if (!lottery) {
+            const game = misc_1.getGame(bet.game.type, bet.game.isoDate);
+            if (!game) {
                 return true;
             }
-            return lottery.date.diff(now).as("minutes") < 50;
+            return game.date.diff(now).as("minutes") < 50;
         });
         if (hasInvalidDate) {
-            throw new common_1.BadRequestException("Less than 50 minutes left for one or more selected lotteries");
+            throw new common_1.BadRequestException("Less than 50 minutes left for one or more selected games");
         }
         const betbook = await this.prisma.betbook.create({
             data: {
@@ -43,13 +43,13 @@ let BetbooksService = class BetbooksService {
             },
         });
         for (const bet of createBetbookInput.bets) {
-            const lottery = await this.lotteriesService.findOrCreate({
-                isoDate: bet.lottery.isoDate,
-                type: bet.lottery.type,
+            const game = await this.gamesService.findOrCreate({
+                isoDate: bet.game.isoDate,
+                type: bet.game.type,
             });
             await this.betsService.create({
                 betbookId: betbook.id,
-                lotteryId: lottery.id,
+                gameId: game.id,
                 pick: bet.pick,
                 target: bet.target,
                 updown: bet.updown,
@@ -58,11 +58,11 @@ let BetbooksService = class BetbooksService {
         }
         return betbook;
     }
-    async findAllBySeller(sellerId, fixed, after, first) {
-        const args = {
+    async findAllBySeller(sellerId, args) {
+        const baseFindManyArgs = {
             where: {
                 sellerId,
-                fixed,
+                fixed: args.fixed,
             },
             orderBy: {
                 id: "desc",
@@ -71,12 +71,17 @@ let BetbooksService = class BetbooksService {
                 seller: true,
                 bets: {
                     include: {
-                        lottery: true,
+                        game: true,
                     },
                 },
             },
         };
-        const betbooks = await prisma_relay_cursor_connection_1.findManyCursorConnection((pagination) => this.prisma.betbook.findMany(Object.assign(Object.assign({}, pagination), args)), () => this.prisma.betbook.count({ where: args.where }), { first, after });
+        const betbooks = await prisma_relay_cursor_connection_1.findManyCursorConnection((findManyArgs) => this.prisma.betbook.findMany(Object.assign(Object.assign({}, findManyArgs), baseFindManyArgs)), () => this.prisma.betbook.count({ where: baseFindManyArgs.where }), {
+            first: args.first,
+            after: args.after,
+            before: args.before,
+            last: args.last,
+        });
         return betbooks;
     }
     async findOne(id) {
@@ -86,7 +91,7 @@ let BetbooksService = class BetbooksService {
                 seller: true,
                 bets: {
                     include: {
-                        lottery: true,
+                        game: true,
                     },
                 },
             },
@@ -103,7 +108,9 @@ let BetbooksService = class BetbooksService {
         if (!betbook) {
             throw new Error("Betbook not found");
         }
-        await this.prisma.$queryRaw("DELETE FROM betbooks WHERE id = $1", id);
+        await this.prisma.betbook.delete({
+            where: { id },
+        });
         return betbook;
     }
 };
@@ -111,7 +118,7 @@ BetbooksService = __decorate([
     common_1.Injectable(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         bets_service_1.BetsService,
-        lotteries_service_1.LotteriesService])
+        games_service_1.GamesService])
 ], BetbooksService);
 exports.BetbooksService = BetbooksService;
 //# sourceMappingURL=betbooks.service.js.map

@@ -1,6 +1,6 @@
-import { RawLottery } from "src/types";
+import { RawGame } from "src/types";
 
-const rawLotteries: RawLottery[] = [
+const games: RawGame[] = [
   {
     type: "LC",
     name: "Lotaria Clássica",
@@ -75,4 +75,4 @@ const rawLotteries: RawLottery[] = [
   },
 ];
 
-export default rawLotteries;
+export default games;

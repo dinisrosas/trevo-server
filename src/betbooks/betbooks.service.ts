@@ -3,10 +3,11 @@ import { BadRequestException, Injectable } from "@nestjs/common";
 import { Prisma } from "@prisma/client";
 import { DateTime } from "luxon";
 import { BetsService } from "src/bets/bets.service";
-import { LotteriesService } from "src/lotteries/lotteries.service";
+import { GamesService } from "src/games/games.service";
 import { PrismaService } from "src/prisma/prisma.service";
-import { getLottery } from "src/utils/misc";
+import { getGame } from "src/utils/misc";
 import { CreateBetbookInput } from "./dto/create-betbook.input";
+import { FindAllArgs } from "./dto/generics.args";
 import { UpdateBetbookInput } from "./dto/update-betbook.input";
 import { Betbook, BetbookConnection } from "./entities/betbook.entity";
 
@@ -15,7 +16,7 @@ export class BetbooksService {
   constructor(
     private prisma: PrismaService,
     private betsService: BetsService,
-    private lotteriesService: LotteriesService
+    private gamesService: GamesService
   ) {}
 
   async create(
@@ -25,18 +26,18 @@ export class BetbooksService {
 
     // validations
     const hasInvalidDate = createBetbookInput.bets.some((bet) => {
-      const lottery = getLottery(bet.lottery.type, bet.lottery.isoDate);
+      const game = getGame(bet.game.type, bet.game.isoDate);
 
-      if (!lottery) {
+      if (!game) {
         return true;
       }
 
-      return lottery.date.diff(now).as("minutes") < 50;
+      return game.date.diff(now).as("minutes") < 50;
     });
 
     if (hasInvalidDate) {
       throw new BadRequestException(
-        "Less than 50 minutes left for one or more selected lotteries"
+        "Less than 50 minutes left for one or more selected games"
       );
     }
 
@@ -49,14 +50,14 @@ export class BetbooksService {
     });
 
     for (const bet of createBetbookInput.bets) {
-      const lottery = await this.lotteriesService.findOrCreate({
-        isoDate: bet.lottery.isoDate,
-        type: bet.lottery.type,
+      const game = await this.gamesService.findOrCreate({
+        isoDate: bet.game.isoDate,
+        type: bet.game.type,
       });
 
       await this.betsService.create({
         betbookId: betbook.id,
-        lotteryId: lottery.id,
+        gameId: game.id,
         pick: bet.pick,
         target: bet.target,
         updown: bet.updown,
@@ -69,14 +70,12 @@ export class BetbooksService {
 
   async findAllBySeller(
     sellerId: string,
-    fixed?: boolean,
-    after?: string,
-    first?: number
+    args: FindAllArgs
   ): Promise<BetbookConnection> {
-    const args: Prisma.BetbookFindManyArgs = {
+    const baseFindManyArgs: Prisma.BetbookFindManyArgs = {
       where: {
         sellerId,
-        fixed,
+        fixed: args.fixed,
       },
       orderBy: {
         id: "desc",
@@ -85,16 +84,22 @@ export class BetbooksService {
         seller: true,
         bets: {
           include: {
-            lottery: true,
+            game: true,
           },
         },
       },
     };
 
     const betbooks = await findManyCursorConnection(
-      (pagination) => this.prisma.betbook.findMany({ ...pagination, ...args }),
-      () => this.prisma.betbook.count({ where: args.where }),
-      { first, after }
+      (findManyArgs) =>
+        this.prisma.betbook.findMany({ ...findManyArgs, ...baseFindManyArgs }),
+      () => this.prisma.betbook.count({ where: baseFindManyArgs.where }),
+      {
+        first: args.first,
+        after: args.after,
+        before: args.before,
+        last: args.last,
+      }
     );
 
     return betbooks;
@@ -107,7 +112,7 @@ export class BetbooksService {
         seller: true,
         bets: {
           include: {
-            lottery: true,
+            game: true,
           },
         },
       },
@@ -133,7 +138,10 @@ export class BetbooksService {
       throw new Error("Betbook not found");
     }
 
-    await this.prisma.$queryRaw("DELETE FROM betbooks WHERE id = $1", id);
+    // await this.prisma.$queryRaw<Betbook>`DELETE FROM betbooks WHERE id = {id}`;
+    await this.prisma.betbook.delete({
+      where: { id },
+    });
 
     return betbook;
   }

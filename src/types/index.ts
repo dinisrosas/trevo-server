@@ -1,4 +1,4 @@
-import { Bet, Betbook, Lottery, User } from "@prisma/client";
+import { Bet, Betbook, Game, User } from "@prisma/client";
 
 export type UserProps = User;
 export type AuthUser = Pick<UserProps, "id" | "username">;
@@ -7,17 +7,17 @@ export type BetbookProps = Betbook;
 
 export type BetProps = Bet;
 
-export type LotteryProps = Lottery;
+export type GameProps = Game;
 
 export enum UserRoleEnum {
   SELLER = "SELLER",
   ADMIN = "ADMIN",
 }
 
-export type LotteryType = LotteryProps["type"];
-export type LotteryMode = LotteryProps["mode"];
+export type GameType = GameProps["type"];
+export type GameMode = GameProps["mode"];
 
-export enum LotteryTypeEnum {
+export enum GameTypeEnum {
   EM = "EM",
   TL = "TL",
   M1 = "M1",
@@ -26,13 +26,13 @@ export enum LotteryTypeEnum {
   JE = "JE",
 }
 
-export enum LotteryModeEnum {
+export enum GameModeEnum {
   DRAW = "DRAW",
   LOTTERY = "LOTTERY",
 }
 
-export type RawLottery = {
-  type: LotteryType;
+export type RawGame = {
+  type: GameType;
   name: string;
   day: 1 | 2 | 3 | 4 | 5 | 6;
   time: {

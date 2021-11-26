@@ -1,7 +1,7 @@
-import { LotteryMode } from ".prisma/client";
+import { GameMode } from ".prisma/client";
 
 type CalculateBetAmount = {
-  mode: LotteryMode;
+  mode: GameMode;
   pick: string;
   target: number;
   updown?: boolean;
@@ -36,6 +36,6 @@ export function getBetAmount({
       throw new Error("Invalid bet pick");
 
     default:
-      throw new Error("Invalid lottery mode");
+      throw new Error("Invalid game mode");
   }
 }

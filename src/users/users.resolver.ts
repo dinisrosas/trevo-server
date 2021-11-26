@@ -2,7 +2,7 @@ import { UseGuards } from "@nestjs/common";
 import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
-import { UpdateUserInput } from "./dto/update-user.input";
+import { UpdatePasswordInput, UpdateUserInput } from "./dto/update-user.input";
 import { User } from "./entities/user.entity";
 import { UsersService } from "./users.service";
 
@@ -29,23 +29,16 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
-  updateUser(
-    @Args("updateUserInput") updateUserInput: UpdateUserInput
-  ): Promise<User> {
-    return this.usersService.update(updateUserInput.id, updateUserInput);
+  updateUser(@Args("input") input: UpdateUserInput): Promise<User> {
+    return this.usersService.update(input.id, input);
   }
 
   @Mutation(() => User)
   updatePassword(
     @CurrentUser() user: User,
-    @Args("currentPassword") currentPassword: string,
-    @Args("newPassword") newPassword: string
+    @Args("input") input: UpdatePasswordInput
   ): Promise<User> {
-    return this.usersService.updatePassword(
-      user.id,
-      currentPassword,
-      newPassword
-    );
+    return this.usersService.updatePassword(user.id, input);
   }
 
   @Mutation(() => User)

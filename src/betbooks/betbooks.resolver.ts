@@ -1,10 +1,11 @@
 import { UseGuards } from "@nestjs/common";
-import { Args, ID, Int, Mutation, Query, Resolver } from "@nestjs/graphql";
+import { Args, ID, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { CurrentUser } from "src/auth/decorators/current-user.decorator";
 import { GqlAuthGuard } from "src/auth/guards/gql-auth.guard";
 import { AuthUser } from "src/types";
 import { BetbooksService } from "./betbooks.service";
 import { CreateBetbookInput } from "./dto/create-betbook.input";
+import { FindAllArgs } from "./dto/generics.args";
 import { UpdateBetbookInput } from "./dto/update-betbook.input";
 import { Betbook, BetbookConnection } from "./entities/betbook.entity";
 
@@ -16,10 +17,10 @@ export class BetbooksResolver {
   @Mutation(() => Betbook)
   createBetbook(
     @CurrentUser() user: AuthUser,
-    @Args("createBetbookInput") createBetbookInput: CreateBetbookInput
+    @Args("input") input: CreateBetbookInput
   ): Promise<Betbook> {
     return this.betbooksService.create({
-      ...createBetbookInput,
+      ...input,
       sellerId: user.id,
     });
   }
@@ -27,11 +28,9 @@ export class BetbooksResolver {
   @Query(() => BetbookConnection, { name: "betbooks" })
   findAll(
     @CurrentUser() user: AuthUser,
-    @Args("fixed", { nullable: true }) fixed?: boolean,
-    @Args("after", { nullable: true }) after?: string,
-    @Args("first", { nullable: true, type: () => Int }) first?: number
+    @Args() args: FindAllArgs
   ): Promise<BetbookConnection> {
-    return this.betbooksService.findAllBySeller(user.id, fixed, after, first);
+    return this.betbooksService.findAllBySeller(user.id, args);
   }
 
   @Query(() => Betbook, { name: "betbook" })
@@ -40,13 +39,8 @@ export class BetbooksResolver {
   }
 
   @Mutation(() => Betbook)
-  updateBetbook(
-    @Args("updateBetbookInput") updateBetbookInput: UpdateBetbookInput
-  ): Promise<Betbook> {
-    return this.betbooksService.update(
-      updateBetbookInput.id,
-      updateBetbookInput
-    );
+  updateBetbook(@Args("input") input: UpdateBetbookInput): Promise<Betbook> {
+    return this.betbooksService.update(input.id, input);
   }
 
   @Mutation(() => Betbook)

@@ -1,8 +1,8 @@
-import { CreateLotteryInput } from "src/lotteries/dto/create-lottery.input";
+import { CreateGameInput } from "src/games/dto/create-game.input";
 export declare class CreateBetInput {
     pick: string;
     target: number;
     updown?: boolean;
     ball?: number;
-    lottery: CreateLotteryInput;
+    game: CreateGameInput;
 }

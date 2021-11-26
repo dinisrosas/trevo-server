@@ -1,6 +1,6 @@
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
 import { Betbook } from "src/betbooks/entities/betbook.entity";
-import { Lottery } from "src/lotteries/entities/lottery.entity";
+import { Game } from "src/games/entities/game.entity";
 
 @ObjectType()
 export class Bet {
@@ -22,8 +22,8 @@ export class Bet {
   @Field({ nullable: true })
   award?: number;
 
-  @Field(() => Lottery)
-  lottery?: Lottery;
+  @Field(() => Game)
+  game?: Game;
 
   @Field(() => Betbook)
   betbook?: Betbook;

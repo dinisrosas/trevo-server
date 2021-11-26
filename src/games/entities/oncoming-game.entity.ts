@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { LotteryMode, LotteryType } from "@prisma/client";
+import { GameMode, GameType } from "@prisma/client";
 
 @ObjectType()
-export class OncomingLottery {
+export class OncomingGame {
   @Field()
   id: string;
 
@@ -10,10 +10,10 @@ export class OncomingLottery {
   name: string;
 
   @Field()
-  type: LotteryType;
+  type: GameType;
 
   @Field()
-  mode: LotteryMode;
+  mode: GameMode;
 
   @Field()
   isoDate: string;

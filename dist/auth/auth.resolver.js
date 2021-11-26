@@ -23,23 +23,23 @@ let AuthResolver = class AuthResolver {
     constructor(authService) {
         this.authService = authService;
     }
-    async login(loginInput) {
-        return await this.authService.login(loginInput);
+    async login(input) {
+        return await this.authService.login(input);
     }
-    signUp(createUserInput) {
-        return this.authService.signUp(createUserInput);
+    signUp(input) {
+        return this.authService.signUp(input);
     }
 };
 __decorate([
     graphql_1.Mutation(() => auth_session_entity_1.AuthSession),
-    __param(0, graphql_1.Args("loginInput")),
+    __param(0, graphql_1.Args("input")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_input_1.LoginInput]),
     __metadata("design:returntype", Promise)
 ], AuthResolver.prototype, "login", null);
 __decorate([
     graphql_1.Mutation(() => user_entity_1.User),
-    __param(0, graphql_1.Args("signUpInput")),
+    __param(0, graphql_1.Args("input")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_input_1.CreateUserInput]),
     __metadata("design:returntype", Promise)

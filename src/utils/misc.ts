@@ -1,15 +1,15 @@
-import { LotteryMode } from ".prisma/client";
+import { GameMode } from ".prisma/client";
 import * as bcrypt from "bcrypt";
 import { DateTime } from "luxon";
-import rawLotteries from "src/lotteries/data/raw-lotteries";
-import { Lottery } from "src/lotteries/entities/lottery.entity";
-import { LotteryType } from "src/types";
+import rawGames from "src/games/data/raw-games";
+import { Game } from "src/games/entities/game.entity";
+import { GameType } from "src/types";
 
-export function getLottery(
-  type: LotteryType,
+export function getGame(
+  type: GameType,
   isoDate: string
-): Pick<Lottery, "type" | "name" | "mode" | "isoDate"> & { date: DateTime } {
-  const raw = rawLotteries.find((lottery) => lottery.type === type);
+): Pick<Game, "type" | "name" | "mode" | "isoDate"> & { date: DateTime } {
+  const raw = rawGames.find((game) => game.type === type);
 
   if (!raw) {
     return null;
@@ -23,7 +23,7 @@ export function getLottery(
     return null;
   }
 
-  const mode: LotteryMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
+  const mode: GameMode = /(EM|TL)/.test(type) ? "DRAW" : "LOTTERY";
 
   return {
     type: raw.type,

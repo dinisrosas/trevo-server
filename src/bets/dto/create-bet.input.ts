@@ -1,5 +1,5 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { CreateLotteryInput } from "src/lotteries/dto/create-lottery.input";
+import { CreateGameInput } from "src/games/dto/create-game.input";
 
 @InputType()
 export class CreateBetInput {
@@ -16,5 +16,5 @@ export class CreateBetInput {
   ball?: number;
 
   @Field()
-  lottery: CreateLotteryInput;
+  game: CreateGameInput;
 }

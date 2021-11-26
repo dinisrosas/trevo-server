@@ -10,14 +10,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Bet = void 0;
-const eager_import_0 = require("../../lotteries/entities/lottery.entity");
+const eager_import_0 = require("../../games/entities/game.entity");
 const eager_import_1 = require("../../betbooks/entities/betbook.entity");
 const graphql_1 = require("@nestjs/graphql");
 const betbook_entity_1 = require("../../betbooks/entities/betbook.entity");
-const lottery_entity_1 = require("../../lotteries/entities/lottery.entity");
+const game_entity_1 = require("../../games/entities/game.entity");
 let Bet = class Bet {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, sid: { type: () => Number }, target: { type: () => Number }, pick: { type: () => String }, amount: { type: () => Number }, award: { nullable: true, type: () => Number }, lottery: { nullable: true, type: () => require("../../lotteries/entities/lottery.entity").Lottery }, betbook: { nullable: true, type: () => require("../../betbooks/entities/betbook.entity").Betbook }, updown: { nullable: true, type: () => Boolean }, ball: { nullable: true, type: () => Number }, updatedAt: { type: () => Date }, createdAt: { type: () => Date } };
+        return { id: { type: () => String }, sid: { type: () => Number }, target: { type: () => Number }, pick: { type: () => String }, amount: { type: () => Number }, award: { nullable: true, type: () => Number }, game: { nullable: true, type: () => require("../../games/entities/game.entity").Game }, betbook: { nullable: true, type: () => require("../../betbooks/entities/betbook.entity").Betbook }, updown: { nullable: true, type: () => Boolean }, ball: { nullable: true, type: () => Number }, updatedAt: { type: () => Date }, createdAt: { type: () => Date } };
     }
 };
 __decorate([
@@ -45,9 +45,9 @@ __decorate([
     __metadata("design:type", Number)
 ], Bet.prototype, "award", void 0);
 __decorate([
-    graphql_1.Field(() => lottery_entity_1.Lottery),
-    __metadata("design:type", lottery_entity_1.Lottery)
-], Bet.prototype, "lottery", void 0);
+    graphql_1.Field(() => game_entity_1.Game),
+    __metadata("design:type", game_entity_1.Game)
+], Bet.prototype, "game", void 0);
 __decorate([
     graphql_1.Field(() => betbook_entity_1.Betbook),
     __metadata("design:type", betbook_entity_1.Betbook)

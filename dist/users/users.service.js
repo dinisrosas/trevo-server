@@ -37,15 +37,15 @@ let UsersService = class UsersService {
             data: updateUserInput,
         });
     }
-    async updatePassword(id, currentPassword, newPassword) {
+    async updatePassword(id, data) {
         const user = await this.prisma.user.findUnique({
             where: { id },
         });
-        const match = await misc_1.comparePasswords(currentPassword, user.password);
+        const match = await misc_1.comparePasswords(data.currentPassword, user.password);
         if (!match) {
             throw new common_1.BadRequestException("Current password does not match user password");
         }
-        const hashedPassword = await misc_1.encryptPassword(newPassword);
+        const hashedPassword = await misc_1.encryptPassword(data.newPassword);
         return this.prisma.user.update({
             where: { id },
             data: {

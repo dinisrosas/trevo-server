@@ -1,7 +1,7 @@
-import { LotteryMode, LotteryType } from ".prisma/client";
+import { GameMode, GameType } from ".prisma/client";
 export declare type GetBetAward = {
-    type: LotteryType;
-    mode: LotteryMode;
+    type: GameType;
+    mode: GameMode;
     target: number;
     pick: string;
     ball?: number;
@@ -10,6 +10,6 @@ export declare type GetBetAward = {
     amount: number;
 };
 export declare type GetDrawAward = Omit<GetBetAward, "type" | "mode" | "amount">;
-export declare type GetLotteryAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
+export declare type GetGameAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
 export declare type GetDrawnTickets = Pick<GetBetAward, "type" | "result">;
 export declare function getBetAward(params: GetBetAward): number;

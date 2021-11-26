@@ -1,6 +1,6 @@
-import { LotteryMode } from ".prisma/client";
+import { GameMode } from ".prisma/client";
 declare type CalculateBetAmount = {
-    mode: LotteryMode;
+    mode: GameMode;
     pick: string;
     target: number;
     updown?: boolean;

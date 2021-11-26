@@ -23,7 +23,7 @@ function getBetAmount({ mode, pick, target, updown, }) {
             }
             throw new Error("Invalid bet pick");
         default:
-            throw new Error("Invalid lottery mode");
+            throw new Error("Invalid game mode");
     }
 }
 exports.getBetAmount = getBetAmount;

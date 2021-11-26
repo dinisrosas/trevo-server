@@ -20,23 +20,24 @@ const gql_auth_guard_1 = require("../auth/guards/gql-auth.guard");
 const types_1 = require("../types");
 const betbooks_service_1 = require("./betbooks.service");
 const create_betbook_input_1 = require("./dto/create-betbook.input");
+const generics_args_1 = require("./dto/generics.args");
 const update_betbook_input_1 = require("./dto/update-betbook.input");
 const betbook_entity_1 = require("./entities/betbook.entity");
 let BetbooksResolver = class BetbooksResolver {
     constructor(betbooksService) {
         this.betbooksService = betbooksService;
     }
-    createBetbook(user, createBetbookInput) {
-        return this.betbooksService.create(Object.assign(Object.assign({}, createBetbookInput), { sellerId: user.id }));
+    createBetbook(user, input) {
+        return this.betbooksService.create(Object.assign(Object.assign({}, input), { sellerId: user.id }));
     }
-    findAll(user, fixed, after, first) {
-        return this.betbooksService.findAllBySeller(user.id, fixed, after, first);
+    findAll(user, args) {
+        return this.betbooksService.findAllBySeller(user.id, args);
     }
     findOne(id) {
         return this.betbooksService.findOne(id);
     }
-    updateBetbook(updateBetbookInput) {
-        return this.betbooksService.update(updateBetbookInput.id, updateBetbookInput);
+    updateBetbook(input) {
+        return this.betbooksService.update(input.id, input);
     }
     deleteBetbook(id) {
         return this.betbooksService.delete(id);
@@ -45,7 +46,7 @@ let BetbooksResolver = class BetbooksResolver {
 __decorate([
     graphql_1.Mutation(() => betbook_entity_1.Betbook),
     __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args("createBetbookInput")),
+    __param(1, graphql_1.Args("input")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, create_betbook_input_1.CreateBetbookInput]),
     __metadata("design:returntype", Promise)
@@ -53,11 +54,9 @@ __decorate([
 __decorate([
     graphql_1.Query(() => betbook_entity_1.BetbookConnection, { name: "betbooks" }),
     __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args("fixed", { nullable: true })),
-    __param(2, graphql_1.Args("after", { nullable: true })),
-    __param(3, graphql_1.Args("first", { nullable: true, type: () => graphql_1.Int })),
+    __param(1, graphql_1.Args()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object, Boolean, String, Number]),
+    __metadata("design:paramtypes", [Object, generics_args_1.FindAllArgs]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "findAll", null);
 __decorate([
@@ -69,7 +68,7 @@ __decorate([
 ], BetbooksResolver.prototype, "findOne", null);
 __decorate([
     graphql_1.Mutation(() => betbook_entity_1.Betbook),
-    __param(0, graphql_1.Args("updateBetbookInput")),
+    __param(0, graphql_1.Args("input")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_betbook_input_1.UpdateBetbookInput]),
     __metadata("design:returntype", Promise)

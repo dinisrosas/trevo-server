@@ -5,12 +5,13 @@ import { ScheduleModule } from "@nestjs/schedule";
 import { AuthModule } from "./auth/auth.module";
 import { BetbooksModule } from "./betbooks/betbooks.module";
 import { BetsModule } from "./bets/bets.module";
-import { LotteriesModule } from "./lotteries/lotteries.module";
+import { GamesModule } from "./games/games.module";
 import { UsersModule } from "./users/users.module";
 
 @Module({
   imports: [
     GraphQLModule.forRoot({
+      debug: true,
       installSubscriptionHandlers: true,
       autoSchemaFile: "schema.gql",
       formatError: (error) => {
@@ -28,7 +29,7 @@ import { UsersModule } from "./users/users.module";
     ScheduleModule.forRoot(),
     UsersModule,
     AuthModule,
-    LotteriesModule,
+    GamesModule,
     BetsModule,
     BetbooksModule,
   ],

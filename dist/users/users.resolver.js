@@ -33,11 +33,11 @@ let UsersResolver = class UsersResolver {
     findByUsername(username) {
         return this.usersService.findOneByUsername(username);
     }
-    updateUser(updateUserInput) {
-        return this.usersService.update(updateUserInput.id, updateUserInput);
+    updateUser(input) {
+        return this.usersService.update(input.id, input);
     }
-    updatePassword(user, currentPassword, newPassword) {
-        return this.usersService.updatePassword(user.id, currentPassword, newPassword);
+    updatePassword(user, input) {
+        return this.usersService.updatePassword(user.id, input);
     }
     removeUser(id) {
         return this.usersService.remove(id);
@@ -65,7 +65,7 @@ __decorate([
 ], UsersResolver.prototype, "findByUsername", null);
 __decorate([
     graphql_1.Mutation(() => user_entity_1.User),
-    __param(0, graphql_1.Args("updateUserInput")),
+    __param(0, graphql_1.Args("input")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_user_input_1.UpdateUserInput]),
     __metadata("design:returntype", Promise)
@@ -73,10 +73,10 @@ __decorate([
 __decorate([
     graphql_1.Mutation(() => user_entity_1.User),
     __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args("currentPassword")),
-    __param(2, graphql_1.Args("newPassword")),
+    __param(1, graphql_1.Args("input")),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [user_entity_1.User, String, String]),
+    __metadata("design:paramtypes", [user_entity_1.User,
+        update_user_input_1.UpdatePasswordInput]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "updatePassword", null);
 __decorate([
