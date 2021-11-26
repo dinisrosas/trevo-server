@@ -1,5 +1,6 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
+import { comparePasswords, encryptPassword } from "src/utils/misc";
 import { CreateUserInput } from "./dto/create-user.input";
 import { UpdateUserInput } from "./dto/update-user.input";
 import { User } from "./entities/user.entity";
@@ -27,16 +28,36 @@ export class UsersService {
   }
 
   async update(id: string, updateUserInput: UpdateUserInput): Promise<User> {
-    if (updateUserInput.password) {
-      // updateUserInput.password = await this.authService.encryptPassword(
-      //   updateUserInput.password
-      // );
-      // encruypt password
-    }
-
     return this.prisma.user.update({
       where: { id },
       data: updateUserInput,
+    });
+  }
+
+  async updatePassword(
+    id: string,
+    currentPassword: string,
+    newPassword: string
+  ): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
+    const match = await comparePasswords(currentPassword, user.password);
+
+    if (!match) {
+      throw new BadRequestException(
+        "Current password does not match user password"
+      );
+    }
+
+    const hashedPassword = await encryptPassword(newPassword);
+
+    return this.prisma.user.update({
+      where: { id },
+      data: {
+        password: hashedPassword,
+      },
     });
   }
 

@@ -36,6 +36,19 @@ export class UsersResolver {
   }
 
   @Mutation(() => User)
+  updatePassword(
+    @CurrentUser() user: User,
+    @Args("currentPassword") currentPassword: string,
+    @Args("newPassword") newPassword: string
+  ): Promise<User> {
+    return this.usersService.updatePassword(
+      user.id,
+      currentPassword,
+      newPassword
+    );
+  }
+
+  @Mutation(() => User)
   removeUser(@Args("id", { type: () => ID }) id: string): Promise<User> {
     return this.usersService.remove(id);
   }

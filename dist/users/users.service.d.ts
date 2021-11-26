@@ -10,5 +10,6 @@ export declare class UsersService {
     findOneById(id: string): Promise<User>;
     findOneByUsername(username: string): Promise<User>;
     update(id: string, updateUserInput: UpdateUserInput): Promise<User>;
+    updatePassword(id: string, currentPassword: string, newPassword: string): Promise<User>;
     remove(id: string): Promise<User>;
 }

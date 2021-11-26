@@ -11,16 +11,23 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateUserInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
-const create_user_input_1 = require("./create-user.input");
-let UpdateUserInput = class UpdateUserInput extends graphql_1.PartialType(create_user_input_1.CreateUserInput) {
+let UpdateUserInput = class UpdateUserInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String } };
+        return { id: { type: () => String }, name: { type: () => String }, username: { type: () => String } };
     }
 };
 __decorate([
     graphql_1.Field(() => graphql_1.ID),
     __metadata("design:type", String)
 ], UpdateUserInput.prototype, "id", void 0);
+__decorate([
+    graphql_1.Field(() => graphql_1.ID),
+    __metadata("design:type", String)
+], UpdateUserInput.prototype, "name", void 0);
+__decorate([
+    graphql_1.Field(() => graphql_1.ID),
+    __metadata("design:type", String)
+], UpdateUserInput.prototype, "username", void 0);
 UpdateUserInput = __decorate([
     graphql_1.InputType()
 ], UpdateUserInput);

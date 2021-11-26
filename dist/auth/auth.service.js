@@ -23,15 +23,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
-const bcrypt = require("bcrypt");
 const create_user_input_1 = require("../users/dto/create-user.input");
 const user_entity_1 = require("../users/entities/user.entity");
 const users_service_1 = require("../users/users.service");
+const misc_1 = require("../utils/misc");
 let AuthService = class AuthService {
     constructor(usersService, jwtService) {
         this.usersService = usersService;
         this.jwtService = jwtService;
-        this.rounds = 10;
     }
     async login(loginInput) {
         const { username, password } = loginInput;
@@ -39,7 +38,7 @@ let AuthService = class AuthService {
         if (!user) {
             throw new common_1.UnauthorizedException("Invalid credentials");
         }
-        const isMatch = await this.comparePasswords(password, user.password);
+        const isMatch = await misc_1.comparePasswords(password, user.password);
         if (!isMatch) {
             throw new common_1.UnauthorizedException("Invalid credentials");
         }
@@ -53,15 +52,9 @@ let AuthService = class AuthService {
     }
     async signUp(createUserInput) {
         const { password } = createUserInput, restOfProps = __rest(createUserInput, ["password"]);
-        const encryptedPassword = await this.encryptPassword(password);
+        const encryptedPassword = await misc_1.encryptPassword(password);
         const user = await this.usersService.create(Object.assign(Object.assign({}, restOfProps), { password: encryptedPassword }));
         return user;
-    }
-    async encryptPassword(password) {
-        return await bcrypt.hash(password, this.rounds);
-    }
-    async comparePasswords(password, encryptedPassword) {
-        return await bcrypt.compare(password, encryptedPassword);
     }
 };
 AuthService = __decorate([

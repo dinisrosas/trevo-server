@@ -36,6 +36,9 @@ let UsersResolver = class UsersResolver {
     updateUser(updateUserInput) {
         return this.usersService.update(updateUserInput.id, updateUserInput);
     }
+    updatePassword(user, currentPassword, newPassword) {
+        return this.usersService.updatePassword(user.id, currentPassword, newPassword);
+    }
     removeUser(id) {
         return this.usersService.remove(id);
     }
@@ -67,6 +70,15 @@ __decorate([
     __metadata("design:paramtypes", [update_user_input_1.UpdateUserInput]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "updateUser", null);
+__decorate([
+    graphql_1.Mutation(() => user_entity_1.User),
+    __param(0, current_user_decorator_1.CurrentUser()),
+    __param(1, graphql_1.Args("currentPassword")),
+    __param(2, graphql_1.Args("newPassword")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_entity_1.User, String, String]),
+    __metadata("design:returntype", Promise)
+], UsersResolver.prototype, "updatePassword", null);
 __decorate([
     graphql_1.Mutation(() => user_entity_1.User),
     __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),

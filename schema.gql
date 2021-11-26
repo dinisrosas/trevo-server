@@ -18,15 +18,48 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type AuthSession {
-  token: String!
-}
-
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
   startCursor: String
   endCursor: String
+}
+
+type Betbook {
+  id: ID!
+  sid: Float!
+  bettor: String!
+  fixed: Boolean!
+  seller: User
+  bets: [Bet!]
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type BetbookEdge {
+  cursor: String!
+  node: Betbook!
+}
+
+type BetbookConnection {
+  edges: [BetbookEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type Bet {
+  id: ID!
+  sid: Float!
+  target: Float!
+  pick: String!
+  amount: Float!
+  award: Float
+  lottery: Lottery
+  betbook: Betbook
+  updown: Boolean
+  ball: Int
+  updatedAt: DateTime!
+  createdAt: DateTime!
 }
 
 type Lottery {
@@ -68,41 +101,8 @@ type LotteryConnection {
   totalCount: Int!
 }
 
-type Bet {
-  id: ID!
-  sid: Float!
-  target: Float!
-  pick: String!
-  amount: Float!
-  award: Float
-  lottery: Lottery
-  betbook: Betbook
-  updown: Boolean
-  ball: Int
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
-type Betbook {
-  id: ID!
-  sid: Float!
-  bettor: String!
-  fixed: Boolean!
-  seller: User
-  bets: [Bet!]
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
-type BetbookEdge {
-  cursor: String!
-  node: Betbook!
-}
-
-type BetbookConnection {
-  edges: [BetbookEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
+type AuthSession {
+  token: String!
 }
 
 type LotteryResult {
@@ -135,6 +135,7 @@ type Query {
 
 type Mutation {
   updateUser(updateUserInput: UpdateUserInput!): User!
+  updatePassword(newPassword: String!, currentPassword: String!): User!
   removeUser(id: ID!): User!
   login(loginInput: LoginInput!): AuthSession!
   signUp(signUpInput: CreateUserInput!): User!
@@ -150,10 +151,9 @@ type Mutation {
 }
 
 input UpdateUserInput {
-  name: String
-  username: String
-  password: String
   id: ID!
+  name: ID!
+  username: ID!
 }
 
 input LoginInput {

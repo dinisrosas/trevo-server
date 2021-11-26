@@ -1,16 +1,14 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import * as bcrypt from "bcrypt";
 import { CreateUserInput } from "src/users/dto/create-user.input";
 import { User } from "src/users/entities/user.entity";
 import { UsersService } from "src/users/users.service";
+import { comparePasswords, encryptPassword } from "src/utils/misc";
 import { LoginInput } from "./dto/login.input";
 import { AuthSession } from "./entities/auth-session.entity";
 
 @Injectable()
 export class AuthService {
-  private readonly rounds = 10;
-
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService
@@ -25,7 +23,7 @@ export class AuthService {
       throw new UnauthorizedException("Invalid credentials");
     }
 
-    const isMatch = await this.comparePasswords(password, user.password);
+    const isMatch = await comparePasswords(password, user.password);
 
     if (!isMatch) {
       throw new UnauthorizedException("Invalid credentials");
@@ -44,7 +42,7 @@ export class AuthService {
   async signUp(createUserInput: CreateUserInput): Promise<User> {
     const { password, ...restOfProps } = createUserInput;
 
-    const encryptedPassword = await this.encryptPassword(password);
+    const encryptedPassword = await encryptPassword(password);
 
     const user = await this.usersService.create({
       ...restOfProps,
@@ -52,16 +50,5 @@ export class AuthService {
     });
 
     return user;
-  }
-
-  async encryptPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, this.rounds);
-  }
-
-  async comparePasswords(
-    password: string,
-    encryptedPassword: string
-  ): Promise<boolean> {
-    return await bcrypt.compare(password, encryptedPassword);
   }
 }

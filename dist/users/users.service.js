@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UsersService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../prisma/prisma.service");
+const misc_1 = require("../utils/misc");
 let UsersService = class UsersService {
     constructor(prisma) {
         this.prisma = prisma;
@@ -31,11 +32,25 @@ let UsersService = class UsersService {
         return this.prisma.user.findUnique({ where: { username } });
     }
     async update(id, updateUserInput) {
-        if (updateUserInput.password) {
-        }
         return this.prisma.user.update({
             where: { id },
             data: updateUserInput,
+        });
+    }
+    async updatePassword(id, currentPassword, newPassword) {
+        const user = await this.prisma.user.findUnique({
+            where: { id },
+        });
+        const match = await misc_1.comparePasswords(currentPassword, user.password);
+        if (!match) {
+            throw new common_1.BadRequestException("Current password does not match user password");
+        }
+        const hashedPassword = await misc_1.encryptPassword(newPassword);
+        return this.prisma.user.update({
+            where: { id },
+            data: {
+                password: hashedPassword,
+            },
         });
     }
     remove(id) {
