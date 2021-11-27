@@ -1,19 +1,11 @@
-import { GameMode, GameType } from '.prisma/client';
-
-export type GetBetAward = {
-  type: GameType;
-  mode: GameMode;
-  target: number;
-  pick: string;
-  ball?: number;
-  updown?: boolean;
-  result: string;
-  amount: number;
-};
-
-export type GetDrawAward = Omit<GetBetAward, 'type' | 'mode' | 'amount'>;
-export type GetGameAward = Omit<GetBetAward, 'ball' | 'updown' | 'mode'>;
-export type GetDrawnTickets = Pick<GetBetAward, 'type' | 'result'>;
+import {
+  GameModeEnum,
+  GameTypeEnum,
+  GetBetAward,
+  GetDrawAward,
+  GetDrawnTickets,
+  GetGameAward,
+} from 'src/types';
 
 const odd_dividers = {
   draw_updown: 12,
@@ -24,7 +16,7 @@ const odd_dividers = {
 
 export function getBetAward(params: GetBetAward): number {
   switch (params.mode) {
-    case 'DRAW':
+    case GameModeEnum.DRAW:
       return getDrawAward({
         target: params.target,
         pick: params.pick,
@@ -32,7 +24,7 @@ export function getBetAward(params: GetBetAward): number {
         updown: params.updown,
         result: params.result,
       });
-    case 'LOTTERY':
+    case GameModeEnum.LOTTERY:
       return getGameAward({
         type: params.type,
         target: params.target,
@@ -81,7 +73,6 @@ function getGameAward(params: GetGameAward): number {
       .some((termination) => termination === params.pick.slice(-2));
 
     if (hasLastTwo) {
-      // betted amount
       return params.amount;
     }
   } else if (params.pick.length === 2) {
@@ -108,13 +99,13 @@ function getGameAward(params: GetGameAward): number {
 }
 
 function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
-  if (type === 'M1') {
+  if (type === GameTypeEnum.M1) {
     const first = result.slice(-3);
     const second = result.substring(0, result.length - 1).slice(-3);
     const third = String(Number(first) + Number(second)).slice(-3);
 
     return [first, second, third];
-  } else if (type === 'JE') {
+  } else if (type === GameTypeEnum.JE) {
     const first = result.slice(-3);
     const second = result.substring(0, 3);
     const third = String(Number(first) + Number(second)).slice(-3);

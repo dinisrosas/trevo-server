@@ -1,7 +1,7 @@
-import { Bet, Betbook, Game, User } from "@prisma/client";
+import { Bet, Betbook, Game, User } from '@prisma/client';
 
 export type UserProps = User;
-export type AuthUser = Pick<UserProps, "id" | "username">;
+export type AuthUser = Pick<UserProps, 'id' | 'username'>;
 
 export type BetbookProps = Betbook;
 
@@ -10,25 +10,25 @@ export type BetProps = Bet;
 export type GameProps = Game;
 
 export enum UserRoleEnum {
-  SELLER = "SELLER",
-  ADMIN = "ADMIN",
+  SELLER = 'SELLER',
+  ADMIN = 'ADMIN',
 }
 
-export type GameType = GameProps["type"];
-export type GameMode = GameProps["mode"];
+export type GameType = GameProps['type'];
+export type GameMode = GameProps['mode'];
 
 export enum GameTypeEnum {
-  EM = "EM",
-  TL = "TL",
-  M1 = "M1",
-  LC = "LC",
-  LP = "LP",
-  JE = "JE",
+  EM = 'EM',
+  TL = 'TL',
+  M1 = 'M1',
+  LC = 'LC',
+  LP = 'LP',
+  JE = 'JE',
 }
 
 export enum GameModeEnum {
-  DRAW = "DRAW",
-  LOTTERY = "LOTTERY",
+  DRAW = 'DRAW',
+  LOTTERY = 'LOTTERY',
 }
 
 export type RawGame = {
@@ -47,3 +47,18 @@ export type FormattedGraphQLError = {
   name: string;
   status: number;
 };
+
+export type GetBetAward = {
+  type: GameType;
+  mode: GameMode;
+  target: number;
+  pick: string;
+  ball?: number;
+  updown?: boolean;
+  result: string;
+  amount: number;
+};
+
+export type GetDrawAward = Omit<GetBetAward, 'type' | 'mode' | 'amount'>;
+export type GetGameAward = Omit<GetBetAward, 'ball' | 'updown' | 'mode'>;
+export type GetDrawnTickets = Pick<GetBetAward, 'type' | 'result'>;

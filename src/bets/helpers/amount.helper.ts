@@ -1,4 +1,4 @@
-import { GameMode } from '.prisma/client';
+import { GameMode, GameModeEnum } from 'src/types';
 
 type CalculateBetAmount = {
   mode: GameMode;
@@ -19,14 +19,14 @@ export function getBetAmount({
   updown,
 }: CalculateBetAmount): number {
   switch (mode) {
-    case 'DRAW':
+    case GameModeEnum.LOTTERY:
       if (updown) {
         return target / ODDS[mode][1];
       } else {
         return target / ODDS[mode][0];
       }
 
-    case 'LOTTERY':
+    case GameModeEnum.LOTTERY:
       if (pick.length === 2) {
         return target / ODDS[mode][1];
       } else if (pick.length === 3) {

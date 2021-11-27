@@ -3,9 +3,10 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { DateTime } from 'luxon';
 import { BetsService } from 'src/bets/bets.service';
+import { gameConstants } from 'src/games/contants';
 import { GamesService } from 'src/games/games.service';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { getGame } from 'src/utils/misc';
+import { getGameFromRawData } from 'src/utils/misc';
 import { CreateBetbookInput } from './dto/create-betbook.input';
 import { FindAllArgs } from './dto/generics.args';
 import { UpdateBetbookInput } from './dto/update-betbook.input';
@@ -20,36 +21,33 @@ export class BetbooksService {
   ) {}
 
   async create(
-    createBetbookInput: CreateBetbookInput & { sellerId: string },
+    input: CreateBetbookInput & { sellerId: string },
   ): Promise<Betbook> {
-    const now = DateTime.now();
+    // validate date
+    const hasInvalidDate = input.bets.some((bet) => {
+      const game = getGameFromRawData(bet.game.type, bet.game.isoDate);
 
-    // validations
-    const hasInvalidDate = createBetbookInput.bets.some((bet) => {
-      const game = getGame(bet.game.type, bet.game.isoDate);
-
-      if (!game) {
-        return true;
-      }
-
-      return game.date.diff(now).as('minutes') < 50;
+      return (
+        DateTime.fromJSDate(game.date).diffNow().as('minutes') <
+        gameConstants.minDelayBeforeDeadlineInMinutes
+      );
     });
 
     if (hasInvalidDate) {
       throw new BadRequestException(
-        'Less than 50 minutes left for one or more selected games',
+        `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more selected games`,
       );
     }
 
     const betbook = await this.prisma.betbook.create({
       data: {
-        bettor: createBetbookInput.bettor,
-        fixed: createBetbookInput.fixed,
-        sellerId: createBetbookInput.sellerId,
+        bettor: input.bettor,
+        fixed: input.fixed,
+        sellerId: input.sellerId,
       },
     });
 
-    for (const bet of createBetbookInput.bets) {
+    for (const bet of input.bets) {
       const game = await this.gamesService.findOrCreate({
         isoDate: bet.game.isoDate,
         type: bet.game.type,

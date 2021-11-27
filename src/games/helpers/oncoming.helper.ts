@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon';
 import { RawGame } from 'src/types';
+import { getGameMode } from 'src/utils/misc';
 import { gameConstants } from '../contants';
 import rawGames from '../data/raw-games';
 import { OncomingGame } from '../entities/oncoming-game.entity';
@@ -76,7 +77,7 @@ export function getNextGames(
     ...game,
     date,
     isoDate: DateTime.fromJSDate(date).toISODate(),
-    mode: game.type.match(/EM|TL/) ? 'DRAW' : 'LOTTERY',
+    mode: getGameMode(game.type),
   };
 
   return getNextGames(quantity, date, [...games, oncomingGame]);

@@ -5,7 +5,7 @@ import { EventEmitter2 } from 'eventemitter2';
 import { DateTime } from 'luxon';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GameType } from 'src/types';
-import { getGame } from 'src/utils/misc';
+import { getGameFromRawData } from 'src/utils/misc';
 import { CreateGameInput } from './dto/create-game.input';
 import { FindAllBySellerArgs } from './dto/generics.args';
 import { UpdateGameInput } from './dto/update-game.input';
@@ -23,7 +23,7 @@ export class GamesService {
   async create(data: CreateGameInput): Promise<Game> {
     const { type, isoDate } = data;
 
-    const game = getGame(type, isoDate);
+    const game = getGameFromRawData(type, isoDate);
 
     if (!game) {
       throw new BadRequestException('Invalid game type or date');
@@ -34,7 +34,7 @@ export class GamesService {
         type,
         name: game.name,
         mode: game.mode,
-        date: game.date.toJSDate(),
+        date: game.date,
         isoDate: game.isoDate,
       },
     });

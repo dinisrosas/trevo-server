@@ -1,7 +1,12 @@
+import { GameType } from '.prisma/client';
 import got from 'got';
 import { JSDOM } from 'jsdom';
 import { DateTime } from 'luxon';
-import { GameType } from 'src/types';
+
+const JOGOSSANTACASA_PT_URL_PREFIX =
+  'https://www.jogossantacasa.pt/web/SCCartazResult';
+const LOTERIASYAPUESTAS_ES_URL =
+  'https://www.loteriasyapuestas.es/es/resultados';
 
 const DATE_REGEX = /(\d{1,2})[/](\d{1,2})[/](\d{4})/;
 const DATE_FORMAT = 'dd/MM/yyyy';
@@ -24,10 +29,8 @@ export async function getResultAndDate(type: GameType): Promise<{
   result: string;
   isoDate: string;
 }> {
-  const url_prefix = `https://www.jogossantacasa.pt/web/SCCartazResult`;
-
   if (/(EM|TL)/.test(type)) {
-    const url = `${url_prefix}/${
+    const url = `${JOGOSSANTACASA_PT_URL_PREFIX}/${
       type === 'EM' ? 'euroMilhoes' : 'totolotoNew'
     }`;
 
@@ -44,7 +47,9 @@ export async function getResultAndDate(type: GameType): Promise<{
 
     return { result, isoDate };
   } else if (/(LC|LP)/.test(type)) {
-    const url = `${url_prefix}/${type === 'LC' ? 'lotClass' : 'lotPop'}`;
+    const url = `${JOGOSSANTACASA_PT_URL_PREFIX}/${
+      type === GameType.LC ? 'lotClass' : 'lotPop'
+    }`;
 
     const response = await got(url);
     const dom = new JSDOM(response.body);
@@ -62,8 +67,8 @@ export async function getResultAndDate(type: GameType): Promise<{
     const isoDate = getIsoDateFromString(date);
 
     return { result, isoDate };
-  } else if (type === 'M1') {
-    const url = `${url_prefix}/m1lhao`;
+  } else if (type === GameType.M1) {
+    const url = `${JOGOSSANTACASA_PT_URL_PREFIX}/m1lhao`;
 
     const response = await got(url);
     const dom = new JSDOM(response.body);
@@ -75,10 +80,8 @@ export async function getResultAndDate(type: GameType): Promise<{
     const isoDate = getIsoDateFromString(date);
 
     return { result, isoDate };
-  } else if (type === 'JE') {
-    const url = 'https://www.loteriasyapuestas.es/es/resultados';
-
-    const response = await got(url);
+  } else if (type === GameType.JE) {
+    const response = await got(LOTERIASYAPUESTAS_ES_URL);
     const dom = new JSDOM(response.body);
     const document = dom.window.document;
 
