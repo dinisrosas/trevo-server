@@ -8,6 +8,7 @@ async function bootstrap() {
 
   app.use(helmet());
   app.use(csurf());
+  app.enableCors();
 
   await app.listen(process.env.PORT || 8080);
 }
