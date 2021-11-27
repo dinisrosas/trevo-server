@@ -16,7 +16,6 @@ export class FetchGameResultTask {
     for (const game of activeGames) {
       const { result, isoDate } = await getLatestGameResult(game.type);
 
-      // result date validation !!
       if (game.isoDate !== isoDate) {
         throw new NotAcceptableException(
           'The date of the game and the date of the result fetched do not match',

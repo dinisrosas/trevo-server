@@ -1,13 +1,13 @@
-import { Module } from "@nestjs/common";
-import { EventEmitterModule } from "@nestjs/event-emitter";
-import { GraphQLModule } from "@nestjs/graphql";
-import { ScheduleModule } from "@nestjs/schedule";
-import { AuthModule } from "./auth/auth.module";
-import { BetbooksModule } from "./betbooks/betbooks.module";
-import { BetsModule } from "./bets/bets.module";
-import { GamesModule } from "./games/games.module";
-import { UsersModule } from "./users/users.module";
-import { formatGraphQLError } from "./utils/graphql";
+import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ScheduleModule } from '@nestjs/schedule';
+import { AuthModule } from './auth/auth.module';
+import { BetbooksModule } from './betbooks/betbooks.module';
+import { BetsModule } from './bets/bets.module';
+import { GamesModule } from './games/games.module';
+import { UsersModule } from './users/users.module';
+import { formatGraphQLError } from './utils/graphql';
 
 @Module({
   imports: [
@@ -21,8 +21,9 @@ import { formatGraphQLError } from "./utils/graphql";
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot({
-      autoSchemaFile: "schema.gql",
+      autoSchemaFile: 'schema.gql',
       formatError: formatGraphQLError,
+      cors: true,
     }),
   ],
 })

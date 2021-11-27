@@ -12,7 +12,6 @@ export class GameResultListener {
 
   @OnEvent('game.result.updated')
   async handleGameResultUpdated(payload: Game): Promise<void> {
-    // get all game bets
     const bets = await this.betsService.findAllByGameId(payload.id);
 
     for (const bet of bets) {
