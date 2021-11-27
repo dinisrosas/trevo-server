@@ -7,6 +7,7 @@ import { BetbooksModule } from "./betbooks/betbooks.module";
 import { BetsModule } from "./bets/bets.module";
 import { GamesModule } from "./games/games.module";
 import { UsersModule } from "./users/users.module";
+import { formatGraphQLError } from "./utils/graphql";
 
 @Module({
   imports: [
@@ -21,17 +22,7 @@ import { UsersModule } from "./users/users.module";
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: "schema.gql",
-      installSubscriptionHandlers: true,
-      formatError: (error) => {
-        const graphQLFormattedError = {
-          name: error.extensions?.exception?.name || error.name,
-          code: error.extensions?.code || "SERVER_ERROR",
-          status: error.extensions?.response?.statusCode,
-          message:
-            error.extensions?.exception?.response?.message || error.message,
-        };
-        return graphQLFormattedError;
-      },
+      formatError: formatGraphQLError,
     }),
   ],
 })
