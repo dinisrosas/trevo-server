@@ -64,7 +64,7 @@ export function getNextGames(
     return games;
   }
 
-  const lastGame = games.length > 0 ? games.at(-1) : null;
+  const lastGame = games.length > 0 ? games[games.length - 1] : null;
 
   const game = lastGame
     ? findNextRawGame(lastGame)
