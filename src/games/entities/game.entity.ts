@@ -1,14 +1,14 @@
-import { Field, ID, ObjectType, registerEnumType } from "@nestjs/graphql";
-import { Bet } from "src/bets/entities/bet.entity";
-import { Connection } from "src/common/generics/pagination.entity";
-import { GameMode, GameModeEnum, GameType, GameTypeEnum } from "src/types";
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Bet } from 'src/bets/entities/bet.entity';
+import { Connection } from 'src/common/generics/pagination.entity';
+import { GameMode, GameModeEnum, GameType, GameTypeEnum } from 'src/types';
 
 registerEnumType(GameModeEnum, {
-  name: "GameMode",
+  name: 'GameMode',
 });
 
 registerEnumType(GameTypeEnum, {
-  name: "GameType",
+  name: 'GameType',
 });
 
 @ObjectType()

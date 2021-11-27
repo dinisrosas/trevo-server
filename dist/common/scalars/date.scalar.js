@@ -27,7 +27,7 @@ let DateScalar = class DateScalar {
     }
 };
 DateScalar = __decorate([
-    graphql_1.Scalar('Date', type => Date)
+    (0, graphql_1.Scalar)('Date', () => Date)
 ], DateScalar);
 exports.DateScalar = DateScalar;
 //# sourceMappingURL=date.scalar.js.map

@@ -1,9 +1,9 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { comparePasswords, encryptPassword } from "src/utils/misc";
-import { CreateUserInput } from "./dto/create-user.input";
-import { UpdatePasswordInput, UpdateUserInput } from "./dto/update-user.input";
-import { User } from "./entities/user.entity";
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { comparePasswords, encryptPassword } from 'src/utils/misc';
+import { CreateUserInput } from './dto/create-user.input';
+import { UpdatePasswordInput, UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -43,7 +43,7 @@ export class UsersService {
 
     if (!match) {
       throw new BadRequestException(
-        "Current password does not match user password"
+        'Current password does not match user password',
       );
     }
 

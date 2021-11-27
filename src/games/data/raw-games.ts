@@ -1,9 +1,9 @@
-import { RawGame } from "src/types";
+import { RawGame } from 'src/types';
 
 const games: RawGame[] = [
   {
-    type: "LC",
-    name: "Lotaria Clássica",
+    type: 'LC',
+    name: 'Lotaria Clássica',
     day: 1,
     time: {
       hour: 20,
@@ -11,8 +11,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "EM",
-    name: "Euromilhões",
+    type: 'EM',
+    name: 'Euromilhões',
     day: 2,
     time: {
       hour: 20,
@@ -20,8 +20,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "TL",
-    name: "Totoloto",
+    type: 'TL',
+    name: 'Totoloto',
     day: 3,
     time: {
       hour: 20,
@@ -29,8 +29,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "LP",
-    name: "Lotaria Popular",
+    type: 'LP',
+    name: 'Lotaria Popular',
     day: 4,
     time: {
       hour: 12,
@@ -38,8 +38,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "EM",
-    name: "Euromilhões",
+    type: 'EM',
+    name: 'Euromilhões',
     day: 5,
     time: {
       hour: 20,
@@ -47,8 +47,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "M1",
-    name: "M1lhão",
+    type: 'M1',
+    name: 'M1lhão',
     day: 5,
     time: {
       hour: 20,
@@ -56,8 +56,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "JE",
-    name: "Joker Espanhol",
+    type: 'JE',
+    name: 'Joker Espanhol',
     day: 6,
     time: {
       hour: 20,
@@ -65,8 +65,8 @@ const games: RawGame[] = [
     },
   },
   {
-    type: "TL",
-    name: "Totoloto",
+    type: 'TL',
+    name: 'Totoloto',
     day: 6,
     time: {
       hour: 20,

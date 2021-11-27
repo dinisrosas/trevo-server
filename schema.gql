@@ -30,8 +30,8 @@ type Betbook {
   sid: Float!
   bettor: String!
   fixed: Boolean!
-  seller: User
-  bets: [Bet!]
+  seller: User!
+  bets: [Bet!]!
   updatedAt: DateTime!
   createdAt: DateTime!
 }
@@ -54,8 +54,8 @@ type Bet {
   pick: String!
   amount: Float!
   award: Float
-  game: Game
-  betbook: Betbook
+  game: Game!
+  betbook: Betbook!
   updown: Boolean
   ball: Int
   updatedAt: DateTime!
@@ -69,7 +69,7 @@ type Game {
   type: GameType!
   mode: GameMode!
   isoDate: String!
-  bets: [Bet!]
+  bets: [Bet!]!
   date: DateTime!
   result: String
   createdAt: DateTime!

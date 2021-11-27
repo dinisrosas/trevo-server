@@ -1,6 +1,6 @@
-import { Bet, Betbook, Game, User } from "@prisma/client";
+import { Bet, Betbook, Game, User } from '@prisma/client';
 export declare type UserProps = User;
-export declare type AuthUser = Pick<UserProps, "id" | "username">;
+export declare type AuthUser = Pick<UserProps, 'id' | 'username'>;
 export declare type BetbookProps = Betbook;
 export declare type BetProps = Bet;
 export declare type GameProps = Game;
@@ -8,8 +8,8 @@ export declare enum UserRoleEnum {
     SELLER = "SELLER",
     ADMIN = "ADMIN"
 }
-export declare type GameType = GameProps["type"];
-export declare type GameMode = GameProps["mode"];
+export declare type GameType = GameProps['type'];
+export declare type GameMode = GameProps['mode'];
 export declare enum GameTypeEnum {
     EM = "EM",
     TL = "TL",

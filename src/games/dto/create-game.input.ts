@@ -1,5 +1,5 @@
-import { Field, InputType } from "@nestjs/graphql";
-import { GameType } from "src/types";
+import { Field, InputType } from '@nestjs/graphql';
+import { GameType } from 'src/types';
 
 @InputType()
 export class CreateGameInput {

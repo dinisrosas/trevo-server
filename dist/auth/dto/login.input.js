@@ -12,20 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.LoginInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let LoginInput = class LoginInput {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { username: { type: () => String }, password: { type: () => String } };
-    }
 };
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], LoginInput.prototype, "username", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], LoginInput.prototype, "password", void 0);
 LoginInput = __decorate([
-    graphql_1.InputType()
+    (0, graphql_1.InputType)()
 ], LoginInput);
 exports.LoginInput = LoginInput;
 //# sourceMappingURL=login.input.js.map

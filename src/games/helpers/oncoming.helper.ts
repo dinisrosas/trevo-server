@@ -1,12 +1,13 @@
-import { DateTime } from "luxon";
-import { gameConstants } from "../contants";
-import rawGames from "../data/raw-games";
-import { OncomingGame } from "../entities/oncoming-game.entity";
+import { DateTime } from 'luxon';
+import { RawGame } from 'src/types';
+import { gameConstants } from '../contants';
+import rawGames from '../data/raw-games';
+import { OncomingGame } from '../entities/oncoming-game.entity';
 
 function getGameCalendarDate(game, startDate) {
   const previousGameDateTime = DateTime.fromJSDate(startDate)
     .set(game.time)
-    .startOf("minute");
+    .startOf('minute');
 
   const daysDiff = game.day - previousGameDateTime.weekday;
 
@@ -17,54 +18,53 @@ function getGameCalendarDate(game, startDate) {
   return previousGameDateTime.plus({ days: daysOffset }).toJSDate();
 }
 
-function getGameId(game) {
+function getGameId(game: RawGame) {
   return `${game.day}${game.type}`;
 }
 
-function findNextRawGame(prevGame) {
+function findNextRawGame(prevGame: RawGame) {
   const nextGame = rawGames.find(
-    (game) => getGameId(game) > getGameId(prevGame)
+    (game) => getGameId(game) > getGameId(prevGame),
   );
 
-  return nextGame ? nextGame : rawGames[0];
+  return nextGame ?? rawGames[0];
 }
 
-function findFirstRawGame(startDate) {
+function getRawGameDateDiffNow(game: RawGame, date: Date) {
+  const gameDate = getGameCalendarDate(game, date);
+  return DateTime.fromJSDate(gameDate).diff(DateTime.fromJSDate(date));
+}
+
+export function findFirstRawGame(startDate: Date): RawGame {
   const startDateTime = DateTime.fromJSDate(startDate);
   const dayOfWeek = startDateTime.weekday;
 
   // is sunday
   if (dayOfWeek === 7) {
-    // return monday (weekday 0)
     return rawGames[0];
   }
 
-  const firstGame = rawGames.find((game) => game.day === dayOfWeek);
+  let currentGame = rawGames.find((game) => game.day === dayOfWeek);
+  let minutesLeft = getRawGameDateDiffNow(currentGame, startDate).as('minutes');
 
-  const firstGameDateTime = startDateTime.set(firstGame.time).startOf("minute");
-
-  const { minutes: minutesLeft } = firstGameDateTime.diff(
-    startDateTime,
-    "minutes"
-  );
-
-  if (minutesLeft > gameConstants.maxMinutesBeforeGame) {
-    return firstGame;
+  while (minutesLeft < gameConstants.minDelayBeforeDeadlineInMinutes) {
+    currentGame = findNextRawGame(currentGame);
+    minutesLeft = getRawGameDateDiffNow(currentGame, startDate).as('minutes');
   }
 
-  return findNextRawGame(firstGame);
+  return currentGame;
 }
 
 export function getNextGames(
   quantity = 8,
   startDate = new Date(),
-  games = []
+  games = [],
 ): OncomingGame[] {
   if (games.length === quantity) {
     return games;
   }
 
-  const lastGame = games.length > 0 ? games[games.length - 1] : null;
+  const lastGame = games.length > 0 ? games.at(-1) : null;
 
   const game = lastGame
     ? findNextRawGame(lastGame)
@@ -76,7 +76,7 @@ export function getNextGames(
     ...game,
     date,
     isoDate: DateTime.fromJSDate(date).toISODate(),
-    mode: game.type.match(/EM|TL/) ? "DRAW" : "LOTTERY",
+    mode: game.type.match(/EM|TL/) ? 'DRAW' : 'LOTTERY',
   };
 
   return getNextGames(quantity, date, [...games, oncomingGame]);

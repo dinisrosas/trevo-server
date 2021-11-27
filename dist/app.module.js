@@ -19,30 +19,31 @@ const users_module_1 = require("./users/users.module");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [
+            users_module_1.UsersModule,
+            auth_module_1.AuthModule,
+            users_module_1.UsersModule,
+            auth_module_1.AuthModule,
+            games_module_1.GamesModule,
+            bets_module_1.BetsModule,
+            betbooks_module_1.BetbooksModule,
             graphql_1.GraphQLModule.forRoot({
-                debug: true,
+                autoSchemaFile: 'schema.gql',
                 installSubscriptionHandlers: true,
-                autoSchemaFile: "schema.gql",
                 formatError: (error) => {
                     var _a, _b, _c, _d, _e, _f, _g, _h;
                     const graphQLFormattedError = {
                         name: ((_b = (_a = error.extensions) === null || _a === void 0 ? void 0 : _a.exception) === null || _b === void 0 ? void 0 : _b.name) || error.name,
-                        code: ((_c = error.extensions) === null || _c === void 0 ? void 0 : _c.code) || "SERVER_ERROR",
+                        code: ((_c = error.extensions) === null || _c === void 0 ? void 0 : _c.code) || 'SERVER_ERROR',
                         status: (_e = (_d = error.extensions) === null || _d === void 0 ? void 0 : _d.response) === null || _e === void 0 ? void 0 : _e.statusCode,
                         message: ((_h = (_g = (_f = error.extensions) === null || _f === void 0 ? void 0 : _f.exception) === null || _g === void 0 ? void 0 : _g.response) === null || _h === void 0 ? void 0 : _h.message) || error.message,
                     };
                     return graphQLFormattedError;
                 },
             }),
-            event_emitter_1.EventEmitterModule.forRoot(),
             schedule_1.ScheduleModule.forRoot(),
-            users_module_1.UsersModule,
-            auth_module_1.AuthModule,
-            games_module_1.GamesModule,
-            bets_module_1.BetsModule,
-            betbooks_module_1.BetbooksModule,
+            event_emitter_1.EventEmitterModule.forRoot(),
         ],
     })
 ], AppModule);

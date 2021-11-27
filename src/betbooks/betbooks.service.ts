@@ -1,26 +1,26 @@
-import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { DateTime } from "luxon";
-import { BetsService } from "src/bets/bets.service";
-import { GamesService } from "src/games/games.service";
-import { PrismaService } from "src/prisma/prisma.service";
-import { getGame } from "src/utils/misc";
-import { CreateBetbookInput } from "./dto/create-betbook.input";
-import { FindAllArgs } from "./dto/generics.args";
-import { UpdateBetbookInput } from "./dto/update-betbook.input";
-import { Betbook, BetbookConnection } from "./entities/betbook.entity";
+import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { DateTime } from 'luxon';
+import { BetsService } from 'src/bets/bets.service';
+import { GamesService } from 'src/games/games.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { getGame } from 'src/utils/misc';
+import { CreateBetbookInput } from './dto/create-betbook.input';
+import { FindAllArgs } from './dto/generics.args';
+import { UpdateBetbookInput } from './dto/update-betbook.input';
+import { Betbook, BetbookConnection } from './entities/betbook.entity';
 
 @Injectable()
 export class BetbooksService {
   constructor(
     private prisma: PrismaService,
     private betsService: BetsService,
-    private gamesService: GamesService
+    private gamesService: GamesService,
   ) {}
 
   async create(
-    createBetbookInput: CreateBetbookInput & { sellerId: string }
+    createBetbookInput: CreateBetbookInput & { sellerId: string },
   ): Promise<Betbook> {
     const now = DateTime.now();
 
@@ -32,12 +32,12 @@ export class BetbooksService {
         return true;
       }
 
-      return game.date.diff(now).as("minutes") < 50;
+      return game.date.diff(now).as('minutes') < 50;
     });
 
     if (hasInvalidDate) {
       throw new BadRequestException(
-        "Less than 50 minutes left for one or more selected games"
+        'Less than 50 minutes left for one or more selected games',
       );
     }
 
@@ -70,7 +70,7 @@ export class BetbooksService {
 
   async findAllBySeller(
     sellerId: string,
-    args: FindAllArgs
+    args: FindAllArgs,
   ): Promise<BetbookConnection> {
     const baseFindManyArgs: Prisma.BetbookFindManyArgs = {
       where: {
@@ -78,7 +78,7 @@ export class BetbooksService {
         fixed: args.fixed,
       },
       orderBy: {
-        id: "desc",
+        id: 'desc',
       },
       include: {
         seller: true,
@@ -99,7 +99,7 @@ export class BetbooksService {
         after: args.after,
         before: args.before,
         last: args.last,
-      }
+      },
     );
 
     return betbooks;
@@ -121,7 +121,7 @@ export class BetbooksService {
 
   async update(
     id: string,
-    updateBetbookInput: UpdateBetbookInput
+    updateBetbookInput: UpdateBetbookInput,
   ): Promise<Betbook> {
     return await this.prisma.betbook.update({
       where: { id },

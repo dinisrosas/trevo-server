@@ -1,6 +1,6 @@
-import { UpdatePasswordInput, UpdateUserInput } from "./dto/update-user.input";
-import { User } from "./entities/user.entity";
-import { UsersService } from "./users.service";
+import { UpdatePasswordInput, UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
+import { UsersService } from './users.service';
 export declare class UsersResolver {
     private readonly usersService;
     constructor(usersService: UsersService);

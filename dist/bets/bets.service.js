@@ -21,7 +21,7 @@ let BetsService = class BetsService {
     }
     async create(data) {
         const game = await this.gamesService.findOneById(data.gameId);
-        const amount = amount_helper_1.getBetAmount({
+        const amount = (0, amount_helper_1.getBetAmount)({
             mode: game.mode,
             pick: data.pick,
             target: data.target,
@@ -81,7 +81,7 @@ let BetsService = class BetsService {
     }
 };
 BetsService = __decorate([
-    common_1.Injectable(),
+    (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         games_service_1.GamesService])
 ], BetsService);

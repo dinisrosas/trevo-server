@@ -1,4 +1,4 @@
-import { GameMode, GameType } from ".prisma/client";
+import { GameMode, GameType } from '.prisma/client';
 
 export type GetBetAward = {
   type: GameType;
@@ -11,9 +11,9 @@ export type GetBetAward = {
   amount: number;
 };
 
-export type GetDrawAward = Omit<GetBetAward, "type" | "mode" | "amount">;
-export type GetGameAward = Omit<GetBetAward, "ball" | "updown" | "mode">;
-export type GetDrawnTickets = Pick<GetBetAward, "type" | "result">;
+export type GetDrawAward = Omit<GetBetAward, 'type' | 'mode' | 'amount'>;
+export type GetGameAward = Omit<GetBetAward, 'ball' | 'updown' | 'mode'>;
+export type GetDrawnTickets = Pick<GetBetAward, 'type' | 'result'>;
 
 const odd_dividers = {
   draw_updown: 12,
@@ -24,7 +24,7 @@ const odd_dividers = {
 
 export function getBetAward(params: GetBetAward): number {
   switch (params.mode) {
-    case "DRAW":
+    case 'DRAW':
       return getDrawAward({
         target: params.target,
         pick: params.pick,
@@ -32,7 +32,7 @@ export function getBetAward(params: GetBetAward): number {
         updown: params.updown,
         result: params.result,
       });
-    case "LOTTERY":
+    case 'LOTTERY':
       return getGameAward({
         type: params.type,
         target: params.target,
@@ -41,7 +41,7 @@ export function getBetAward(params: GetBetAward): number {
         amount: params.amount,
       });
     default:
-      throw new Error("Invalid game mode");
+      throw new Error('Invalid game mode');
   }
 }
 
@@ -69,7 +69,7 @@ function getGameAward(params: GetGameAward): number {
 
   if (params.pick.length === 3) {
     const index = drawnTickets.findIndex(
-      (ticket: string) => ticket === params.pick
+      (ticket: string) => ticket === params.pick,
     );
 
     if (index !== -1) {
@@ -86,7 +86,7 @@ function getGameAward(params: GetGameAward): number {
     }
   } else if (params.pick.length === 2) {
     const index = drawnTickets.findIndex(
-      (ticket) => ticket.slice(-2) === params.pick
+      (ticket) => ticket.slice(-2) === params.pick,
     );
 
     if (index !== -1) {
@@ -96,7 +96,7 @@ function getGameAward(params: GetGameAward): number {
     const updownIndex = drawnTickets.findIndex(
       (ticket) =>
         Number(ticket.slice(-2)) === Number(params.pick) - 1 ||
-        Number(ticket.slice(-2)) === Number(params.pick) + 1
+        Number(ticket.slice(-2)) === Number(params.pick) + 1,
     );
 
     if (updownIndex !== -1) {
@@ -108,13 +108,13 @@ function getGameAward(params: GetGameAward): number {
 }
 
 function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
-  if (type === "M1") {
+  if (type === 'M1') {
     const first = result.slice(-3);
     const second = result.substring(0, result.length - 1).slice(-3);
     const third = String(Number(first) + Number(second)).slice(-3);
 
     return [first, second, third];
-  } else if (type === "JE") {
+  } else if (type === 'JE') {
     const first = result.slice(-3);
     const second = result.substring(0, 3);
     const third = String(Number(first) + Number(second)).slice(-3);
@@ -124,7 +124,7 @@ function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
 
   // LC & LP
   return result
-    .split(";")
+    .split(';')
     .map((ticket) => ticket.slice(-3))
     .slice(0, 3);
 }

@@ -1,9 +1,7 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { Bet } from "src/bets/entities/bet.entity";
-import {
-  Connection
-} from "src/common/generics/pagination.entity";
-import { User } from "src/users/entities/user.entity";
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Bet } from 'src/bets/entities/bet.entity';
+import { Connection } from 'src/common/generics/pagination.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @ObjectType()
 export class Betbook {

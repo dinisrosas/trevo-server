@@ -16,7 +16,7 @@ const bets_module_1 = require("../bets/bets.module");
 let BetbooksModule = class BetbooksModule {
 };
 BetbooksModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [bets_module_1.BetsModule, games_module_1.GamesModule],
         providers: [betbooks_resolver_1.BetbooksResolver, betbooks_service_1.BetbooksService, prisma_service_1.PrismaService],
     })

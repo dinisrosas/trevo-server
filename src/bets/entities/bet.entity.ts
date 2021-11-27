@@ -1,6 +1,6 @@
-import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
-import { Betbook } from "src/betbooks/entities/betbook.entity";
-import { Game } from "src/games/entities/game.entity";
+import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Betbook } from 'src/betbooks/entities/betbook.entity';
+import { Game } from 'src/games/entities/game.entity';
 
 @ObjectType()
 export class Bet {

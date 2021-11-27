@@ -12,41 +12,35 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdatePasswordInput = exports.UpdateUserInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let UpdateUserInput = class UpdateUserInput {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, name: { type: () => String }, username: { type: () => String } };
-    }
 };
 __decorate([
-    graphql_1.Field(() => graphql_1.ID),
+    (0, graphql_1.Field)(() => graphql_1.ID),
     __metadata("design:type", String)
 ], UpdateUserInput.prototype, "id", void 0);
 __decorate([
-    graphql_1.Field(() => graphql_1.ID),
+    (0, graphql_1.Field)(() => graphql_1.ID),
     __metadata("design:type", String)
 ], UpdateUserInput.prototype, "name", void 0);
 __decorate([
-    graphql_1.Field(() => graphql_1.ID),
+    (0, graphql_1.Field)(() => graphql_1.ID),
     __metadata("design:type", String)
 ], UpdateUserInput.prototype, "username", void 0);
 UpdateUserInput = __decorate([
-    graphql_1.InputType()
+    (0, graphql_1.InputType)()
 ], UpdateUserInput);
 exports.UpdateUserInput = UpdateUserInput;
 let UpdatePasswordInput = class UpdatePasswordInput {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { currentPassword: { type: () => String }, newPassword: { type: () => String } };
-    }
 };
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], UpdatePasswordInput.prototype, "currentPassword", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], UpdatePasswordInput.prototype, "newPassword", void 0);
 UpdatePasswordInput = __decorate([
-    graphql_1.InputType()
+    (0, graphql_1.InputType)()
 ], UpdatePasswordInput);
 exports.UpdatePasswordInput = UpdatePasswordInput;
 //# sourceMappingURL=update-user.input.js.map

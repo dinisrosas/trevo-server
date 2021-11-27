@@ -14,7 +14,7 @@ const users_service_1 = require("./users.service");
 let UsersModule = class UsersModule {
 };
 UsersModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         providers: [users_resolver_1.UsersResolver, users_service_1.UsersService, prisma_service_1.PrismaService],
         exports: [users_service_1.UsersService],
     })

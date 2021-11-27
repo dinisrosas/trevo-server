@@ -1,5 +1,5 @@
-import { Betbook } from "src/betbooks/entities/betbook.entity";
-import { Game } from "src/games/entities/game.entity";
+import { Betbook } from 'src/betbooks/entities/betbook.entity';
+import { Game } from 'src/games/entities/game.entity';
 export declare class Bet {
     id: string;
     sid: number;

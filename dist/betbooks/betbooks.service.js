@@ -26,14 +26,14 @@ let BetbooksService = class BetbooksService {
     async create(createBetbookInput) {
         const now = luxon_1.DateTime.now();
         const hasInvalidDate = createBetbookInput.bets.some((bet) => {
-            const game = misc_1.getGame(bet.game.type, bet.game.isoDate);
+            const game = (0, misc_1.getGame)(bet.game.type, bet.game.isoDate);
             if (!game) {
                 return true;
             }
-            return game.date.diff(now).as("minutes") < 50;
+            return game.date.diff(now).as('minutes') < 50;
         });
         if (hasInvalidDate) {
-            throw new common_1.BadRequestException("Less than 50 minutes left for one or more selected games");
+            throw new common_1.BadRequestException('Less than 50 minutes left for one or more selected games');
         }
         const betbook = await this.prisma.betbook.create({
             data: {
@@ -65,7 +65,7 @@ let BetbooksService = class BetbooksService {
                 fixed: args.fixed,
             },
             orderBy: {
-                id: "desc",
+                id: 'desc',
             },
             include: {
                 seller: true,
@@ -76,7 +76,7 @@ let BetbooksService = class BetbooksService {
                 },
             },
         };
-        const betbooks = await prisma_relay_cursor_connection_1.findManyCursorConnection((findManyArgs) => this.prisma.betbook.findMany(Object.assign(Object.assign({}, findManyArgs), baseFindManyArgs)), () => this.prisma.betbook.count({ where: baseFindManyArgs.where }), {
+        const betbooks = await (0, prisma_relay_cursor_connection_1.findManyCursorConnection)((findManyArgs) => this.prisma.betbook.findMany(Object.assign(Object.assign({}, findManyArgs), baseFindManyArgs)), () => this.prisma.betbook.count({ where: baseFindManyArgs.where }), {
             first: args.first,
             after: args.after,
             before: args.before,
@@ -108,7 +108,7 @@ let BetbooksService = class BetbooksService {
     }
 };
 BetbooksService = __decorate([
-    common_1.Injectable(),
+    (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         bets_service_1.BetsService,
         games_service_1.GamesService])

@@ -31,21 +31,21 @@ let AuthResolver = class AuthResolver {
     }
 };
 __decorate([
-    graphql_1.Mutation(() => auth_session_entity_1.AuthSession),
-    __param(0, graphql_1.Args("input")),
+    (0, graphql_1.Mutation)(() => auth_session_entity_1.AuthSession),
+    __param(0, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [login_input_1.LoginInput]),
     __metadata("design:returntype", Promise)
 ], AuthResolver.prototype, "login", null);
 __decorate([
-    graphql_1.Mutation(() => user_entity_1.User),
-    __param(0, graphql_1.Args("input")),
+    (0, graphql_1.Mutation)(() => user_entity_1.User),
+    __param(0, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_user_input_1.CreateUserInput]),
     __metadata("design:returntype", Promise)
 ], AuthResolver.prototype, "signUp", null);
 AuthResolver = __decorate([
-    graphql_1.Resolver(),
+    (0, graphql_1.Resolver)(),
     __metadata("design:paramtypes", [auth_service_1.AuthService])
 ], AuthResolver);
 exports.AuthResolver = AuthResolver;

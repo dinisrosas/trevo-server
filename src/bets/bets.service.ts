@@ -1,23 +1,23 @@
-import { Injectable } from "@nestjs/common";
-import { Bet } from "@prisma/client";
-import { GamesService } from "src/games/games.service";
-import { PrismaService } from "src/prisma/prisma.service";
-import { CreateBetInput } from "./dto/create-bet.input";
-import { UpdateBetInput } from "./dto/update-bet.input";
-import { getBetAmount } from "./helpers/amount.helper";
+import { Injectable } from '@nestjs/common';
+import { Bet } from '@prisma/client';
+import { GamesService } from 'src/games/games.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateBetInput } from './dto/create-bet.input';
+import { UpdateBetInput } from './dto/update-bet.input';
+import { getBetAmount } from './helpers/amount.helper';
 
 @Injectable()
 export class BetsService {
   constructor(
     private prisma: PrismaService,
-    private gamesService: GamesService
+    private gamesService: GamesService,
   ) {}
 
   async create(
-    data: Omit<CreateBetInput, "game"> & {
+    data: Omit<CreateBetInput, 'game'> & {
       gameId: string;
       betbookId: string;
-    }
+    },
   ): Promise<Bet> {
     const game = await this.gamesService.findOneById(data.gameId);
 

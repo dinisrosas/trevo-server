@@ -7,23 +7,23 @@ const ODDS = {
 };
 function getBetAmount({ mode, pick, target, updown, }) {
     switch (mode) {
-        case "DRAW":
+        case 'DRAW':
             if (updown) {
                 return target / ODDS[mode][1];
             }
             else {
                 return target / ODDS[mode][0];
             }
-        case "LOTTERY":
+        case 'LOTTERY':
             if (pick.length === 2) {
                 return target / ODDS[mode][1];
             }
             else if (pick.length === 3) {
                 return target / ODDS[mode][0];
             }
-            throw new Error("Invalid bet pick");
+            throw new Error('Invalid bet pick');
         default:
-            throw new Error("Invalid game mode");
+            throw new Error('Invalid game mode');
     }
 }
 exports.getBetAmount = getBetAmount;

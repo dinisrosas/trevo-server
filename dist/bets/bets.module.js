@@ -16,7 +16,7 @@ const game_result_listener_1 = require("./listeners/game-result.listener");
 let BetsModule = class BetsModule {
 };
 BetsModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [games_module_1.GamesModule],
         providers: [bets_resolver_1.BetsResolver, bets_service_1.BetsService, prisma_service_1.PrismaService, game_result_listener_1.GameResultListener],
         exports: [bets_service_1.BetsService],

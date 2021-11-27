@@ -44,51 +44,51 @@ let UsersResolver = class UsersResolver {
     }
 };
 __decorate([
-    graphql_1.Query(() => user_entity_1.User),
-    __param(0, current_user_decorator_1.CurrentUser()),
+    (0, graphql_1.Query)(() => user_entity_1.User),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "me", null);
 __decorate([
-    graphql_1.Query(() => [user_entity_1.User], { name: "users" }),
+    (0, graphql_1.Query)(() => [user_entity_1.User], { name: 'users' }),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "findAll", null);
 __decorate([
-    graphql_1.Query(() => user_entity_1.User, { name: "user" }),
-    __param(0, graphql_1.Args("username", { type: () => String })),
+    (0, graphql_1.Query)(() => user_entity_1.User, { name: 'user' }),
+    __param(0, (0, graphql_1.Args)('username', { type: () => String })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "findByUsername", null);
 __decorate([
-    graphql_1.Mutation(() => user_entity_1.User),
-    __param(0, graphql_1.Args("input")),
+    (0, graphql_1.Mutation)(() => user_entity_1.User),
+    __param(0, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_user_input_1.UpdateUserInput]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "updateUser", null);
 __decorate([
-    graphql_1.Mutation(() => user_entity_1.User),
-    __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args("input")),
+    (0, graphql_1.Mutation)(() => user_entity_1.User),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_entity_1.User,
         update_user_input_1.UpdatePasswordInput]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "updatePassword", null);
 __decorate([
-    graphql_1.Mutation(() => user_entity_1.User),
-    __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
+    (0, graphql_1.Mutation)(() => user_entity_1.User),
+    __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], UsersResolver.prototype, "deleteUser", null);
 UsersResolver = __decorate([
-    common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),
-    graphql_1.Resolver(() => user_entity_1.User),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
+    (0, graphql_1.Resolver)(() => user_entity_1.User),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersResolver);
 exports.UsersResolver = UsersResolver;

@@ -21,14 +21,14 @@ let ComplexityPlugin = class ComplexityPlugin {
         const { schema } = this.gqlSchemaHost;
         return {
             didResolveOperation({ request, document }) {
-                const complexity = graphql_query_complexity_1.getComplexity({
+                const complexity = (0, graphql_query_complexity_1.getComplexity)({
                     schema,
                     operationName: request.operationName,
                     query: document,
                     variables: request.variables,
                     estimators: [
-                        graphql_query_complexity_1.fieldExtensionsEstimator(),
-                        graphql_query_complexity_1.simpleEstimator({ defaultComplexity: 1 }),
+                        (0, graphql_query_complexity_1.fieldExtensionsEstimator)(),
+                        (0, graphql_query_complexity_1.simpleEstimator)({ defaultComplexity: 1 }),
                     ],
                 });
                 if (complexity >= 20) {
@@ -40,7 +40,7 @@ let ComplexityPlugin = class ComplexityPlugin {
     }
 };
 ComplexityPlugin = __decorate([
-    graphql_1.Plugin(),
+    (0, graphql_1.Plugin)(),
     __metadata("design:paramtypes", [graphql_1.GraphQLSchemaHost])
 ], ComplexityPlugin);
 exports.ComplexityPlugin = ComplexityPlugin;

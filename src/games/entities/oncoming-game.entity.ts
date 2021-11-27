@@ -1,5 +1,5 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-import { GameMode, GameType } from "@prisma/client";
+import { Field, ObjectType } from '@nestjs/graphql';
+import { GameMode, GameType } from '@prisma/client';
 
 @ObjectType()
 export class OncomingGame {

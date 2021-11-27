@@ -18,12 +18,12 @@ const jwt_strategy_1 = require("./strategies/jwt.strategy");
 let AuthModule = class AuthModule {
 };
 AuthModule = __decorate([
-    common_1.Module({
+    (0, common_1.Module)({
         imports: [
-            passport_1.PassportModule.register({ defaultStrategy: "jwt" }),
+            passport_1.PassportModule.register({ defaultStrategy: 'jwt' }),
             jwt_1.JwtModule.register({
                 secret: constants_1.jwtConstants.secret,
-                signOptions: { expiresIn: "24h" },
+                signOptions: { expiresIn: constants_1.jwtConstants.expiresIn },
             }),
             users_module_1.UsersModule,
         ],

@@ -19,7 +19,7 @@ let LoggingPlugin = class LoggingPlugin {
     }
 };
 LoggingPlugin = __decorate([
-    graphql_1.Plugin()
+    (0, graphql_1.Plugin)()
 ], LoggingPlugin);
 exports.LoggingPlugin = LoggingPlugin;
 //# sourceMappingURL=logging.plugin.js.map

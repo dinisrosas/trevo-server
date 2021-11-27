@@ -1,4 +1,4 @@
-import { GameMode } from ".prisma/client";
+import { GameMode } from '.prisma/client';
 declare type CalculateBetAmount = {
     mode: GameMode;
     pick: string;

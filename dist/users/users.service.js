@@ -41,11 +41,11 @@ let UsersService = class UsersService {
         const user = await this.prisma.user.findUnique({
             where: { id },
         });
-        const match = await misc_1.comparePasswords(data.currentPassword, user.password);
+        const match = await (0, misc_1.comparePasswords)(data.currentPassword, user.password);
         if (!match) {
-            throw new common_1.BadRequestException("Current password does not match user password");
+            throw new common_1.BadRequestException('Current password does not match user password');
         }
-        const hashedPassword = await misc_1.encryptPassword(data.newPassword);
+        const hashedPassword = await (0, misc_1.encryptPassword)(data.newPassword);
         return this.prisma.user.update({
             where: { id },
             data: {
@@ -58,7 +58,7 @@ let UsersService = class UsersService {
     }
 };
 UsersService = __decorate([
-    common_1.Injectable(),
+    (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService])
 ], UsersService);
 exports.UsersService = UsersService;

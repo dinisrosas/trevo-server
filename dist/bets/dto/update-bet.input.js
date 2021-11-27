@@ -12,20 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UpdateBetInput = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let UpdateBetInput = class UpdateBetInput {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, award: { type: () => Number } };
-    }
 };
 __decorate([
-    graphql_1.Field(() => graphql_1.ID),
+    (0, graphql_1.Field)(() => graphql_1.ID),
     __metadata("design:type", String)
 ], UpdateBetInput.prototype, "id", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", Number)
 ], UpdateBetInput.prototype, "award", void 0);
 UpdateBetInput = __decorate([
-    graphql_1.InputType()
+    (0, graphql_1.InputType)()
 ], UpdateBetInput);
 exports.UpdateBetInput = UpdateBetInput;
 //# sourceMappingURL=update-bet.input.js.map

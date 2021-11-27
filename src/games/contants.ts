@@ -1,3 +1,3 @@
 export const gameConstants = {
-  maxMinutesBeforeGame: 30,
+  minDelayBeforeDeadlineInMinutes: 30,
 };

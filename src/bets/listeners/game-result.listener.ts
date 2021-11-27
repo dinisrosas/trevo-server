@@ -1,8 +1,8 @@
-import { Game } from ".prisma/client";
-import { Injectable } from "@nestjs/common";
-import { OnEvent } from "@nestjs/event-emitter";
-import { BetsService } from "../bets.service";
-import { getBetAward } from "../helpers/award.helper";
+import { Game } from '.prisma/client';
+import { Injectable } from '@nestjs/common';
+import { OnEvent } from '@nestjs/event-emitter';
+import { BetsService } from '../bets.service';
+import { getBetAward } from '../helpers/award.helper';
 
 @Injectable()
 export class GameResultListener {
@@ -10,7 +10,7 @@ export class GameResultListener {
 
   constructor(private betsService: BetsService) {}
 
-  @OnEvent("game.result.updated")
+  @OnEvent('game.result.updated')
   async handleGameResultUpdated(payload: Game): Promise<void> {
     // get all game bets
     const bets = await this.betsService.findAllByGameId(payload.id);

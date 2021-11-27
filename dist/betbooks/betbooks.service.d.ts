@@ -1,10 +1,10 @@
-import { BetsService } from "src/bets/bets.service";
-import { GamesService } from "src/games/games.service";
-import { PrismaService } from "src/prisma/prisma.service";
-import { CreateBetbookInput } from "./dto/create-betbook.input";
-import { FindAllArgs } from "./dto/generics.args";
-import { UpdateBetbookInput } from "./dto/update-betbook.input";
-import { Betbook, BetbookConnection } from "./entities/betbook.entity";
+import { BetsService } from 'src/bets/bets.service';
+import { GamesService } from 'src/games/games.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateBetbookInput } from './dto/create-betbook.input';
+import { FindAllArgs } from './dto/generics.args';
+import { UpdateBetbookInput } from './dto/update-betbook.input';
+import { Betbook, BetbookConnection } from './entities/betbook.entity';
 export declare class BetbooksService {
     private prisma;
     private betsService;

@@ -1,12 +1,11 @@
-import { Strategy } from "passport-jwt";
-import { AuthUser } from "src/types";
+import { AuthUser } from 'src/types';
 declare type JwtPayload = {
     username: string;
     sub: string;
     iat: number;
     exp: number;
 };
-declare const JwtStrategy_base: new (...args: any[]) => Strategy;
+declare const JwtStrategy_base: new (...args: any[]) => any;
 export declare class JwtStrategy extends JwtStrategy_base {
     constructor();
     validate(payload: JwtPayload): AuthUser;

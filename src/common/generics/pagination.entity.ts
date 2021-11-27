@@ -1,5 +1,5 @@
-import { Type } from "@nestjs/common";
-import { ArgsType, Field, Int, ObjectType } from "@nestjs/graphql";
+import { Type } from '@nestjs/common';
+import { ArgsType, Field, Int, ObjectType } from '@nestjs/graphql';
 
 interface IEdgeType<T> {
   cursor: string;
@@ -36,16 +36,16 @@ class PageInfo implements IPageInfoType {
 
 @ArgsType()
 export class PaginationArgs {
-  @Field()
+  @Field({ nullable: true })
   before?: string;
 
-  @Field()
+  @Field({ nullable: true })
   after?: string;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   first?: number;
 
-  @Field(() => Int)
+  @Field(() => Int, { nullable: true })
   last?: number;
 }
 

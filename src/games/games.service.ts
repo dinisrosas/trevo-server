@@ -1,23 +1,23 @@
-import { Prisma } from ".prisma/client";
-import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { EventEmitter2 } from "eventemitter2";
-import { DateTime } from "luxon";
-import { PrismaService } from "src/prisma/prisma.service";
-import { GameType } from "src/types";
-import { getGame } from "src/utils/misc";
-import { CreateGameInput } from "./dto/create-game.input";
-import { FindAllBySellerArgs } from "./dto/generics.args";
-import { UpdateGameInput } from "./dto/update-game.input";
-import { Game, GameConnection } from "./entities/game.entity";
-import { OncomingGame } from "./entities/oncoming-game.entity";
-import { getNextGames } from "./helpers/oncoming.helper";
+import { Prisma } from '.prisma/client';
+import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { EventEmitter2 } from 'eventemitter2';
+import { DateTime } from 'luxon';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { GameType } from 'src/types';
+import { getGame } from 'src/utils/misc';
+import { CreateGameInput } from './dto/create-game.input';
+import { FindAllBySellerArgs } from './dto/generics.args';
+import { UpdateGameInput } from './dto/update-game.input';
+import { Game, GameConnection } from './entities/game.entity';
+import { OncomingGame } from './entities/oncoming-game.entity';
+import { getNextGames } from './helpers/oncoming.helper';
 
 @Injectable()
 export class GamesService {
   constructor(
     private prisma: PrismaService,
-    private eventEmitter: EventEmitter2
+    private eventEmitter: EventEmitter2,
   ) {}
 
   async create(data: CreateGameInput): Promise<Game> {
@@ -26,7 +26,7 @@ export class GamesService {
     const game = getGame(type, isoDate);
 
     if (!game) {
-      throw new BadRequestException("Invalid game type or date");
+      throw new BadRequestException('Invalid game type or date');
     }
 
     return await this.prisma.game.create({
@@ -71,7 +71,7 @@ export class GamesService {
 
   async findAllBySeller(
     sellerId: string,
-    args: FindAllBySellerArgs
+    args: FindAllBySellerArgs,
   ): Promise<GameConnection> {
     const findManyBaseArgs: Prisma.GameFindManyArgs = {
       where: {
@@ -90,7 +90,7 @@ export class GamesService {
         },
       },
       orderBy: {
-        id: "desc",
+        id: 'desc',
       },
     };
 
@@ -103,7 +103,7 @@ export class GamesService {
         after: args.after,
         before: args.before,
         last: args.last,
-      }
+      },
     );
 
     return games;
@@ -154,7 +154,7 @@ export class GamesService {
       },
     });
 
-    this.eventEmitter.emit("game.result.updated", Game);
+    this.eventEmitter.emit('game.result.updated', Game);
 
     return game;
   }

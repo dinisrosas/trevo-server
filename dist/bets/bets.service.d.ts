@@ -1,13 +1,13 @@
-import { Bet } from "@prisma/client";
-import { GamesService } from "src/games/games.service";
-import { PrismaService } from "src/prisma/prisma.service";
-import { CreateBetInput } from "./dto/create-bet.input";
-import { UpdateBetInput } from "./dto/update-bet.input";
+import { Bet } from '@prisma/client';
+import { GamesService } from 'src/games/games.service';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateBetInput } from './dto/create-bet.input';
+import { UpdateBetInput } from './dto/update-bet.input';
 export declare class BetsService {
     private prisma;
     private gamesService;
     constructor(prisma: PrismaService, gamesService: GamesService);
-    create(data: Omit<CreateBetInput, "game"> & {
+    create(data: Omit<CreateBetInput, 'game'> & {
         gameId: string;
         betbookId: string;
     }): Promise<Bet>;

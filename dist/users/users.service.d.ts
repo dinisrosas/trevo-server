@@ -1,7 +1,7 @@
-import { PrismaService } from "src/prisma/prisma.service";
-import { CreateUserInput } from "./dto/create-user.input";
-import { UpdatePasswordInput, UpdateUserInput } from "./dto/update-user.input";
-import { User } from "./entities/user.entity";
+import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateUserInput } from './dto/create-user.input';
+import { UpdatePasswordInput, UpdateUserInput } from './dto/update-user.input';
+import { User } from './entities/user.entity';
 export declare class UsersService {
     private prisma;
     constructor(prisma: PrismaService);

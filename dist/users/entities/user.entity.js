@@ -13,44 +13,41 @@ exports.User = void 0;
 const graphql_1 = require("@nestjs/graphql");
 const client_1 = require("@prisma/client");
 let User = class User {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { type: () => String }, sid: { type: () => Number }, name: { type: () => String }, username: { type: () => String }, password: { type: () => String }, role: { type: () => Object }, createdAt: { type: () => Date }, updatedAt: { type: () => Date } };
-    }
 };
 __decorate([
-    graphql_1.Field(() => graphql_1.ID),
+    (0, graphql_1.Field)(() => graphql_1.ID),
     __metadata("design:type", String)
 ], User.prototype, "id", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", Number)
 ], User.prototype, "sid", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], User.prototype, "name", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], User.prototype, "username", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], User.prototype, "password", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], User.prototype, "role", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", Date)
 ], User.prototype, "createdAt", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", Date)
 ], User.prototype, "updatedAt", void 0);
 User = __decorate([
-    graphql_1.ObjectType()
+    (0, graphql_1.ObjectType)()
 ], User);
 exports.User = User;
 //# sourceMappingURL=user.entity.js.map

@@ -1,5 +1,5 @@
-import { Field, ID, InputType } from "@nestjs/graphql";
-import { Game } from "../entities/game.entity";
+import { Field, ID, InputType } from '@nestjs/graphql';
+import { Game } from '../entities/game.entity';
 
 @InputType()
 export class UpdateGameInput extends Game {

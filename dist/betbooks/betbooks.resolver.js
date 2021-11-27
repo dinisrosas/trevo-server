@@ -44,45 +44,45 @@ let BetbooksResolver = class BetbooksResolver {
     }
 };
 __decorate([
-    graphql_1.Mutation(() => betbook_entity_1.Betbook),
-    __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args("input")),
+    (0, graphql_1.Mutation)(() => betbook_entity_1.Betbook),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, create_betbook_input_1.CreateBetbookInput]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "createBetbook", null);
 __decorate([
-    graphql_1.Query(() => betbook_entity_1.BetbookConnection, { name: "betbooks" }),
-    __param(0, current_user_decorator_1.CurrentUser()),
-    __param(1, graphql_1.Args()),
+    (0, graphql_1.Query)(() => betbook_entity_1.BetbookConnection, { name: 'betbooks' }),
+    __param(0, (0, current_user_decorator_1.CurrentUser)()),
+    __param(1, (0, graphql_1.Args)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object, generics_args_1.FindAllArgs]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "findAll", null);
 __decorate([
-    graphql_1.Query(() => betbook_entity_1.Betbook, { name: "betbook" }),
-    __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
+    (0, graphql_1.Query)(() => betbook_entity_1.Betbook, { name: 'betbook' }),
+    __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "findOne", null);
 __decorate([
-    graphql_1.Mutation(() => betbook_entity_1.Betbook),
-    __param(0, graphql_1.Args("input")),
+    (0, graphql_1.Mutation)(() => betbook_entity_1.Betbook),
+    __param(0, (0, graphql_1.Args)('input')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [update_betbook_input_1.UpdateBetbookInput]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "updateBetbook", null);
 __decorate([
-    graphql_1.Mutation(() => betbook_entity_1.Betbook),
-    __param(0, graphql_1.Args("id", { type: () => graphql_1.ID })),
+    (0, graphql_1.Mutation)(() => betbook_entity_1.Betbook),
+    __param(0, (0, graphql_1.Args)('id', { type: () => graphql_1.ID })),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], BetbooksResolver.prototype, "deleteBetbook", null);
 BetbooksResolver = __decorate([
-    common_1.UseGuards(gql_auth_guard_1.GqlAuthGuard),
-    graphql_1.Resolver(() => betbook_entity_1.Betbook),
+    (0, common_1.UseGuards)(gql_auth_guard_1.GqlAuthGuard),
+    (0, graphql_1.Resolver)(() => betbook_entity_1.Betbook),
     __metadata("design:paramtypes", [betbooks_service_1.BetbooksService])
 ], BetbooksResolver);
 exports.BetbooksResolver = BetbooksResolver;

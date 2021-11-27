@@ -9,7 +9,7 @@ const odd_dividers = {
 };
 function getBetAward(params) {
     switch (params.mode) {
-        case "DRAW":
+        case 'DRAW':
             return getDrawAward({
                 target: params.target,
                 pick: params.pick,
@@ -17,7 +17,7 @@ function getBetAward(params) {
                 updown: params.updown,
                 result: params.result,
             });
-        case "LOTTERY":
+        case 'LOTTERY':
             return getGameAward({
                 type: params.type,
                 target: params.target,
@@ -26,7 +26,7 @@ function getBetAward(params) {
                 amount: params.amount,
             });
         default:
-            throw new Error("Invalid game mode");
+            throw new Error('Invalid game mode');
     }
 }
 exports.getBetAward = getBetAward;
@@ -75,20 +75,20 @@ function getGameAward(params) {
     return 0;
 }
 function getDrawnTickets({ type, result }) {
-    if (type === "M1") {
+    if (type === 'M1') {
         const first = result.slice(-3);
         const second = result.substring(0, result.length - 1).slice(-3);
         const third = String(Number(first) + Number(second)).slice(-3);
         return [first, second, third];
     }
-    else if (type === "JE") {
+    else if (type === 'JE') {
         const first = result.slice(-3);
         const second = result.substring(0, 3);
         const third = String(Number(first) + Number(second)).slice(-3);
         return [first, second, third];
     }
     return result
-        .split(";")
+        .split(';')
         .map((ticket) => ticket.slice(-3))
         .slice(0, 3);
 }

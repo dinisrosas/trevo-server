@@ -12,16 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthSession = void 0;
 const graphql_1 = require("@nestjs/graphql");
 let AuthSession = class AuthSession {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { token: { type: () => String } };
-    }
 };
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], AuthSession.prototype, "token", void 0);
 AuthSession = __decorate([
-    graphql_1.ObjectType()
+    (0, graphql_1.ObjectType)()
 ], AuthSession);
 exports.AuthSession = AuthSession;
 //# sourceMappingURL=auth-session.entity.js.map

@@ -10,10 +10,18 @@ import { UsersModule } from "./users/users.module";
 
 @Module({
   imports: [
+    UsersModule,
+    AuthModule,
+    UsersModule,
+    AuthModule,
+    GamesModule,
+    BetsModule,
+    BetbooksModule,
+    ScheduleModule.forRoot(),
+    EventEmitterModule.forRoot(),
     GraphQLModule.forRoot({
-      debug: true,
-      installSubscriptionHandlers: true,
       autoSchemaFile: "schema.gql",
+      installSubscriptionHandlers: true,
       formatError: (error) => {
         const graphQLFormattedError = {
           name: error.extensions?.exception?.name || error.name,
@@ -25,13 +33,6 @@ import { UsersModule } from "./users/users.module";
         return graphQLFormattedError;
       },
     }),
-    EventEmitterModule.forRoot(),
-    ScheduleModule.forRoot(),
-    UsersModule,
-    AuthModule,
-    GamesModule,
-    BetsModule,
-    BetbooksModule,
   ],
 })
 export class AppModule {}

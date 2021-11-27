@@ -10,28 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateBetbookInput = void 0;
-const eager_import_0 = require("../../bets/dto/create-bet.input");
 const graphql_1 = require("@nestjs/graphql");
 const create_bet_input_1 = require("../../bets/dto/create-bet.input");
 let CreateBetbookInput = class CreateBetbookInput {
-    static _GRAPHQL_METADATA_FACTORY() {
-        return { bettor: { type: () => String }, fixed: { type: () => Boolean }, bets: { type: () => [require("../../bets/dto/create-bet.input").CreateBetInput] } };
-    }
 };
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", String)
 ], CreateBetbookInput.prototype, "bettor", void 0);
 __decorate([
-    graphql_1.Field(),
+    (0, graphql_1.Field)(),
     __metadata("design:type", Boolean)
 ], CreateBetbookInput.prototype, "fixed", void 0);
 __decorate([
-    graphql_1.Field(() => [create_bet_input_1.CreateBetInput]),
+    (0, graphql_1.Field)(() => [create_bet_input_1.CreateBetInput]),
     __metadata("design:type", Array)
 ], CreateBetbookInput.prototype, "bets", void 0);
 CreateBetbookInput = __decorate([
-    graphql_1.InputType()
+    (0, graphql_1.InputType)()
 ], CreateBetbookInput);
 exports.CreateBetbookInput = CreateBetbookInput;
 //# sourceMappingURL=create-betbook.input.js.map
