@@ -58,6 +58,7 @@ type Bet {
   pick: String!
   amount: Float!
   award: Float
+  awardDescription: String
   game: Game!
   betbook: Betbook!
   updown: Boolean
