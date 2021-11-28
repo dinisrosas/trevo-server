@@ -22,6 +22,9 @@ export class Bet {
   @Field({ nullable: true })
   award?: number;
 
+  @Field({ nullable: true })
+  awardDescription?: string;
+
   @Field(() => Game)
   game?: Game;
 
