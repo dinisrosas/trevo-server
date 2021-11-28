@@ -1,4 +1,5 @@
 import {
+  Award,
   GameModeEnum,
   GameTypeEnum,
   GetBetAward,
@@ -14,7 +15,7 @@ const odd_dividers = {
   game_3: [1, 6, 12],
 };
 
-export function getBetAward(params: GetBetAward): number {
+export function getBetAward(params: GetBetAward): Award {
   switch (params.mode) {
     case GameModeEnum.DRAW:
       return getDrawAward({
@@ -37,67 +38,6 @@ export function getBetAward(params: GetBetAward): number {
   }
 }
 
-function getDrawAward(params: GetDrawAward): number {
-  const ball = parseInt(params.result.split(/\s+/)[params.ball - 1]);
-  const pick = parseInt(params.pick);
-
-  if (ball === pick) {
-    return params.target;
-  } else if (params.updown) {
-    const match = ball === pick - 1 || ball === pick + 1;
-    if (match) {
-      return params.target / odd_dividers.draw_updown;
-    }
-  }
-
-  return 0;
-}
-
-function getGameAward(params: GetGameAward): number {
-  const drawnTickets = getDrawnTickets({
-    type: params.type,
-    result: params.result,
-  });
-
-  if (params.pick.length === 3) {
-    const index = drawnTickets.findIndex(
-      (ticket: string) => ticket === params.pick,
-    );
-
-    if (index !== -1) {
-      return params.target / odd_dividers.game_3[index];
-    }
-
-    const hasLastTwo = drawnTickets
-      .map((ticket) => ticket.slice(-2))
-      .some((termination) => termination === params.pick.slice(-2));
-
-    if (hasLastTwo) {
-      return params.amount;
-    }
-  } else if (params.pick.length === 2) {
-    const index = drawnTickets.findIndex(
-      (ticket) => ticket.slice(-2) === params.pick,
-    );
-
-    if (index !== -1) {
-      return params.target / odd_dividers.game_2[index];
-    }
-
-    const updownIndex = drawnTickets.findIndex(
-      (ticket) =>
-        Number(ticket.slice(-2)) === Number(params.pick) - 1 ||
-        Number(ticket.slice(-2)) === Number(params.pick) + 1,
-    );
-
-    if (updownIndex !== -1) {
-      return params.amount * odd_dividers.game_updown[updownIndex];
-    }
-  }
-
-  return 0;
-}
-
 function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
   if (type === GameTypeEnum.M1) {
     const first = result.slice(-3);
@@ -118,4 +58,96 @@ function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
     .split(';')
     .map((ticket) => ticket.slice(-3))
     .slice(0, 3);
+}
+
+function getDrawAward(params: GetDrawAward): Award {
+  const ball = parseInt(params.result.split(/\s+/)[params.ball - 1]);
+  const pick = parseInt(params.pick);
+
+  if (ball === pick) {
+    return {
+      amount: params.target,
+      description: `1º Lugar`,
+    };
+  } else if (params.updown) {
+    if (ball === pick - 1) {
+      return {
+        amount: params.target / odd_dividers.draw_updown,
+        description: '1º Lugar Desce',
+      };
+    } else if (ball === pick + 1) {
+      return {
+        amount: params.target / odd_dividers.draw_updown,
+        description: '1º Lugar Sobe',
+      };
+    }
+  }
+
+  return { amount: 0 };
+}
+
+function getGameAward(params: GetGameAward): Award {
+  const drawnTickets = getDrawnTickets({
+    type: params.type,
+    result: params.result,
+  });
+
+  if (params.pick.length === 3) {
+    const index = drawnTickets.findIndex(
+      (ticket: string) => ticket === params.pick,
+    );
+
+    if (index !== -1) {
+      return {
+        amount: params.target / odd_dividers.game_3[index],
+        description: `${index + 1}º Lugar`,
+      };
+    }
+
+    const hasLastTwoIndex = drawnTickets
+      .map((ticket) => ticket.slice(-2))
+      .findIndex((termination) => termination === params.pick.slice(-2));
+
+    if (hasLastTwoIndex !== -1) {
+      return {
+        amount: params.amount,
+        description: `${hasLastTwoIndex + 1}º Lugar Terminação`,
+      };
+    }
+  } else if (params.pick.length === 2) {
+    const index = drawnTickets.findIndex(
+      (ticket) => ticket.slice(-2) === params.pick,
+    );
+
+    if (index !== -1) {
+      return {
+        amount: params.target / odd_dividers.game_2[index],
+        description: `${index + 1}º Lugar`,
+      };
+    }
+
+    const downIndex = drawnTickets.findIndex(
+      (ticket) => Number(ticket.slice(-2)) === Number(params.pick) - 1,
+    );
+
+    if (downIndex !== -1) {
+      return {
+        amount: params.amount * odd_dividers.game_updown[downIndex],
+        description: `${downIndex + 1}º Lugar Desce`,
+      };
+    }
+
+    const upIndex = drawnTickets.findIndex(
+      (ticket) => Number(ticket.slice(-2)) === Number(params.pick) - 1,
+    );
+
+    if (upIndex !== -1) {
+      return {
+        amount: params.amount * odd_dividers.game_updown[upIndex],
+        description: `${upIndex + 1}º Lugar Sobe`,
+      };
+    }
+  }
+
+  return { amount: 0 };
 }

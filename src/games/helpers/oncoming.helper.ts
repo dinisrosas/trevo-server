@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
+import { getGameMode } from 'src/bets/helpers/game.helper';
 import { RawGame } from 'src/types';
-import { getGameMode } from 'src/utils/misc';
 import { gameConstants } from '../contants';
 import rawGames from '../data/raw-games';
 import { OncomingGame } from '../entities/oncoming-game.entity';
@@ -40,7 +40,7 @@ export function findFirstRawGame(startDate: Date): RawGame {
   const startDateTime = DateTime.fromJSDate(startDate);
   const dayOfWeek = startDateTime.weekday;
 
-  // is sunday
+  // no games at sunday
   if (dayOfWeek === 7) {
     return rawGames[0];
   }

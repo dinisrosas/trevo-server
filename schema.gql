@@ -18,6 +18,10 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type AuthSession {
+  token: String!
+}
+
 type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
@@ -101,10 +105,6 @@ type GameConnection {
   pageInfo: PageInfo!
 }
 
-type AuthSession {
-  token: String!
-}
-
 type GameResult {
   result: String!
   isoDate: String!
@@ -186,8 +186,9 @@ input UpdateGameResultInput {
 }
 
 input UpdateBetInput {
-  id: ID!
+  id: ID
   award: Float!
+  awardDescription: String
 }
 
 input CreateBetbookInput {

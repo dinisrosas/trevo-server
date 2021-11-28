@@ -3,9 +3,9 @@ import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { EventEmitter2 } from 'eventemitter2';
 import { DateTime } from 'luxon';
+import { getGameFromRawData } from 'src/bets/helpers/game.helper';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { GameType } from 'src/types';
-import { getGameFromRawData } from 'src/utils/misc';
 import { CreateGameInput } from './dto/create-game.input';
 import { FindAllBySellerArgs } from './dto/generics.args';
 import { UpdateGameInput } from './dto/update-game.input';

@@ -62,3 +62,8 @@ export type GetBetAward = {
 export type GetDrawAward = Omit<GetBetAward, 'type' | 'mode' | 'amount'>;
 export type GetGameAward = Omit<GetBetAward, 'ball' | 'updown' | 'mode'>;
 export type GetDrawnTickets = Pick<GetBetAward, 'type' | 'result'>;
+
+export type Award = {
+  description?: string;
+  amount: number;
+};

@@ -26,7 +26,10 @@ export class GameResultListener {
         updown: bet.updown,
       });
 
-      await this.betsService.update(bet.id, { id: bet.id, award });
+      await this.betsService.update(bet.id, {
+        award: award.amount,
+        awardDescription: award.description,
+      });
     }
   }
 }
