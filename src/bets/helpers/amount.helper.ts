@@ -19,7 +19,7 @@ export function getBetAmount({
   updown,
 }: CalculateBetAmount): number {
   switch (mode) {
-    case GameModeEnum.LOTTERY:
+    case GameModeEnum.DRAW:
       if (updown) {
         return target / ODDS[mode][1];
       } else {
