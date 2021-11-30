@@ -1,11 +1,6 @@
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import {
-  BadRequestException,
-  Injectable,
-  NotAcceptableException,
-} from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { GraphQLError } from 'graphql';
 import { DateTime } from 'luxon';
 import { BetsService } from 'src/bets/bets.service';
 import { getGameFromRawData } from 'src/bets/helpers/game.helper';
