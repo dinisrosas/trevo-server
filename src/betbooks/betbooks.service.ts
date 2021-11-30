@@ -39,12 +39,11 @@ export class BetbooksService {
     });
 
     if (hasInvalidDate) {
+      throw new NotAcceptableException({
+        message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more selected games`,
+        code: 'GAME_UNAVAILABLE',
+      });
     }
-
-    throw new NotAcceptableException({
-      message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more selected games`,
-      code: 'GAME_UNAVAILABLE',
-    });
 
     const betbook = await this.prisma.betbook.create({
       data: {
