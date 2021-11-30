@@ -1,6 +1,11 @@
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotAcceptableException,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { GraphQLError } from 'graphql';
 import { DateTime } from 'luxon';
 import { BetsService } from 'src/bets/bets.service';
 import { getGameFromRawData } from 'src/bets/helpers/game.helper';
@@ -34,10 +39,12 @@ export class BetbooksService {
     });
 
     if (hasInvalidDate) {
-      throw new BadRequestException(
-        `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more selected games`,
-      );
     }
+
+    throw new NotAcceptableException({
+      message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more selected games`,
+      code: 'GAME_UNAVAILABLE',
+    });
 
     const betbook = await this.prisma.betbook.create({
       data: {

@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotAcceptableException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { comparePasswords, encryptPassword } from 'src/utils/misc';
 import { CreateUserInput } from './dto/create-user.input';
@@ -35,6 +39,8 @@ export class UsersService {
   }
 
   async updatePassword(id: string, data: UpdatePasswordInput): Promise<User> {
+    console.log(id, data);
+
     const user = await this.prisma.user.findUnique({
       where: { id },
     });
@@ -42,9 +48,10 @@ export class UsersService {
     const match = await comparePasswords(data.currentPassword, user.password);
 
     if (!match) {
-      throw new BadRequestException(
-        'Current password does not match user password',
-      );
+      throw new NotAcceptableException({
+        message: 'Current password does not match user password',
+        code: 'INVALID_CURRENT_PASSWORD',
+      });
     }
 
     const hashedPassword = await encryptPassword(data.newPassword);

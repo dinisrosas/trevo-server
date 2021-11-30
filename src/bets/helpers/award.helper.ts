@@ -10,9 +10,9 @@ import {
 
 const odd_dividers = {
   draw_updown: 12,
-  game_updown: [5, 10, 20],
-  game_2: [1, 6, 12],
-  game_3: [1, 6, 12],
+  lottery_updown: [5, 10, 20],
+  lottery_2: [1, 5, 10], // 1 5 12 ??
+  lottery_3: [1, 6, 12], // 1 5 10 ??
 };
 
 export function getBetAward(params: GetBetAward): Award {
@@ -25,6 +25,7 @@ export function getBetAward(params: GetBetAward): Award {
         updown: params.updown,
         result: params.result,
       });
+
     case GameModeEnum.LOTTERY:
       return getGameAward({
         type: params.type,
@@ -61,21 +62,21 @@ function getDrawnTickets({ type, result }: GetDrawnTickets): string[] {
 }
 
 function getDrawAward(params: GetDrawAward): Award {
-  const ball = parseInt(params.result.split(/\s+/)[params.ball - 1]);
+  const result = parseInt(params.result.split(/\s+/)[params.ball - 1]);
   const pick = parseInt(params.pick);
 
-  if (ball === pick) {
+  if (result === pick) {
     return {
       amount: params.target,
-      description: `1º Lugar`,
+      description: '1º Lugar',
     };
   } else if (params.updown) {
-    if (ball === pick - 1) {
+    if (pick === result - 1) {
       return {
         amount: params.target / odd_dividers.draw_updown,
         description: '1º Lugar Desce',
       };
-    } else if (ball === pick + 1) {
+    } else if (pick === result + 1) {
       return {
         amount: params.target / odd_dividers.draw_updown,
         description: '1º Lugar Sobe',
@@ -99,7 +100,7 @@ function getGameAward(params: GetGameAward): Award {
 
     if (index !== -1) {
       return {
-        amount: params.target / odd_dividers.game_3[index],
+        amount: params.target / odd_dividers.lottery_3[index],
         description: `${index + 1}º Lugar`,
       };
     }
@@ -121,33 +122,39 @@ function getGameAward(params: GetGameAward): Award {
 
     if (index !== -1) {
       return {
-        amount: params.target / odd_dividers.game_2[index],
+        amount: params.target / odd_dividers.lottery_2[index],
         description: `${index + 1}º Lugar`,
       };
     }
 
-    const downIndex = drawnTickets.findIndex(
-      (ticket) => Number(ticket.slice(-2)) === Number(params.pick) - 1,
-    );
+    const updown = findUpdownResult(params.pick, drawnTickets);
 
-    if (downIndex !== -1) {
+    if (updown) {
       return {
-        amount: params.amount * odd_dividers.game_updown[downIndex],
-        description: `${downIndex + 1}º Lugar Desce`,
-      };
-    }
-
-    const upIndex = drawnTickets.findIndex(
-      (ticket) => Number(ticket.slice(-2)) === Number(params.pick) - 1,
-    );
-
-    if (upIndex !== -1) {
-      return {
-        amount: params.amount * odd_dividers.game_updown[upIndex],
-        description: `${upIndex + 1}º Lugar Sobe`,
+        amount: params.target / odd_dividers.lottery_updown[updown.index],
+        description: `${updown.index + 1}º Lugar ${
+          updown.variation > 0 ? 'Sobe' : 'Desce'
+        }`,
       };
     }
   }
 
   return { amount: 0 };
+}
+
+function findUpdownResult(
+  pick: string,
+  tickets: string[],
+  digits = 2,
+): { index: number; variation: number } {
+  const variations = [-1, 1];
+
+  const array = variations.map((variation) => ({
+    variation,
+    index: tickets.findIndex(
+      (ticket) => Number(ticket.slice(-digits)) + variation === Number(pick),
+    ),
+  }));
+
+  return array.find((data) => data.index !== -1);
 }

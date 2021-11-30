@@ -154,7 +154,7 @@ export class GamesService {
       },
     });
 
-    this.eventEmitter.emit('game.result.updated', Game);
+    this.eventEmitter.emit('game.result.updated', game);
 
     return game;
   }

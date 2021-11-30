@@ -11,16 +11,16 @@ export class GameResultListener {
   constructor(private betsService: BetsService) {}
 
   @OnEvent('game.result.updated')
-  async handleGameResultUpdated(payload: Game): Promise<void> {
-    const bets = await this.betsService.findAllByGameId(payload.id);
+  async handleGameResultUpdated(game: Game): Promise<void> {
+    const bets = await this.betsService.findAllByGameId(game.id);
 
     for (const bet of bets) {
       const award = getBetAward({
         pick: bet.pick,
-        result: payload.result,
-        mode: payload.mode,
+        result: game.result,
+        mode: game.mode,
         target: bet.target,
-        type: payload.type,
+        type: game.type,
         ball: bet.ball,
         amount: bet.amount,
         updown: bet.updown,
