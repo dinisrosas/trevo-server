@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotAcceptableException,
-} from '@nestjs/common';
+import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { comparePasswords, encryptPassword } from 'src/utils/misc';
 import { CreateUserInput } from './dto/create-user.input';
