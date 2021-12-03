@@ -7,8 +7,6 @@ const prisma = new PrismaClient();
 async function main() {
   const args = process.argv.slice(2);
 
-  console.log('args', args);
-
   if (args.length !== 3) {
     console.error(
       'Invalid arguments. Arguments should be [name, username, is_seller]',

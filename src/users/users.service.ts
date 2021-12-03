@@ -57,8 +57,6 @@ export class UsersService {
   }
 
   async updatePassword(id: string, data: UpdatePasswordInput): Promise<User> {
-    console.log(id, data);
-
     const user = await this.prisma.user.findUnique({
       where: { id },
     });
