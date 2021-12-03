@@ -1,5 +1,7 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { UserRoleEnum } from 'src/types';
+import { ErrorCodes } from 'src/utils/errors';
 import { comparePasswords, encryptPassword } from 'src/utils/misc';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdatePasswordInput, UpdateUserInput } from './dto/update-user.input';
@@ -9,9 +11,27 @@ import { User } from './entities/user.entity';
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  create(createUserInput: CreateUserInput): Promise<User> {
-    return this.prisma.user.create({
-      data: createUserInput,
+  async register(input: CreateUserInput): Promise<User> {
+    const { name, username, password } = input;
+
+    const user = await this.findOneByUsername(username);
+
+    if (user) {
+      throw new NotAcceptableException({
+        message: 'Username already exists',
+        code: ErrorCodes.UsernameAlreadyExists,
+      });
+    }
+
+    const encryptedPassword = await encryptPassword(password);
+
+    return await this.prisma.user.create({
+      data: {
+        name,
+        username,
+        password: encryptedPassword,
+        roles: [UserRoleEnum.Seller],
+      },
     });
   }
 
@@ -48,7 +68,7 @@ export class UsersService {
     if (!match) {
       throw new NotAcceptableException({
         message: 'Current password does not match user password',
-        code: 'INVALID_CURRENT_PASSWORD',
+        code: ErrorCodes.InvalidCurrentPassword,
       });
     }
 

@@ -1,7 +1,7 @@
 import { Bet, Betbook, Game, User } from '@prisma/client';
 
 export type UserProps = User;
-export type AuthUser = Pick<UserProps, 'id' | 'username'>;
+export type AuthUser = Pick<UserProps, 'id' | 'username' | 'roles'>;
 
 export type BetbookProps = Betbook;
 
@@ -9,11 +9,11 @@ export type BetProps = Bet;
 
 export type GameProps = Game;
 
-export type UserRole = User['role'];
+export type UserRoles = User['roles'];
 
 export enum UserRoleEnum {
-  SELLER = 'SELLER',
-  ADMIN = 'ADMIN',
+  Seller = 'SELLER',
+  Admin = 'ADMIN',
 }
 
 export type GameType = GameProps['type'];

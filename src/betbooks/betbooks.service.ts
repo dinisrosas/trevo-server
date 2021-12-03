@@ -7,6 +7,7 @@ import { getGameFromRawData } from 'src/bets/helpers/game.helper';
 import { gameConstants } from 'src/games/contants';
 import { GamesService } from 'src/games/games.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { ErrorCodes } from 'src/utils/errors';
 import { CreateBetbookInput } from './dto/create-betbook.input';
 import { FindAllArgs } from './dto/generics.args';
 import { UpdateBetbookInput } from './dto/update-betbook.input';
@@ -36,7 +37,7 @@ export class BetbooksService {
     if (hasInvalidDate) {
       throw new NotAcceptableException({
         message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more games`,
-        code: 'GAME_UNAVAILABLE',
+        code: ErrorCodes.GameUnavailable,
       });
     }
 

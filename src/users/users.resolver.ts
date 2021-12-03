@@ -1,12 +1,16 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
+import { Roles } from 'src/auth/decorators/roles.decorator';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
+import { UserRoleEnum } from 'src/types';
+import { CreateUserInput } from './dto/create-user.input';
 import { UpdatePasswordInput, UpdateUserInput } from './dto/update-user.input';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
-@UseGuards(GqlAuthGuard)
+@UseGuards(GqlAuthGuard, RolesGuard)
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly usersService: UsersService) {}
@@ -14,6 +18,12 @@ export class UsersResolver {
   @Query(() => User)
   me(@CurrentUser() user: User): Promise<User> {
     return this.usersService.findOneById(user.id);
+  }
+
+  @Roles(UserRoleEnum.Admin)
+  @Mutation(() => User)
+  registerSeller(@Args('input') input: CreateUserInput): Promise<User> {
+    return this.usersService.register(input);
   }
 
   @Query(() => [User], { name: 'users' })

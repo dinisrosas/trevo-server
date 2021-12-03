@@ -8,14 +8,14 @@ type User {
   name: String!
   username: String!
   password: String!
-  role: UserRole!
+  roles: [UserRole!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
 
 enum UserRole {
-  SELLER
-  ADMIN
+  Seller
+  Admin
 }
 
 """
@@ -139,11 +139,11 @@ type Query {
 }
 
 type Mutation {
+  registerSeller(input: CreateUserInput!): User!
   updateUser(input: UpdateUserInput!): User!
   updatePassword(input: UpdatePasswordInput!): User!
   deleteUser(id: ID!): User!
   login(input: LoginInput!): AuthSession!
-  signUp(input: CreateUserInput!): User!
   createGame(input: CreateGameInput!): Game!
   updateGame(input: UpdateGameInput!): Game!
   updateGameResult(input: UpdateGameResultInput!): Game!
@@ -153,6 +153,12 @@ type Mutation {
   createBetbook(input: CreateBetbookInput!): Betbook!
   updateBetbook(input: UpdateBetbookInput!): Betbook!
   deleteBetbook(id: ID!): Betbook!
+}
+
+input CreateUserInput {
+  name: String!
+  username: String!
+  password: String!
 }
 
 input UpdateUserInput {
@@ -167,12 +173,6 @@ input UpdatePasswordInput {
 }
 
 input LoginInput {
-  username: String!
-  password: String!
-}
-
-input CreateUserInput {
-  name: String!
   username: String!
   password: String!
 }
