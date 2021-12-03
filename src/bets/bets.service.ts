@@ -61,19 +61,6 @@ export class BetsService {
     });
   }
 
-  async getBetbookTotalAmount(betbookId: string): Promise<number> {
-    const aggregate = await this.prisma.bet.aggregate({
-      where: {
-        betbookId: betbookId,
-      },
-      _sum: {
-        amount: true,
-      },
-    });
-
-    return aggregate._sum.amount;
-  }
-
   async findOne(id: string): Promise<Bet> {
     return await this.prisma.bet.findUnique({ where: { id } });
   }

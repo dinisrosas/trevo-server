@@ -8,9 +8,14 @@ type User {
   name: String!
   username: String!
   password: String!
-  role: String!
+  role: UserRole!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+enum UserRole {
+  SELLER
+  ADMIN
 }
 
 """

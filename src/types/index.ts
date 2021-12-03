@@ -9,6 +9,8 @@ export type BetProps = Bet;
 
 export type GameProps = Game;
 
+export type UserRole = User['role'];
+
 export enum UserRoleEnum {
   SELLER = 'SELLER',
   ADMIN = 'ADMIN',

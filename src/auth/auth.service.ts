@@ -1,6 +1,6 @@
 import {
-  BadRequestException,
   Injectable,
+  NotAcceptableException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -36,6 +36,7 @@ export class AuthService {
     const payload = {
       sub: user.id,
       username: user.username,
+      role: user.role,
     };
 
     return {
@@ -49,7 +50,7 @@ export class AuthService {
     const user = await this.usersService.findOneByUsername(username);
 
     if (user) {
-      throw new BadRequestException('Username already exists');
+      throw new NotAcceptableException('Username already exists');
     }
 
     const encryptedPassword = await encryptPassword(password);

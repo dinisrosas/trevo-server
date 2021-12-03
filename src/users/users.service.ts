@@ -20,7 +20,9 @@ export class UsersService {
   }
 
   findOneById(id: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
   }
 
   findOneByUsername(username: string): Promise<User> {

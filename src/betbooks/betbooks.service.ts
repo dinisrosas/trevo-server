@@ -35,7 +35,7 @@ export class BetbooksService {
 
     if (hasInvalidDate) {
       throw new NotAcceptableException({
-        message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more selected games`,
+        message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more games`,
         code: 'GAME_UNAVAILABLE',
       });
     }
