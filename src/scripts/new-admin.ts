@@ -1,5 +1,5 @@
 import { PrismaClient, UserRole } from '@prisma/client';
-import { encryptPassword, username_regex } from '../src/utils/misc';
+import { encryptPassword, username_regex } from 'src/utils/misc';
 
 const prisma = new PrismaClient();
 
