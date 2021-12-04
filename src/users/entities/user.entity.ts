@@ -1,4 +1,10 @@
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  HideField,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { UserRoleEnum, UserRoles } from 'src/types';
 
 registerEnumType(UserRoleEnum, {
@@ -19,7 +25,7 @@ export class User {
   @Field()
   username: string;
 
-  @Field()
+  @HideField()
   password: string;
 
   @Field(() => [UserRoleEnum])

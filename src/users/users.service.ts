@@ -39,6 +39,15 @@ export class UsersService {
     return this.prisma.user.findMany();
   }
 
+  findAllSellers(id: string): Promise<User[]> {
+    return this.prisma.user.findMany({
+      where: {
+        id: { not: id },
+        roles: { has: UserRoleEnum.Seller },
+      },
+    });
+  }
+
   findOneById(id: string): Promise<User> {
     return this.prisma.user.findUnique({
       where: { id },

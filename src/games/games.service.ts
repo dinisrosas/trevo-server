@@ -62,7 +62,11 @@ export class GamesService {
       include: {
         bets: {
           include: {
-            betbook: true,
+            betbook: {
+              include: {
+                seller: true,
+              },
+            },
           },
         },
       },

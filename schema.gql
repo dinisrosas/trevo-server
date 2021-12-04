@@ -7,7 +7,6 @@ type User {
   sid: Float!
   name: String!
   username: String!
-  password: String!
   roles: [UserRole!]!
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -126,6 +125,7 @@ type OncomingGame {
 
 type Query {
   me: User!
+  sellers: [User!]!
   users: [User!]!
   user(username: String!): User!
   oncomingGames: [OncomingGame!]!
