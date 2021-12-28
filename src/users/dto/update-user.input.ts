@@ -5,10 +5,10 @@ export class UpdateUserInput {
   @Field(() => ID)
   id: string;
 
-  @Field(() => ID)
+  @Field()
   name: string;
 
-  @Field(() => ID)
+  @Field()
   username: string;
 }
 
