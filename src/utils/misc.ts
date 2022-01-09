@@ -12,3 +12,7 @@ export async function comparePasswords(
 ): Promise<boolean> {
   return await bcrypt.compare(password, encryptedPassword);
 }
+
+export async function sleep(time = 2000) {
+  return await new Promise((resolve) => setTimeout(resolve, time));
+}

@@ -8,29 +8,31 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  name      String
-  username  String     @unique
-  password  String
-  roles     UserRole[]
-  createdAt DateTime   @default(now()) @map("created_at")
-  updatedAt DateTime   @updatedAt @map("updated_at")
-  sid       Int        @default(autoincrement())
-  betbooks  Betbook[]
+  id       String     @id @default(cuid())
+  name     String
+  username String     @unique
+  password String
+  roles    UserRole[]
+  sid      Int        @default(autoincrement())
+  betbooks Betbook[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("users")
 }
 
 model Betbook {
-  id        String   @id @default(cuid())
-  bettor    String
-  fixed     Boolean  @default(false)
-  sellerId  String   @map("seller_id")
+  id       String  @id @default(cuid())
+  bettor   String
+  fixed    Boolean @default(false)
+  sellerId String  @map("seller_id")
+  sid      Int     @default(autoincrement())
+  seller   User    @relation(fields: [sellerId], references: [id])
+  bets     Bet[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  sid       Int      @default(autoincrement())
-  seller    User     @relation(fields: [sellerId], references: [id])
-  bets      Bet[]
 
   @@map("betbooks")
 }
@@ -46,27 +48,29 @@ model Bet {
   ball             Int?
   betbookId        String   @map("betbook_id")
   gameId           String   @map("game_id")
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
   sid              Int      @default(autoincrement())
   betbook          Betbook  @relation(fields: [betbookId], references: [id], onDelete: Cascade)
   game             Game     @relation(fields: [gameId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
   @@map("bets")
 }
 
 model Game {
-  id        String   @id @default(cuid())
-  name      String
-  type      GameType
-  result    String?
-  date      DateTime
-  isoDate   String   @map("iso_date")
+  id      String   @id @default(cuid())
+  name    String
+  type    GameType
+  result  String?
+  date    DateTime
+  isoDate String   @map("iso_date")
+  mode    GameMode
+  sid     Int      @default(autoincrement())
+  bets    Bet[]
+
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
-  mode      GameMode
-  sid       Int      @default(autoincrement())
-  bets      Bet[]
 
   @@unique([type, isoDate], name: "type_iso_date")
   @@map("games")

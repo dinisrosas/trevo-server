@@ -4,4 +4,7 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 export class UpdateBetbookInput {
   @Field(() => ID)
   id: string;
+
+  @Field()
+  fixed: boolean;
 }

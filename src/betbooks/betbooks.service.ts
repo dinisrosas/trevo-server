@@ -9,7 +9,7 @@ import { GamesService } from 'src/games/games.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ErrorCodes } from 'src/utils/errors';
 import { CreateBetbookInput } from './dto/create-betbook.input';
-import { FindAllArgs } from './dto/generics.args';
+import { FindAllArgs } from './dto/find-all.args';
 import { UpdateBetbookInput } from './dto/update-betbook.input';
 import { Betbook, BetbookConnection } from './entities/betbook.entity';
 
@@ -105,7 +105,7 @@ export class BetbooksService {
     return betbooks;
   }
 
-  async findOne(id: string): Promise<Betbook> {
+  async findOneById(id: string): Promise<Betbook> {
     return await this.prisma.betbook.findUnique({
       where: { id },
       include: {
@@ -132,6 +132,20 @@ export class BetbooksService {
   }
 
   async delete(id: string): Promise<Betbook> {
+    const betbook = await this.findOneById(id);
+
+    const hasBetAlreadyDrawed = betbook.bets.some((bet) => {
+      const timeLeft = DateTime.fromJSDate(bet.game.date).diffNow().toMillis();
+      return timeLeft <= 0;
+    });
+
+    if (hasBetAlreadyDrawed) {
+      throw new NotAcceptableException({
+        message: "Can't delete betbook with game already drawn",
+        code: ErrorCodes.BetbookHasGameAlreadyDrawn,
+      });
+    }
+
     return await this.prisma.betbook.delete({ where: { id } });
   }
 }

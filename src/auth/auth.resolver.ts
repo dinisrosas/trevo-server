@@ -11,4 +11,9 @@ export class AuthResolver {
   async login(@Args('input') input: LoginInput): Promise<AuthSession> {
     return await this.authService.login(input);
   }
+
+  @Mutation(() => AuthSession)
+  async adminLogin(@Args('input') input: LoginInput): Promise<AuthSession> {
+    return await this.authService.login(input, true);
+  }
 }

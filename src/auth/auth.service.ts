@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { UserRoleEnum } from 'src/types';
 import { UsersService } from 'src/users/users.service';
 import { comparePasswords } from 'src/utils/misc';
 import { LoginInput } from './dto/login.input';
@@ -12,12 +13,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(loginInput: LoginInput): Promise<AuthSession> {
+  async login(loginInput: LoginInput, isAdmin?: boolean): Promise<AuthSession> {
     const { username, password } = loginInput;
 
     const user = await this.usersService.findOneByUsername(username);
 
     if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    if (isAdmin && !user.roles.includes(UserRoleEnum.Admin)) {
       throw new UnauthorizedException('Invalid credentials');
     }
 

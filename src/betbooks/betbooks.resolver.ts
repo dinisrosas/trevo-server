@@ -5,7 +5,7 @@ import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
 import { AuthUser } from 'src/types';
 import { BetbooksService } from './betbooks.service';
 import { CreateBetbookInput } from './dto/create-betbook.input';
-import { FindAllArgs } from './dto/generics.args';
+import { FindAllArgs } from './dto/find-all.args';
 import { UpdateBetbookInput } from './dto/update-betbook.input';
 import { Betbook, BetbookConnection } from './entities/betbook.entity';
 
@@ -35,7 +35,7 @@ export class BetbooksResolver {
 
   @Query(() => Betbook, { name: 'betbook' })
   findOne(@Args('id', { type: () => ID }) id: string): Promise<Betbook> {
-    return this.betbooksService.findOne(id);
+    return this.betbooksService.findOneById(id);
   }
 
   @Mutation(() => Betbook)
