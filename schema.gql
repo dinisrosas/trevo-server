@@ -127,7 +127,7 @@ type Query {
   me: User!
   sellers: [User!]!
   users: [User!]!
-  user(username: String!): User!
+  user(id: ID!): User!
   oncomingGames: [OncomingGame!]!
   games(before: String, after: String, first: Int, last: Int, finished: Boolean, date: String): GameConnection!
   game(id: ID!): Game!

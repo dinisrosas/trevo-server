@@ -38,10 +38,8 @@ export class UsersResolver {
   }
 
   @Query(() => User, { name: 'user' })
-  findByUsername(
-    @Args('username', { type: () => String }) username: string,
-  ): Promise<User> {
-    return this.usersService.findOneByUsername(username);
+  findById(@Args('id', { type: () => ID }) id: string): Promise<User> {
+    return this.usersService.findOneById(id);
   }
 
   @Mutation(() => User)
