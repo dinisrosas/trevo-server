@@ -13,8 +13,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(loginInput: LoginInput, isAdmin?: boolean): Promise<AuthSession> {
-    const { username, password } = loginInput;
+  async login(input: LoginInput): Promise<AuthSession> {
+    const { username, password, isAdmin } = input;
 
     const user = await this.usersService.findOneByUsername(username);
 

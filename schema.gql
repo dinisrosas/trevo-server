@@ -144,7 +144,6 @@ type Mutation {
   updatePassword(input: UpdatePasswordInput!): User!
   deleteUser(id: ID!): User!
   login(input: LoginInput!): AuthSession!
-  adminLogin(input: LoginInput!): AuthSession!
   createGame(input: CreateGameInput!): Game!
   updateGame(input: UpdateGameInput!): Game!
   updateGameResult(input: UpdateGameResultInput!): Game!
@@ -176,6 +175,7 @@ input UpdatePasswordInput {
 input LoginInput {
   username: String!
   password: String!
+  isAdmin: Boolean
 }
 
 input CreateGameInput {
