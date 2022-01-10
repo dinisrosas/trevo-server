@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
-import { AuthUser } from 'src/types';
+import { AuthUser, UserRoleEnum } from 'src/types';
 import { BetbooksService } from './betbooks.service';
 import { CreateBetbookInput } from './dto/create-betbook.input';
 import { FindAllArgs } from './dto/find-all.args';
@@ -30,6 +30,9 @@ export class BetbooksResolver {
     @CurrentUser() user: AuthUser,
     @Args() args: FindAllArgs,
   ): Promise<BetbookConnection> {
+    if (user.roles.includes(UserRoleEnum.Admin)) {
+      return this.betbooksService.findAll(args);
+    }
     return this.betbooksService.findAllBySeller(user.id, args);
   }
 

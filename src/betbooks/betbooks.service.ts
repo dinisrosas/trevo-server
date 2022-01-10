@@ -68,6 +68,39 @@ export class BetbooksService {
     return betbook;
   }
 
+  async findAll(args: FindAllArgs): Promise<BetbookConnection> {
+    const baseFindManyArgs: Prisma.BetbookFindManyArgs = {
+      where: {
+        fixed: args.fixed,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      include: {
+        seller: true,
+        bets: {
+          include: {
+            game: true,
+          },
+        },
+      },
+    };
+
+    const betbooks = await findManyCursorConnection(
+      (findManyArgs) =>
+        this.prisma.betbook.findMany({ ...findManyArgs, ...baseFindManyArgs }),
+      () => this.prisma.betbook.count({ where: baseFindManyArgs.where }),
+      {
+        first: args.first,
+        after: args.after,
+        before: args.before,
+        last: args.last,
+      },
+    );
+
+    return betbooks;
+  }
+
   async findAllBySeller(
     sellerId: string,
     args: FindAllArgs,

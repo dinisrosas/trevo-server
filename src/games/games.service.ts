@@ -52,8 +52,34 @@ export class GamesService {
     return await this.create(data);
   }
 
-  async findAll(): Promise<Game[]> {
-    return await this.prisma.game.findMany();
+  async findAll(args: FindAllBySellerArgs): Promise<GameConnection> {
+    const findManyBaseArgs: Prisma.GameFindManyArgs = {
+      where: {
+        isoDate: args.date,
+        result: args.finished
+          ? {
+              not: null,
+            }
+          : undefined,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+    };
+
+    const games = await findManyCursorConnection(
+      (findManyArgs) =>
+        this.prisma.game.findMany({ ...findManyArgs, ...findManyBaseArgs }),
+      () => this.prisma.game.count({ where: findManyBaseArgs.where }),
+      {
+        first: args.first,
+        after: args.after,
+        before: args.before,
+        last: args.last,
+      },
+    );
+
+    return games;
   }
 
   async findOneById(id: string): Promise<Game> {

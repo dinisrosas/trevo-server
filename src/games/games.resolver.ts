@@ -2,7 +2,7 @@ import { UseGuards } from '@nestjs/common';
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { GqlAuthGuard } from 'src/auth/guards/gql-auth.guard';
-import { AuthUser, GameType } from 'src/types';
+import { AuthUser, GameType, UserRoleEnum } from 'src/types';
 import { CreateGameInput } from './dto/create-game.input';
 import { FindAllBySellerArgs } from './dto/generics.args';
 import {
@@ -31,10 +31,13 @@ export class GamesResolver {
   }
 
   @Query(() => GameConnection, { name: 'games' })
-  findAllBySeller(
+  findAll(
     @CurrentUser() user: AuthUser,
     @Args() args: FindAllBySellerArgs,
   ): Promise<GameConnection> {
+    if (user.roles.includes(UserRoleEnum.Admin)) {
+      return this.gamesService.findAll(args);
+    }
     return this.gamesService.findAllBySeller(user.id, args);
   }
 
