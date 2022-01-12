@@ -27,7 +27,7 @@ export function getBetAward(params: GetBetAward): Award {
       });
 
     case GameModeEnum.LOTTERY:
-      return getGameAward({
+      return getLotteryAward({
         type: params.type,
         target: params.target,
         pick: params.pick,
@@ -87,16 +87,14 @@ function getDrawAward(params: GetDrawAward): Award {
   return { amount: 0 };
 }
 
-function getGameAward(params: GetGameAward): Award {
+function getLotteryAward(params: GetGameAward): Award {
   const drawnTickets = getDrawnTickets({
     type: params.type,
     result: params.result,
   });
 
   if (params.pick.length === 3) {
-    const index = drawnTickets.findIndex(
-      (ticket: string) => ticket === params.pick,
-    );
+    const index = drawnTickets.findIndex((ticket) => ticket === params.pick);
 
     if (index !== -1) {
       return {

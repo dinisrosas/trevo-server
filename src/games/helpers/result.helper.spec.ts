@@ -6,7 +6,7 @@ describe('latest game result', () => {
   it('should get valid result and iso date for EM game', async () => {
     const data = await getLatestGameResult('EM');
     expect(data.result).toMatch(
-      /(([1-9]|[1234][0-9]|50)\s){5}\+(\s([1-9]|1[0-1])){2}/,
+      /(([1-9]|[1234][0-9]|50)\s){5}\+(\s([1-9]|1[0-2])){2}/,
     );
     expect(data.isoDate).toMatch(ISO_DATE_REGEX);
   });
@@ -14,7 +14,7 @@ describe('latest game result', () => {
   it('should get valid result and iso date for TL game', async () => {
     const data = await getLatestGameResult('TL');
     expect(data.result).toMatch(
-      /(([1-9]|[1234][0-9]|50)\s){5}\+(\s([1-9]|1[0-1]))/,
+      /(([1-9]|[1234][0-9]|50)\s){5}\+(\s([1-9]|1[0-2]))/,
     );
     expect(data.isoDate).toMatch(ISO_DATE_REGEX);
   });
