@@ -34,11 +34,17 @@ export class FetchGameResultTask {
     }
   }
 
-  @Cron('2 15 * * 4', {
+  @Cron('15 15 * * 4', {
+    timeZone: 'Europe/Lisbon',
+  })
+  @Cron('10 15 * * 4', {
     timeZone: 'Europe/Lisbon',
   })
   async test(): Promise<void> {
     this.logger.log('test fetch game result');
     this.logger.log(new Date());
+
+    const activeGames = await this.gamesService.findRecentActiveGames();
+    this.logger.log('active games', activeGames);
   }
 }
