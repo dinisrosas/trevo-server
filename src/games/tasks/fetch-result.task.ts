@@ -24,7 +24,7 @@ export class FetchGameResultTask {
       const { result, isoDate } = await getLatestGameResult(game.type);
 
       if (game.isoDate !== isoDate) {
-        this.logger.warn('Game date and result date do not match');
+        this.logger.warn('Game and result dates do not match');
         this.logger.debug(isoDate);
         this.logger.debug(JSON.stringify(game, null, 2));
         continue;
@@ -32,19 +32,5 @@ export class FetchGameResultTask {
 
       await this.gamesService.updateResult(game.id, result);
     }
-  }
-
-  @Cron('15 15 * * 4', {
-    timeZone: 'Europe/Lisbon',
-  })
-  @Cron('10 15 * * 4', {
-    timeZone: 'Europe/Lisbon',
-  })
-  async test(): Promise<void> {
-    this.logger.log('test fetch game result');
-    this.logger.log(new Date());
-
-    const activeGames = await this.gamesService.findRecentActiveGames();
-    this.logger.log('active games', activeGames);
   }
 }

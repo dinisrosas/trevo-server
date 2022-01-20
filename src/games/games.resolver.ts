@@ -11,7 +11,6 @@ import {
 } from './dto/update-game.input';
 import { GameResult } from './entities/game-result.entity';
 import { Game, GameConnection } from './entities/game.entity';
-import { OncomingGame } from './entities/oncoming-game.entity';
 import { GamesService } from './games.service';
 import { getLatestGameResult } from './helpers/result.helper';
 
@@ -23,11 +22,6 @@ export class GamesResolver {
   @Mutation(() => Game)
   createGame(@Args('input') input: CreateGameInput): Promise<Game> {
     return this.gamesService.create(input);
-  }
-
-  @Query(() => [OncomingGame], { name: 'oncomingGames' })
-  findOncomingGames(): OncomingGame[] {
-    return this.gamesService.findOncoming();
   }
 
   @Query(() => GameConnection, { name: 'games' })

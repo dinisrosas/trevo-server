@@ -115,20 +115,11 @@ type GameResult {
   isoDate: String!
 }
 
-type OncomingGame {
-  name: String!
-  type: String!
-  mode: String!
-  isoDate: String!
-  date: DateTime!
-}
-
 type Query {
   me: User!
   sellers: [User!]!
   users: [User!]!
   user(id: ID!): User!
-  oncomingGames: [OncomingGame!]!
   games(before: String, after: String, first: Int, last: Int, finished: Boolean, date: String): GameConnection!
   game(id: ID!): Game!
   latestGameResult(type: String!): GameResult!

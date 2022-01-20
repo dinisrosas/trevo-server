@@ -10,8 +10,6 @@ import { CreateGameInput } from './dto/create-game.input';
 import { FindAllBySellerArgs } from './dto/generics.args';
 import { UpdateGameInput } from './dto/update-game.input';
 import { Game, GameConnection } from './entities/game.entity';
-import { OncomingGame } from './entities/oncoming-game.entity';
-import { getNextGames } from './helpers/oncoming.helper';
 
 @Injectable()
 export class GamesService {
@@ -145,10 +143,6 @@ export class GamesService {
         type_iso_date: { isoDate, type },
       },
     });
-  }
-
-  findOncoming(): OncomingGame[] {
-    return getNextGames();
   }
 
   async findRecentActiveGames(): Promise<Game[]> {
