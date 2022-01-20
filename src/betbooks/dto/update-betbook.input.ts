@@ -5,6 +5,6 @@ export class UpdateBetbookInput {
   @Field(() => ID)
   id: string;
 
-  @Field()
-  fixed: boolean;
+  @Field({ nullable: true })
+  fixed?: boolean;
 }

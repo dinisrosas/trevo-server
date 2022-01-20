@@ -205,5 +205,5 @@ input CreateBetInput {
 
 input UpdateBetbookInput {
   id: ID!
-  fixed: Boolean!
+  fixed: Boolean
 }
