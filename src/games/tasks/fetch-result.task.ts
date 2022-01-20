@@ -12,13 +12,10 @@ export class FetchGameResultTask {
     private schedulerRegistry: SchedulerRegistry,
   ) {}
 
-  // @Cron('15 20 * * 1-3,5,6', {
-  //   timeZone: 'Europe/Lisbon',
-  // })
-  // @Cron('45 12 * * 4', {
-  //   timeZone: 'Europe/Lisbon',
-  // })
-  @Cron('30 8 1 * * 4', {
+  @Cron('15 20 * * 1-3,5,6', {
+    timeZone: 'Europe/Lisbon',
+  })
+  @Cron('45 12 * * 4', {
     timeZone: 'Europe/Lisbon',
   })
   async fetchGameResult(): Promise<void> {
