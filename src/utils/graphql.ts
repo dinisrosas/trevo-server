@@ -10,5 +10,6 @@ export function formatGraphQLError(error: GraphQLError): FormattedGraphQLError {
     status:
       error.extensions?.response?.statusCode ||
       error.extensions?.exception?.status,
+    data: error.extensions?.exception?.response?.data,
   };
 }

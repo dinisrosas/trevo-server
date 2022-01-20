@@ -1,13 +1,13 @@
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { Injectable, NotAcceptableException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { GameMode, Prisma } from '@prisma/client';
 import { DateTime } from 'luxon';
 import { BetsService } from 'src/bets/bets.service';
-import { getGameFromRawData } from 'src/bets/helpers/game.helper';
-import { gameConstants } from 'src/games/contants';
+import { getGameFromRawData, getGameMode } from 'src/bets/helpers/game.helper';
 import { GamesService } from 'src/games/games.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ErrorCodes } from 'src/utils/errors';
+import { MAX_BET_TARGET_PER_NUMBER } from './constants';
 import { CreateBetbookInput } from './dto/create-betbook.input';
 import { FindAllArgs } from './dto/find-all.args';
 import { UpdateBetbookInput } from './dto/update-betbook.input';
@@ -27,17 +27,54 @@ export class BetbooksService {
     // validate date
     const hasInvalidDate = input.bets.some((bet) => {
       const game = getGameFromRawData(bet.game.type, bet.game.isoDate);
-
-      return (
-        DateTime.fromJSDate(game.date).diffNow().as('minutes') <
-        gameConstants.minDelayBeforeDeadlineInMinutes
-      );
+      return DateTime.fromJSDate(game.date).diffNow().as('minutes') < 0;
     });
 
     if (hasInvalidDate) {
       throw new NotAcceptableException({
-        message: `Less than ${gameConstants.minDelayBeforeDeadlineInMinutes} minutes left for one or more games`,
+        message: `One or more games already over the dealine`,
         code: ErrorCodes.GameUnavailable,
+      });
+    }
+
+    // check for numbers betting limit
+    const pairs = new Map();
+    const activeBets = await this.betsService.findAllActive();
+
+    for (const bet of [...input.bets, ...activeBets]) {
+      const pickMode =
+        getGameMode(bet.game.type) === GameMode.DRAW
+          ? bet.ball
+          : bet.pick.length;
+
+      const key = JSON.stringify({
+        type: bet.game.type + '|' + pickMode,
+        date: bet.game.isoDate,
+        pick: bet.pick,
+      });
+
+      const target = pairs.get(key);
+
+      if (!target) {
+        pairs.set(key, bet.target);
+      } else {
+        pairs.set(key, target + bet.target);
+      }
+    }
+
+    const invalidBet = [...pairs].find(
+      ([, target]) => target > MAX_BET_TARGET_PER_NUMBER,
+    );
+
+    if (invalidBet) {
+      throw new NotAcceptableException({
+        message: `Betbook has one or more bet targets over limit`,
+        code: ErrorCodes.BetbookHasBetTargetOverLimit,
+        data: {
+          ...JSON.parse(invalidBet[0]),
+          target: invalidBet[1],
+          limit: MAX_BET_TARGET_PER_NUMBER,
+        },
       });
     }
 

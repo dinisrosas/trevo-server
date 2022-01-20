@@ -48,6 +48,7 @@ export type FormattedGraphQLError = {
   code: string;
   name: string;
   status: number;
+  data?: any;
 };
 
 export type GetBetAward = {

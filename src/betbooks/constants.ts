@@ -1,0 +1,1 @@
+export const MAX_BET_TARGET_PER_NUMBER = 5000;

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { Bet } from '@prisma/client';
 import { GamesService } from 'src/games/games.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateBetInput } from './dto/create-bet.input';
 import { UpdateBetInput } from './dto/update-bet.input';
+import { Bet } from './entities/bet.entity';
 import { getBetAmount } from './helpers/amount.helper';
 
 @Injectable()
@@ -43,6 +43,17 @@ export class BetsService {
 
   async findAll(): Promise<Bet[]> {
     return await this.prisma.bet.findMany();
+  }
+
+  async findAllActive(): Promise<Bet[]> {
+    return await this.prisma.bet.findMany({
+      where: {
+        award: null,
+      },
+      include: {
+        game: true,
+      },
+    });
   }
 
   async findAllByGameId(gameId: string): Promise<Bet[]> {
