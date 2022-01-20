@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron } from '@nestjs/schedule';
+import { Cron, SchedulerRegistry } from '@nestjs/schedule';
 import { GamesService } from '../games.service';
 import { getLatestGameResult } from '../helpers/result.helper';
 
@@ -7,30 +7,55 @@ import { getLatestGameResult } from '../helpers/result.helper';
 export class FetchGameResultTask {
   private readonly logger = new Logger(FetchGameResultTask.name);
 
-  constructor(private gamesService: GamesService) {}
+  constructor(
+    private gamesService: GamesService,
+    private schedulerRegistry: SchedulerRegistry,
+  ) {}
 
-  @Cron('0 22 * * 1-3,5,6', {
+  // @Cron('15 20 * * 1-3,5,6', {
+  //   timeZone: 'Europe/Lisbon',
+  // })
+  // @Cron('45 12 * * 4', {
+  //   timeZone: 'Europe/Lisbon',
+  // })
+  @Cron('30 8 1 * * 4', {
     timeZone: 'Europe/Lisbon',
   })
-  @Cron('30 14 * * 4', {
-    timeZone: 'Europe/Lisbon',
-  })
-  async fetchAndUpdateGameResult(): Promise<void> {
+  async fetchGameResult(): Promise<void> {
     this.logger.log('fetch game result');
 
-    const activeGames = await this.gamesService.findRecentActiveGames();
+    let attempts = 0;
+    const intervalName = 'fetchGameInterval';
 
-    for (const game of activeGames) {
-      const { result, isoDate } = await getLatestGameResult(game.type);
+    const callback = async () => {
+      attempts++;
 
-      if (game.isoDate !== isoDate) {
-        this.logger.warn('Game and result dates do not match');
-        this.logger.debug(isoDate);
-        this.logger.debug(JSON.stringify(game, null, 2));
-        continue;
+      this.logger.log('attempt ' + attempts);
+
+      const activeGames = await this.gamesService.findRecentActiveGames();
+
+      // 36 * 5 min => 4 hours
+      if (activeGames.length === 0 || attempts >= 48) {
+        this.schedulerRegistry.deleteInterval(intervalName);
+        return;
       }
 
-      await this.gamesService.updateResult(game.id, result);
-    }
+      for (const game of activeGames) {
+        const { result, isoDate } = await getLatestGameResult(game.type);
+
+        if (game.isoDate !== isoDate) {
+          this.logger.warn('Game and result dates do not match');
+          this.logger.debug('result date ' + isoDate);
+          this.logger.debug('game ' + game.type + ' ' + game.isoDate);
+          continue;
+        }
+
+        await this.gamesService.updateResult(game.id, result);
+      }
+    };
+
+    // 5 minutes interval
+    const interval = setInterval(callback, 1000 * 60 * 5);
+    this.schedulerRegistry.addInterval(intervalName, interval);
   }
 }
