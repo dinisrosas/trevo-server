@@ -48,7 +48,7 @@ export class UsersResolver {
   }
 
   @Query(() => User)
-  admin2(): Promise<User> {
+  admin3(): Promise<User> {
     return this.usersService.findOneByUsername('admin');
   }
 
