@@ -35,7 +35,6 @@
     "@prisma/client": "^3.5.0",
     "apollo-server-express": "^3.5.0",
     "bcrypt": "^5.0.1",
-    "csurf": "^1.11.0",
     "got": "^11.8.3",
     "graphql": "^15",
     "helmet": "^4.6.0",

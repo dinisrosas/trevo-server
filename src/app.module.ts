@@ -21,6 +21,7 @@ import { formatGraphQLError } from './utils/graphql';
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot({
+      useGlobalPrefix: true,
       autoSchemaFile: 'schema.gql',
       formatError: formatGraphQLError,
     }),
