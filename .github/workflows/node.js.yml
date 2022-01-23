@@ -24,6 +24,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
       - run: yarn
       - run: yarn build
       - run: yarn test
