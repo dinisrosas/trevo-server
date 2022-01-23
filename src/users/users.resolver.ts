@@ -47,11 +47,6 @@ export class UsersResolver {
     return this.usersService.update(input.id, input);
   }
 
-  @Query(() => User)
-  admin(): Promise<User> {
-    return this.usersService.findOneByUsername('admin');
-  }
-
   @Mutation(() => User)
   updatePassword(
     @CurrentUser() user: User,
