@@ -24,10 +24,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
-      - run: echo "The DATABASE_URL is:${{secrets.DATABASE_URL}}"
-
       - run: yarn
+      - run: cp .env actions-runner/_work/trevo-server/trevo-server/
       - run: yarn build
       - run: yarn test
       - run: npx prisma db push
