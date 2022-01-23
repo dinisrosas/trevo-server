@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: cp .env actions-runner/_work/trevo-server/trevo-server/
+      - run: cp ~/.env ~/actions-runner/_work/trevo-server/trevo-server/
       - run: yarn build
       - run: yarn test
       - run: npx prisma db push
