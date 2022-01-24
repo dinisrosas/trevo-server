@@ -24,7 +24,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: install dependencies, build test and run
+      - name: Install dependencies, build test, update database and run
+        env:
+          TEST_SECRET: ${{ secrets.JWT_SECRET }}
         run: |
           yarn
           cp ~/.env ~/actions-runner/_work/trevo-server/trevo-server/
@@ -32,5 +34,3 @@ jobs:
           yarn test
           npx prisma db push
           pm2 restart main
-        env:
-          TEST_SECRET: ${{ secrets.JWT_SECRET }}
