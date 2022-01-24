@@ -42,7 +42,7 @@ export class BetsService {
   }
 
   async findAll(): Promise<Bet[]> {
-    return await this.prisma.bet.findMany();
+    return await this.prisma.bet.findMany({ include: { game: true } });
   }
 
   async findAllActive(): Promise<Bet[]> {

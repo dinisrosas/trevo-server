@@ -120,7 +120,6 @@ type Query {
   sellers: [User!]!
   users: [User!]!
   user(id: ID!): User!
-  admin: User!
   games(before: String, after: String, first: Int, last: Int, finished: Boolean, date: String): GameConnection!
   game(id: ID!): Game!
   latestGameResult(type: String!): GameResult!
