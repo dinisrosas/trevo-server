@@ -26,7 +26,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Create env file
         run: |
-          cat << EOF > .env2
+          cat << EOF > .env
           NODE_ENV=production
           DATABASE_URL=${{ secrets.DATABASE_URL }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
@@ -34,7 +34,6 @@ jobs:
       - name: Install dependencies, build, test, update database and run
         run: |
           yarn
-          cp ~/.env ~/actions-runner/_work/trevo-server/trevo-server/
           yarn build
           yarn test
           npx prisma db push
