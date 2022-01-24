@@ -9,10 +9,6 @@ on:
   pull_request:
     branches: [master]
 
-env:
-  HI: himom
-  TEST_SECRET: ${{ secrets.JWT_SECRET }}
-
 jobs:
   build:
     runs-on: self-hosted
