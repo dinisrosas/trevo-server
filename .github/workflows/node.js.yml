@@ -31,7 +31,7 @@ jobs:
           DATABASE_URL=${{ secrets.DATABASE_URL }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           EOF
-      - name: Install dependencies, build, test, update database and run
+      - name: Install dependencies, build, test, sync database and run
         run: |
           yarn
           yarn build
