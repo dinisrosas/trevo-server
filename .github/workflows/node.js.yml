@@ -24,6 +24,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
+      - name: install dependencies, build test and run
         run: |
           yarn
           cp ~/.env ~/actions-runner/_work/trevo-server/trevo-server/
