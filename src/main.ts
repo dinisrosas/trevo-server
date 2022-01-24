@@ -12,6 +12,7 @@ async function bootstrap() {
   await app.listen(process.env.PORT || 8080);
 
   console.log('TEST SECRET', process.env.TEST_SECRET);
+  console.log('HI', process.env.HI);
 }
 
 bootstrap();

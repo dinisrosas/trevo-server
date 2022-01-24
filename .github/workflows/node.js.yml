@@ -9,6 +9,10 @@ on:
   pull_request:
     branches: [master]
 
+env:
+  HI: himom
+  TEST_SECRET: ${{ secrets.JWT_SECRET }}
+
 jobs:
   build:
     runs-on: self-hosted
@@ -24,9 +28,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install dependencies, build test, update database and run
-        env:
-          TEST_SECRET: ${{ secrets.JWT_SECRET }}
+      - name: Install dependencies, build, test, update database and run
         run: |
           yarn
           cp ~/.env ~/actions-runner/_work/trevo-server/trevo-server/
