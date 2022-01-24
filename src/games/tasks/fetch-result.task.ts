@@ -21,7 +21,7 @@ export class FetchGameResultTask {
     timeZone: 'Europe/Lisbon',
   })
   async fetchGameResult(): Promise<void> {
-    this.logger.log('fetch game result');
+    this.logger.debug('Fetching Game Result...');
 
     let attempts = 0;
     const intervalName = 'fetchGameInterval';
@@ -29,13 +29,14 @@ export class FetchGameResultTask {
     const callback = async () => {
       attempts++;
 
-      this.logger.log('fetch attempt ' + attempts);
+      this.logger.debug('Fetch Attempt ' + attempts);
 
       const activeGames = await this.gamesService.findRecentActiveGames();
 
-      // 36 * 5 min => 3 hours 55 minutes
-      if (activeGames.length === 0 || attempts >= 47) {
+      // 4 hours  => 48 * 5 min
+      if (activeGames.length === 0 || attempts >= 48 - 1) {
         this.schedulerRegistry.deleteInterval(intervalName);
+        this.logger.debug('Stopped Fetching. All done');
         return;
       }
 
@@ -44,23 +45,27 @@ export class FetchGameResultTask {
           const { result, isoDate } = await getLatestGameResult(game.type);
 
           if (game.isoDate !== isoDate) {
-            this.logger.warn('Game and result dates do not match');
-            this.logger.debug('result date ' + isoDate);
-            this.logger.debug('game ' + game.type + ' ' + game.isoDate);
+            this.logger.debug('Fetch Result');
+            this.logger.log('Game ' + game.type + ' ' + game.isoDate);
+            this.logger.log('Result date ' + isoDate);
+            this.logger.debug('Game is not available yet');
             continue;
           }
 
-          this.logger.log('found result ' + result);
+          this.logger.debug('Result Found ' + result);
 
-          await this.gamesService.updateResult(game.id, result);
+          // sometimes result by order takes longer to be available
+          if (result) {
+            await this.gamesService.updateResult(game.id, result);
+          }
         } catch (error) {
           this.logger.error(error.message);
         }
       }
     };
 
-    // 5 minutes interval
-    const interval = setInterval(callback, 1000 * 60 * 5);
+    // 1 minute interval
+    const interval = setInterval(callback, 1000 * 60 * 1);
     this.schedulerRegistry.addInterval(intervalName, interval);
   }
 }
