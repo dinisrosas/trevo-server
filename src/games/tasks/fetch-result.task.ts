@@ -64,8 +64,8 @@ export class FetchGameResultTask {
       }
     };
 
-    // 1 minute interval
-    const interval = setInterval(callback, 1000 * 60 * 1);
+    // 5 minutes interval
+    const interval = setInterval(callback, 1000 * 60 * 5);
     this.schedulerRegistry.addInterval(intervalName, interval);
   }
 }
