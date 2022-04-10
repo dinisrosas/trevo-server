@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { BetbooksModule } from './betbooks/betbooks.module';
 import { BetsModule } from './bets/bets.module';
@@ -18,6 +20,7 @@ import { formatGraphQLError } from './utils/graphql';
     GamesModule,
     BetsModule,
     BetbooksModule,
+    ConfigModule.forRoot(),
     ScheduleModule.forRoot(),
     EventEmitterModule.forRoot(),
     GraphQLModule.forRoot({
@@ -26,5 +29,6 @@ import { formatGraphQLError } from './utils/graphql';
       formatError: formatGraphQLError,
     }),
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

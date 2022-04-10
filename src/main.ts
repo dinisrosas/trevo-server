@@ -7,7 +7,6 @@ async function bootstrap() {
 
   app.enableCors();
   app.use(helmet({ contentSecurityPolicy: false }));
-  app.setGlobalPrefix('api');
 
   await app.listen(process.env.PORT || 8080);
 }
