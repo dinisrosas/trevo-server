@@ -7,7 +7,7 @@ import { getGameFromRawData, getGameMode } from 'src/bets/helpers/game.helper';
 import { GamesService } from 'src/games/games.service';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { ErrorCodes } from 'src/utils/errors';
-import { MAX_BET_TARGET_PER_NUMBER } from './constants';
+// import { MAX_BET_TARGET_PER_NUMBER } from './constants';
 import { CreateBetbookInput } from './dto/create-betbook.input';
 import { FindAllArgs } from './dto/find-all.args';
 import { UpdateBetbookInput } from './dto/update-betbook.input';
@@ -62,21 +62,21 @@ export class BetbooksService {
       }
     }
 
-    const invalidBet = [...pairs].find(
-      ([, target]) => target > MAX_BET_TARGET_PER_NUMBER,
-    );
+    // const invalidBet = [...pairs].find(
+    //   ([, target]) => target > MAX_BET_TARGET_PER_NUMBER,
+    // );
 
-    if (invalidBet) {
-      throw new NotAcceptableException({
-        message: `Betbook has one or more bet targets over limit`,
-        code: ErrorCodes.BetbookHasBetTargetOverLimit,
-        data: {
-          ...JSON.parse(invalidBet[0]),
-          target: invalidBet[1],
-          limit: MAX_BET_TARGET_PER_NUMBER,
-        },
-      });
-    }
+    // if (invalidBet) {
+    //   throw new NotAcceptableException({
+    //     message: `Betbook has one or more bet targets over limit`,
+    //     code: ErrorCodes.BetbookHasBetTargetOverLimit,
+    //     data: {
+    //       ...JSON.parse(invalidBet[0]),
+    //       target: invalidBet[1],
+    //       limit: MAX_BET_TARGET_PER_NUMBER,
+    //     },
+    //   });
+    // }
 
     const betbook = await this.prisma.betbook.create({
       data: {
