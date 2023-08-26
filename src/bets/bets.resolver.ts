@@ -18,6 +18,11 @@ export class BetsResolver {
     return this.betsService.findAll();
   }
 
+  @Query(() => [Bet], { name: 'activeBets' })
+  findAllActive(): Promise<Bet[]> {
+    return this.betsService.findAllActive();
+  }
+
   @Query(() => Bet, { name: 'bet' })
   findOne(@Args('id', { type: () => ID }) id: string): Promise<Bet> {
     return this.betsService.findOne(id);
