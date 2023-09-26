@@ -46,12 +46,12 @@ export class BetsService {
     return await this.prisma.bet.findMany({ include: { game: true } });
   }
 
-  async findAllActive(args: FindActiveArgs): Promise<Bet[]> {
+  async findAllActive(args?: FindActiveArgs): Promise<Bet[]> {
     return await this.prisma.bet.findMany({
       where: {
         award: null,
         game: {
-          isoDate: args.date,
+          isoDate: args?.date,
         }
       },
       include: {
