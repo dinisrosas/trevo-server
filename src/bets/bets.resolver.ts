@@ -6,6 +6,7 @@ import { UserRoleEnum } from 'src/types';
 import { BetsService } from './bets.service';
 import { UpdateBetInput } from './dto/update-bet.input';
 import { Bet } from './entities/bet.entity';
+import { FindActiveArgs } from './dto/generics.args';
 
 @UseGuards(GqlAuthGuard)
 @Resolver(() => Bet)
@@ -19,8 +20,10 @@ export class BetsResolver {
   }
 
   @Query(() => [Bet], { name: 'activeBets' })
-  findAllActive(): Promise<Bet[]> {
-    return this.betsService.findAllActive();
+  findAllActive(
+    @Args() args: FindActiveArgs,
+  ): Promise<Bet[]> {
+    return this.betsService.findAllActive(args);
   }
 
   @Query(() => Bet, { name: 'bet' })

@@ -5,6 +5,7 @@ import { CreateBetInput } from './dto/create-bet.input';
 import { UpdateBetInput } from './dto/update-bet.input';
 import { Bet } from './entities/bet.entity';
 import { getBetAmount } from './helpers/amount.helper';
+import { FindActiveArgs } from './dto/generics.args';
 
 @Injectable()
 export class BetsService {
@@ -45,10 +46,13 @@ export class BetsService {
     return await this.prisma.bet.findMany({ include: { game: true } });
   }
 
-  async findAllActive(): Promise<Bet[]> {
+  async findAllActive(args: FindActiveArgs): Promise<Bet[]> {
     return await this.prisma.bet.findMany({
       where: {
         award: null,
+        game: {
+          isoDate: args.date,
+        }
       },
       include: {
         game: true,
