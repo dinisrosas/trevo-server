@@ -1,11 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { GamesService } from 'src/games/games.service';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateBetInput } from './dto/create-bet.input';
-import { UpdateBetInput } from './dto/update-bet.input';
-import { Bet } from './entities/bet.entity';
-import { getBetAmount } from './helpers/amount.helper';
-import { FindActiveArgs } from './dto/generics.args';
+import { Injectable } from "@nestjs/common";
+import { GamesService } from "src/games/games.service";
+import { PrismaService } from "src/prisma/prisma.service";
+import { CreateBetInput } from "./dto/create-bet.input";
+import { UpdateBetInput } from "./dto/update-bet.input";
+import { Bet, BetConnection, BetSummary } from "./entities/bet.entity";
+import { getBetAmount } from "./helpers/amount.helper";
+import { FindActiveArgs, FindAllArgs } from "./dto/generics.args";
+import { Prisma } from "@prisma/client";
+import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
 
 @Injectable()
 export class BetsService {
@@ -15,7 +17,7 @@ export class BetsService {
   ) {}
 
   async create(
-    data: Omit<CreateBetInput, 'game'> & {
+    data: Omit<CreateBetInput, "game"> & {
       gameId: string;
       betbookId: string;
     },
@@ -42,8 +44,48 @@ export class BetsService {
     });
   }
 
-  async findAll(): Promise<Bet[]> {
-    return await this.prisma.bet.findMany({ include: { game: true } });
+  async findAll(args: FindAllArgs): Promise<BetConnection> {
+    const baseFindManyArgs: Prisma.BetFindManyArgs = {
+      orderBy: {
+        id: "desc",
+      },
+      include: {
+        game: true,
+      },
+    };
+
+    const bets = await findManyCursorConnection(
+      (findManyArgs) =>
+        this.prisma.bet.findMany({ ...findManyArgs, ...baseFindManyArgs }),
+      () => this.prisma.bet.count({ where: baseFindManyArgs.where }),
+      {
+        first: args.first,
+        after: args.after,
+        before: args.before,
+        last: args.last,
+      },
+    );
+
+    return bets;
+  }
+
+  async summary(): Promise<BetSummary[]> {
+    return await this.prisma.$queryRaw`
+      SELECT 
+        g.iso_date as date,
+        SUM(b.amount) AS amount,
+        SUM(COALESCE(b.award, 0)) AS award,
+        SUM(b.amount - COALESCE(b.award, 0)) AS profit,
+        g.result AS result
+      FROM 
+        bets b
+      JOIN 
+        games g ON b.game_id = g.id
+      GROUP BY 
+        g.iso_date, g.result
+      ORDER BY
+        g.iso_date ASC;
+    `;
   }
 
   async findAllActive(args?: FindActiveArgs): Promise<Bet[]> {
@@ -52,7 +94,7 @@ export class BetsService {
         award: null,
         game: {
           isoDate: args?.date,
-        }
+        },
       },
       include: {
         game: true,

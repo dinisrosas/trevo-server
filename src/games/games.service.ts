@@ -1,15 +1,15 @@
-import { Prisma } from '.prisma/client';
-import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { EventEmitter2 } from 'eventemitter2';
-import { DateTime } from 'luxon';
-import { getGameFromRawData } from 'src/bets/helpers/game.helper';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { GameType } from 'src/types';
-import { CreateGameInput } from './dto/create-game.input';
-import { FindAllBySellerArgs } from './dto/generics.args';
-import { UpdateGameInput } from './dto/update-game.input';
-import { Game, GameConnection } from './entities/game.entity';
+import { Prisma } from ".prisma/client";
+import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { EventEmitter2 } from "eventemitter2";
+import { DateTime } from "luxon";
+import { getGameFromRawData } from "src/bets/helpers/game.helper";
+import { PrismaService } from "src/prisma/prisma.service";
+import { GameType } from "src/types";
+import { CreateGameInput } from "./dto/create-game.input";
+import { FindAllBySellerArgs } from "./dto/generics.args";
+import { UpdateGameInput } from "./dto/update-game.input";
+import { Game, GameConnection } from "./entities/game.entity";
 
 @Injectable()
 export class GamesService {
@@ -24,7 +24,7 @@ export class GamesService {
     const game = getGameFromRawData(type, isoDate);
 
     if (!game) {
-      throw new BadRequestException('Invalid game type or date');
+      throw new BadRequestException("Invalid game type or date");
     }
 
     return await this.prisma.game.create({
@@ -56,12 +56,12 @@ export class GamesService {
         isoDate: args.date,
         result: args.finished
           ? {
-              not: null,
-            }
+            not: null,
+          }
           : undefined,
       },
       orderBy: {
-        id: 'desc',
+        id: "desc",
       },
     };
 
@@ -106,8 +106,8 @@ export class GamesService {
         isoDate: args.date,
         result: args.finished
           ? {
-              not: null,
-            }
+            not: null,
+          }
           : undefined,
         bets: {
           every: {
@@ -118,7 +118,7 @@ export class GamesService {
         },
       },
       orderBy: {
-        id: 'desc',
+        id: "desc",
       },
     };
 
@@ -162,6 +162,7 @@ export class GamesService {
       },
       data: {
         ...data,
+        bets: undefined,
       },
     });
 
@@ -178,7 +179,7 @@ export class GamesService {
       },
     });
 
-    this.eventEmitter.emit('game.result.updated', game);
+    this.eventEmitter.emit("game.result.updated", game);
 
     return game;
   }

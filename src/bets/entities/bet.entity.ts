@@ -1,6 +1,7 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
-import { Betbook } from 'src/betbooks/entities/betbook.entity';
-import { Game } from 'src/games/entities/game.entity';
+import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
+import { Betbook } from "src/betbooks/entities/betbook.entity";
+import { Connection } from "src/common/generics/pagination.entity";
+import { Game } from "src/games/entities/game.entity";
 
 @ObjectType()
 export class Bet {
@@ -42,4 +43,25 @@ export class Bet {
 
   @Field()
   createdAt: Date;
+}
+
+@ObjectType()
+export class BetConnection extends Connection(Bet) {}
+
+@ObjectType()
+export class BetSummary {
+  @Field()
+  date: string;
+
+  @Field()
+  amount: number;
+
+  @Field()
+  award: number;
+
+  @Field()
+  profit: number;
+
+  @Field({ nullable: true })
+  result?: string;
 }

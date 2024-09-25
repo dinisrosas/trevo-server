@@ -33,44 +33,6 @@ type PageInfo {
   endCursor: String
 }
 
-type Betbook {
-  id: ID!
-  sid: Float!
-  bettor: String!
-  fixed: Boolean!
-  seller: User!
-  bets: [Bet!]!
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
-type BetbookEdge {
-  cursor: String!
-  node: Betbook!
-}
-
-type BetbookConnection {
-  edges: [BetbookEdge!]!
-  totalCount: Int!
-  pageInfo: PageInfo!
-}
-
-type Bet {
-  id: ID!
-  sid: Float!
-  target: Float!
-  pick: String!
-  amount: Float!
-  award: Float
-  awardDescription: String
-  game: Game!
-  betbook: Betbook!
-  updown: Boolean
-  ball: Int
-  updatedAt: DateTime!
-  createdAt: DateTime!
-}
-
 type Game {
   id: ID!
   sid: Float!
@@ -110,6 +72,63 @@ type GameConnection {
   pageInfo: PageInfo!
 }
 
+type Bet {
+  id: ID!
+  sid: Float!
+  target: Float!
+  pick: String!
+  amount: Float!
+  award: Float
+  awardDescription: String
+  game: Game!
+  betbook: Betbook!
+  updown: Boolean
+  ball: Int
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type BetEdge {
+  cursor: String!
+  node: Bet!
+}
+
+type BetConnection {
+  edges: [BetEdge!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
+type BetSummary {
+  date: String!
+  amount: Float!
+  award: Float!
+  profit: Float!
+  result: String
+}
+
+type Betbook {
+  id: ID!
+  sid: Float!
+  bettor: String!
+  fixed: Boolean!
+  seller: User!
+  bets: [Bet!]!
+  updatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+type BetbookEdge {
+  cursor: String!
+  node: Betbook!
+}
+
+type BetbookConnection {
+  edges: [BetbookEdge!]!
+  totalCount: Int!
+  pageInfo: PageInfo!
+}
+
 type GameResult {
   result: String!
   isoDate: String!
@@ -123,7 +142,9 @@ type Query {
   games(before: String, after: String, first: Int, last: Int, finished: Boolean, date: String): GameConnection!
   game(id: ID!): Game!
   latestGameResult(type: String!): GameResult!
-  bets: [Bet!]!
+  bets(before: String, after: String, first: Int, last: Int): BetConnection!
+  betsSummary: [BetSummary!]!
+  activeBets(before: String, after: String, first: Int, last: Int, date: String): [Bet!]!
   bet(id: ID!): Bet!
   betbooks(before: String, after: String, first: Int, last: Int, fixed: Boolean): BetbookConnection!
   betbook(id: ID!): Betbook!
