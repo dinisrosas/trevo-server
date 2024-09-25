@@ -1,13 +1,20 @@
+import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
 import { Injectable } from "@nestjs/common";
+import { Prisma } from "@prisma/client";
 import { GamesService } from "src/games/games.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateBetInput } from "./dto/create-bet.input";
+import {
+  FindActiveArgs,
+  FindAllArgs
+} from "./dto/generics.args";
 import { UpdateBetInput } from "./dto/update-bet.input";
-import { Bet, BetConnection, BetSummary } from "./entities/bet.entity";
+import {
+  Bet,
+  BetConnection,
+  BetSummary
+} from "./entities/bet.entity";
 import { getBetAmount } from "./helpers/amount.helper";
-import { FindActiveArgs, FindAllArgs } from "./dto/generics.args";
-import { Prisma } from "@prisma/client";
-import { findManyCursorConnection } from "@devoxa/prisma-relay-cursor-connection";
 
 @Injectable()
 export class BetsService {
@@ -87,7 +94,7 @@ export class BetsService {
         g.iso_date ASC;
     `;
   }
-
+  
   async findAllActive(args?: FindActiveArgs): Promise<Bet[]> {
     return await this.prisma.bet.findMany({
       where: {

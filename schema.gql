@@ -72,6 +72,12 @@ type GameConnection {
   pageInfo: PageInfo!
 }
 
+type AwardStat {
+  game_type: String!
+  bet_pick: String!
+  total: Float!
+}
+
 type Bet {
   id: ID!
   sid: Float!
@@ -140,6 +146,7 @@ type Query {
   users: [User!]!
   user(id: ID!): User!
   games(before: String, after: String, first: Int, last: Int, finished: Boolean, date: String): GameConnection!
+  awardStats: [AwardStat!]!
   game(id: ID!): Game!
   latestGameResult(type: String!): GameResult!
   bets(before: String, after: String, first: Int, last: Int): BetConnection!

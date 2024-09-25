@@ -1,14 +1,20 @@
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { Bet } from 'src/bets/entities/bet.entity';
-import { Connection } from 'src/common/generics/pagination.entity';
-import { GameMode, GameModeEnum, GameType, GameTypeEnum } from 'src/types';
+import {
+  ArgsType,
+  Field,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from "@nestjs/graphql";
+import { Bet } from "src/bets/entities/bet.entity";
+import { Connection } from "src/common/generics/pagination.entity";
+import { GameMode, GameModeEnum, GameType, GameTypeEnum } from "src/types";
 
 registerEnumType(GameModeEnum, {
-  name: 'GameMode',
+  name: "GameMode",
 });
 
 registerEnumType(GameTypeEnum, {
-  name: 'GameType',
+  name: "GameType",
 });
 
 @ObjectType()
@@ -49,3 +55,19 @@ export class Game {
 
 @ObjectType()
 export class GameConnection extends Connection(Game) {}
+
+@ObjectType()
+export class AwardStat {
+  @Field()
+  game_type: GameType;
+
+  @Field()
+  bet_pick: string;
+
+  @Field()
+  total: number;
+}
+
+@ArgsType()
+export class AwardStatsArgs {
+}

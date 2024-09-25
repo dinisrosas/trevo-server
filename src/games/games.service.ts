@@ -9,7 +9,12 @@ import { GameType } from "src/types";
 import { CreateGameInput } from "./dto/create-game.input";
 import { FindAllBySellerArgs } from "./dto/generics.args";
 import { UpdateGameInput } from "./dto/update-game.input";
-import { Game, GameConnection } from "./entities/game.entity";
+import {
+  AwardStat,
+  AwardStatsArgs,
+  Game,
+  GameConnection,
+} from "./entities/game.entity";
 
 @Injectable()
 export class GamesService {
@@ -135,6 +140,27 @@ export class GamesService {
     );
 
     return games;
+  }
+
+  async awardStats(args: AwardStatsArgs): Promise<AwardStat[]> {
+    return await this.prisma.$queryRaw`
+      SELECT 
+        g.type AS game_type,
+        b.pick AS bet_pick,
+        COUNT(*)::INT AS total
+      FROM 
+          bets b
+      JOIN 
+          games g ON b.game_id = g.id
+      WHERE 
+          g.result IS NOT NULL
+          AND b.award > 0
+      GROUP BY 
+          g.type, b.pick
+      ORDER BY 
+          total DESC
+      LIMIT 25;
+    `;
   }
 
   async findOneByTypeIsoDate(type: GameType, isoDate: string): Promise<Game> {

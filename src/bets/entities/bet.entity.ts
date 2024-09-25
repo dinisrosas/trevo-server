@@ -1,4 +1,5 @@
 import { Field, ID, Int, ObjectType } from "@nestjs/graphql";
+import { GameType } from "@prisma/client";
 import { Betbook } from "src/betbooks/entities/betbook.entity";
 import { Connection } from "src/common/generics/pagination.entity";
 import { Game } from "src/games/entities/game.entity";
