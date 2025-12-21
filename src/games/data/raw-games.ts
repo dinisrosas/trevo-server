@@ -38,6 +38,15 @@ const games: RawGame[] = [
     },
   },
   {
+    type: 'LC',
+    name: 'Lotaria de Ano Novo',
+    day: 4,
+    time: {
+      hour: 12,
+      minute: 30,
+    },
+  },
+  {
     type: 'EM',
     name: 'Euromilhões',
     day: 5,
@@ -71,6 +80,15 @@ const games: RawGame[] = [
     time: {
       hour: 20,
       minute: 0,
+    },
+  },
+  {
+    type: 'LC',
+    name: 'Lotaria de Natal',
+    day: 6,
+    time: {
+      hour: 11,
+      minute: 30,
     },
   },
 ];
