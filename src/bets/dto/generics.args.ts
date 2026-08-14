@@ -5,9 +5,6 @@ import { PaginationArgs } from "src/common/generics/pagination.entity";
 export class FindActiveArgs extends PaginationArgs {
   @Field({ nullable: true })
   date?: string;
-
-  @Field({ nullable: true, defaultValue: false })
-  includeSettled?: boolean;
 }
 
 @ArgsType()
