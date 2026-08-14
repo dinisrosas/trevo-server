@@ -151,7 +151,7 @@ type Query {
   latestGameResult(type: String!): GameResult!
   bets(before: String, after: String, first: Int, last: Int): BetConnection!
   betsSummary: [BetSummary!]!
-  activeBets(before: String, after: String, first: Int, last: Int, date: String): [Bet!]!
+  activeBets(before: String, after: String, first: Int, last: Int, date: String, includeSettled: Boolean = false): [Bet!]!
   bet(id: ID!): Bet!
   betbooks(before: String, after: String, first: Int, last: Int, fixed: Boolean): BetbookConnection!
   betbook(id: ID!): Betbook!

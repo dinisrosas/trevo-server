@@ -94,11 +94,11 @@ export class BetsService {
         g.iso_date ASC;
     `;
   }
-  
+
   async findAllActive(args?: FindActiveArgs): Promise<Bet[]> {
     return await this.prisma.bet.findMany({
       where: {
-        award: null,
+        ...(!args?.includeSettled && { award: null }),
         game: {
           isoDate: args?.date,
         },
