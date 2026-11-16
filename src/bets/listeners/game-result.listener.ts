@@ -16,6 +16,7 @@ export class GameResultListener {
 
     for (const bet of bets) {
       const award = getBetAward({
+        isoDate: game.isoDate,
         pick: bet.pick,
         result: game.result,
         mode: game.mode,
@@ -28,7 +29,7 @@ export class GameResultListener {
 
       await this.betsService.update(bet.id, {
         award: award.amount,
-        awardDescription: award.description,
+        awardDescription: award.description ?? null,
       });
     }
   }

@@ -7,33 +7,24 @@ import {
   GetDrawnTickets,
   GetGameAward,
 } from 'src/types';
+import { AWARD_CHANGE_DATE } from '../constants';
 
 const odd_dividers = {
   draw_updown: 12,
   lottery_updown: [5, 10, 20],
-  lottery_2: [1, 5, 10], // 1 5 12 ??
-  lottery_3: [1, 6, 12], // 1 5 10 ??
+  lottery_2: [1, 5, 10],
+  lottery_3: [1, 6, 12],
 };
+
+const threeDigitMultipliers = [500, 80, 40];
 
 export function getBetAward(params: GetBetAward): Award {
   switch (params.mode) {
     case GameModeEnum.DRAW:
-      return getDrawAward({
-        target: params.target,
-        pick: params.pick,
-        ball: params.ball,
-        updown: params.updown,
-        result: params.result,
-      });
+      return getDrawAward(params);
 
     case GameModeEnum.LOTTERY:
-      return getLotteryAward({
-        type: params.type,
-        target: params.target,
-        pick: params.pick,
-        result: params.result,
-        amount: params.amount,
-      });
+      return getLotteryAward(params);
     default:
       throw new Error('Invalid game mode');
   }
@@ -70,24 +61,21 @@ function getDrawAward(params: GetDrawAward): Award {
       amount: params.target,
       description: '1º Lugar',
     };
-  } else if (params.updown) {
-    if (pick === result - 1) {
-      return {
-        amount: params.target / odd_dividers.draw_updown,
-        description: '1º Lugar Desce',
-      };
-    } else if (pick === result + 1) {
-      return {
-        amount: params.target / odd_dividers.draw_updown,
-        description: '1º Lugar Sobe',
-      };
-    }
+  } else if (params.updown && Math.abs(pick - result) === 1) {
+    return {
+      amount:
+        params.isoDate >= AWARD_CHANGE_DATE
+          ? params.amount * 2.5
+          : params.target / odd_dividers.draw_updown,
+      description: pick > result ? '1º Lugar Sobe' : '1º Lugar Desce',
+    };
   }
 
   return { amount: 0 };
 }
 
 function getLotteryAward(params: GetGameAward): Award {
+  const useNewAwards = params.isoDate >= AWARD_CHANGE_DATE;
   const drawnTickets = getDrawnTickets({
     type: params.type,
     result: params.result,
@@ -98,7 +86,9 @@ function getLotteryAward(params: GetGameAward): Award {
 
     if (index !== -1) {
       return {
-        amount: params.target / odd_dividers.lottery_3[index],
+        amount: useNewAwards
+          ? params.amount * threeDigitMultipliers[index]
+          : params.target / odd_dividers.lottery_3[index],
         description: `${index + 1}º Lugar`,
       };
     }
@@ -125,7 +115,10 @@ function getLotteryAward(params: GetGameAward): Award {
       };
     }
 
-    const updown = findUpdownResult(params.pick, drawnTickets);
+    const updown = findUpdownResult(
+      params.pick,
+      useNewAwards ? drawnTickets.slice(0, 1) : drawnTickets,
+    );
 
     if (updown) {
       return {

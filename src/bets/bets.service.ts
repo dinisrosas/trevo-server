@@ -33,6 +33,7 @@ export class BetsService {
 
     const amount = getBetAmount({
       mode: game.mode,
+      isoDate: game.isoDate,
       pick: data.pick,
       target: data.target,
       updown: data.updown,

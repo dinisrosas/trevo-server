@@ -52,6 +52,7 @@ export type FormattedGraphQLError = {
 };
 
 export type GetBetAward = {
+  isoDate: string;
   type: GameType;
   mode: GameMode;
   target: number;
@@ -62,7 +63,7 @@ export type GetBetAward = {
   amount: number;
 };
 
-export type GetDrawAward = Omit<GetBetAward, 'type' | 'mode' | 'amount'>;
+export type GetDrawAward = Omit<GetBetAward, 'type' | 'mode'>;
 export type GetGameAward = Omit<GetBetAward, 'ball' | 'updown' | 'mode'>;
 export type GetDrawnTickets = Pick<GetBetAward, 'type' | 'result'>;
 
